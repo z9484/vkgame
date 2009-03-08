@@ -6,16 +6,16 @@ end
 
 require 'activerecord'
 require 'curb'
+require 'app/models/game'
 
 VK_SERVER_URL = 'http://localhost:3000'
-GAME_ID = 1
-DBFILE = 'db.sqlite3'
-DBPATH = "db/#{DBFILE}"
+GAME_ID = 2
+DBPATH = "db/db.sqlite3"
 
-ActiveRecord::Base.establish_connection(
+ActiveRecord::Base.establish_connection({
   :adapter => 'sqlite3',
-  :dbfile => DBFILE
-)
+  :dbfile => DBPATH,
+})
 
 class VirtualKingdomsGame < Shoes
   show_log
@@ -23,8 +23,12 @@ class VirtualKingdomsGame < Shoes
   def index
     stack do
       title "VKGAME"
-      download "#{VK_SERVER_URL}/pages/download?id=#{GAME_ID}", :save => DBPATH do
-        visit '/game'
+      download "#{VK_SERVER_URL}/pages/download?id=#{GAME_ID}", :save => DBPATH do |r|
+        if (200..300).include?(r.response.headers['Status'].to_i)
+          visit '/game'
+        else
+          para File.read(DBPATH)
+        end
       end
       para "Now downloading, please be patient"
     end
@@ -32,13 +36,21 @@ class VirtualKingdomsGame < Shoes
 
   def game
     stack do
-      para 'Welcome to the jungle'
+      para 'Welcome to the Jungle'
+      para Game.all.inspect
+      Game.create(:name => "#{rand(1000)}")
+      para Game.all.map {|g| g.name}.join(' ')
       button "Quit" do
         para "saving..."
         c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?id=#{GAME_ID}")
         c.multipart_form_post = true
-        c.http_post(Curl::PostField.content('game[data]', DBPATH))
-        exit
+        c.http_post(Curl::PostField.file('game[data]', DBPATH))
+        if (200..300).include?(c.response_code)
+          File.delete(DBPATH)
+          exit
+        else
+          para "Error"
+        end
       end
     end
   end
