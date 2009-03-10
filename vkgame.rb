@@ -6,7 +6,10 @@ end
 
 require 'activerecord'
 require 'curb'
-require 'app/models/game'
+require 'app/models/character'
+require 'app/models/map'
+require 'app/models/point'
+require 'app/models/terrain'
 
 VK_SERVER_URL = 'http://localhost:3000'
 GAME_ID = 2
@@ -64,10 +67,12 @@ class VirtualKingdomsGame < Shoes
         pw = edit_line :secret => true
       end
       flow do
-        button "Let the Adventure Begin", :width => 300 do
+        b = button "Let the Adventure Begin", :width => 300 do
           para "Downloading... please be patient"
           @@email = CGI.escape(e.text)
           @@password = CGI.escape(pw.text)
+          @@email = CGI.escape('e@e.com')
+          @@password = CGI.escape('test')
           params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
           download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DBPATH do |r|
             if (200..300).include?(r.response.headers['Status'].to_i)
@@ -83,11 +88,23 @@ class VirtualKingdomsGame < Shoes
   end
 
   def game
+    title "vk"
     stack do
-      para 'Welcome to the Jungle'
-      para Game.all.inspect
-      Game.create(:name => "#{rand(1000)}")
-      para Game.all.map {|g| g.name}.join(' ')
+      stack :width => 350, :height => 350 do
+        background BASE_LIGHT
+        flow :width => 340, :displace_left => 4, :displace_top => 4 do
+          (225...250).each do |i|
+            stack :width => 68, :height => 68 do
+              if i == 25 / 2
+                border COMPLEMENT1_LIGHTER, :strokewidth => 5
+              else
+                border COMPLEMENT2_LIGHTER
+              end
+              image "images/terrains/#{Point.find_by_i(i).terrain.color}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3
+            end
+          end
+        end
+      end
       button "Quit" do
         para "saving..."
         params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
@@ -104,27 +121,7 @@ class VirtualKingdomsGame < Shoes
     end
   end
 
-  def field
-    title "vk"
-    stack :width => 350, :height => 350 do
-      background BASE_LIGHT
-      flow :width => 340, :displace_left => 4, :displace_top => 4 do
-        25.times do |i|
-          stack :width => 68, :height => 68 do
-            if i == 25 / 2
-              border COMPLEMENT1_LIGHTER, :strokewidth => 5
-            else
-              border COMPLEMENT2_LIGHTER
-            end
-            image "images/terrains/00ff00.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3
-          end
-        end
-      end
-    end
-  end
-
-  url '/', :field
-  url '/i', :index
+  url '/', :index
   url '/game', :game
 end
 
