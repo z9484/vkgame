@@ -2,10 +2,10 @@ class Character < ActiveRecord::Base
 
   belongs_to :point
 
-  before_save :init
+  before_create :init
 
   def wideview?
-    false
+    true
   end
 
   def field_flow_options
@@ -46,10 +46,10 @@ class Character < ActiveRecord::Base
     if p.nil?
       "Try using the arrow keys"
     elsif can_walk_on?(p)
-      self.point = p
+      self.update_attribute(:point, p)
       "You walk on the #{p.terrain.name}"
     else
-      "The #{p.terrain.name} are too dangerous"
+      "The #{p.terrain.name} is too dangerous"
     end
   end
 
@@ -62,7 +62,7 @@ class Character < ActiveRecord::Base
 
   def init
     self.race_id = nil
-    self.point_id = Point.find_by_i(1050).id
+    self.point_id = Point.find_by_i(2971).id
     self.name = "Hero"
     self.hp = 25
     self.vitality = 25

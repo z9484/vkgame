@@ -56,17 +56,13 @@ class VirtualKingdomsGame < Shoes
   @@character = nil
 
   def index
-    title "Virtual Kingdoms: the Game"
+    title "VK game"
     e, pw = '', ''
     stack do
-      flow do
-        para "Email:"
-        e = edit_line
-      end
-      flow do
-        para "Password:"
-        pw = edit_line :secret => true
-      end
+      para "Email:"
+      e = edit_line
+      para "Password:"
+      pw = edit_line :secret => true
       flow do
         b = button "Let the Adventure Begin", :width => 300 do
           para "Downloading... please be patient"
@@ -92,6 +88,7 @@ class VirtualKingdomsGame < Shoes
       stack :width => 350, :height => 350 do
         background BASE_LIGHT
         flow @@character.field_flow_options do
+          @field_images = []
           @@character.field_points.each do |p|
             stack :width => 68, :height => 68 do
               if @@character.point == p
@@ -99,7 +96,7 @@ class VirtualKingdomsGame < Shoes
               else
                 border COMPLEMENT2_LIGHTER
               end
-              image "images/terrains/#{p.terrain.color}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3
+              @field_images << image("images/terrains/#{p.terrain.color}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3)
             end
           end
         end
@@ -121,6 +118,9 @@ class VirtualKingdomsGame < Shoes
     end
     keypress do |k|
       @status.text = @@character.do(k)
+      @@character.field_points.zip(@field_images) do |p, i|
+        i.path = "images/terrains/#{p.terrain.color}.png" unless p.terrain.nil?
+      end
     end
   end
 
@@ -128,4 +128,4 @@ class VirtualKingdomsGame < Shoes
   url '/game', :game
 end
 
-Shoes.app
+Shoes.app :title => "VK game", :width => 350, :height => 420
