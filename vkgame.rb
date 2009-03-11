@@ -53,6 +53,7 @@ class VirtualKingdomsGame < Shoes
   # show_log
   @@email = ''
   @@password = ''
+  @@character = nil
 
   def index
     title "Virtual Kingdoms: the Game"
@@ -69,13 +70,12 @@ class VirtualKingdomsGame < Shoes
       flow do
         b = button "Let the Adventure Begin", :width => 300 do
           para "Downloading... please be patient"
-          @@email = CGI.escape(e.text)
-          @@password = CGI.escape(pw.text)
-          @@email = CGI.escape('e@e.com')
-          @@password = CGI.escape('test')
+          @@email = CGI.escape('e@e.com' || e.text)
+          @@password = CGI.escape('test' || pw.text)
           params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
           download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DBPATH do |r|
             if (200..300).include?(r.response.headers['Status'].to_i)
+              @@character = Character.find_or_create_by_email(@@email)
               visit '/game'
             else
               alert File.read(DBPATH)
@@ -88,23 +88,23 @@ class VirtualKingdomsGame < Shoes
   end
 
   def game
-    title "vk"
     stack do
       stack :width => 350, :height => 350 do
         background BASE_LIGHT
-        flow :width => 340, :displace_left => 4, :displace_top => 4 do
-          (225...250).each do |i|
+        flow @@character.field_flow_options do
+          @@character.field_points.each do |p|
             stack :width => 68, :height => 68 do
-              if i == 25 / 2
+              if @@character.point == p
                 border COMPLEMENT1_LIGHTER, :strokewidth => 5
               else
                 border COMPLEMENT2_LIGHTER
               end
-              image "images/terrains/#{Point.find_by_i(i).terrain.color}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3
+              image "images/terrains/#{p.terrain.color}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3
             end
           end
         end
       end
+      @status = para "Move with the arrow keys."
       button "Quit" do
         para "saving..."
         params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
@@ -118,6 +118,9 @@ class VirtualKingdomsGame < Shoes
           para "Error"
         end
       end
+    end
+    keypress do |k|
+      @status.text = @@character.do(k)
     end
   end
 
