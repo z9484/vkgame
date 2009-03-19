@@ -5,5 +5,6 @@ class Point < ActiveRecord::Base
   has_many :characters
 
   serialize :foes
+  serialize :special
 
 end

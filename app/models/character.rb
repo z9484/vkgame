@@ -1,6 +1,7 @@
 class Character < ActiveRecord::Base
 
   belongs_to :point
+  has_many :items, :as => :itemable
 
   before_create :init
 
@@ -27,6 +28,9 @@ class Character < ActiveRecord::Base
     Point.find(:all, :conditions => {:i => is}, :order => 'i')
   end
 
+  def center
+    field_points[field_points.size / 2]
+  end
   def do(k)
     move(k)
   end
@@ -46,16 +50,34 @@ class Character < ActiveRecord::Base
     if p.nil?
       "Try using the arrow keys"
     elsif can_walk_on?(p)
-      self.update_attribute(:point, p)
+      update_attribute(:point, p)
+      dospecial(*p.special) if p.special?
       "You walk on the #{p.terrain.name}"
     else
       "The #{p.terrain.name} is too dangerous"
     end
   end
 
+  def dospecial(action, options)
+    case action
+    when 'item_source'
+      bi = BaseItem.find_by_slug(options[:item])
+      if bi && !items.any? {|i| i.slug == bi.slug}
+        @inventory_stack = true
+        items << bi.create_item
+      end
+    end
+  end
+
   def can_walk_on?(p)
     return false if p.blank? || p.terrain.blank?
     !%w(000000 0000ff).include?(p.terrain.color)
+  end
+
+  def refresh?(e)
+    r = instance_variable_get "@#{e}"
+    instance_variable_set "@#{e}", false
+    return r
   end
 
   private

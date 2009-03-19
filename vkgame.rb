@@ -6,10 +6,9 @@ end
 
 require 'activerecord'
 require 'curb'
-require 'app/models/character'
-require 'app/models/map'
-require 'app/models/point'
-require 'app/models/terrain'
+Dir['app/models/*'].each do |m|
+  require m
+end
 
 VK_SERVER_URL = 'http://localhost:3000'
 GAME_ID = 2
@@ -55,6 +54,18 @@ class VirtualKingdomsGame < Shoes
   @@password = ''
   @@character = nil
 
+  def show_inventory
+    flow :margin => [3, 3, 0, 0] do
+      @@character.items.each do |item|
+        stack :width => 85, :height => 60, :margin => [3, 3, 0, 0] do
+          background COMPLEMENT2_MID..COMPLEMENT2_DARK
+          border BASE_MID
+          image "images/items/#{item.kind}/#{item.slug}.png"
+        end
+      end
+    end
+  end
+
   def index
     title "VK game"
     e, pw = '', ''
@@ -69,15 +80,15 @@ class VirtualKingdomsGame < Shoes
           @@email = CGI.escape('e@e.com' || e.text)
           @@password = CGI.escape('test' || pw.text)
           params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
-          download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DBPATH do |r|
-            if (200..300).include?(r.response.headers['Status'].to_i)
+          # download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DBPATH do |r|
+          #   if (200..300).include?(r.response.headers['Status'].to_i)
               @@character = Character.find_or_create_by_email(@@email)
               visit '/game'
-            else
-              alert File.read(DBPATH)
-              exit
-            end
-          end
+          #   else
+          #     alert File.read(DBPATH)
+          #     exit
+          #   end
+          # end
         end
       end
     end
@@ -101,23 +112,34 @@ class VirtualKingdomsGame < Shoes
           end
         end
       end
-      @status = para "Move with the arrow keys."
-      button "Quit" do
-        para "saving..."
-        params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
-        c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?#{params}")
-        c.multipart_form_post = true
-        c.http_post(Curl::PostField.file('game[data]', DBPATH))
-        if (200..300).include?(c.response_code)
-          File.delete(DBPATH)
-          exit
-        else
-          para "Error"
+      stack :height => 150 do
+        @bg = background BASE_LIGHT..BASE_DARK
+        border BASE_LIGHT, :strokewidth => 3
+        stack :height => 75 do
+          keys = %w(left right up down q)
+          @status = para "Available keys: #{keys.to_sentence}"
+          # button "Quit" do
+          #   para "saving..."
+            # params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
+            # c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?#{params}")
+            # c.multipart_form_post = true
+            # c.http_post(Curl::PostField.file('game[data]', DBPATH))
+            # if (200..300).include?(c.response_code)
+            #   File.delete(DBPATH)
+              # exit
+            # else
+            #   para "Error"
+            # end
+          # end
+        end
+        @inventory_stack = stack :height => 70 do
+          show_inventory
         end
       end
     end
     keypress do |k|
       @status.text = @@character.do(k)
+      @inventory_stack.clear {show_inventory} if @@character.refresh?('inventory_stack')
       @@character.field_points.zip(@field_images) do |p, i|
         i.path = "images/terrains/#{p.terrain.color}.png" unless p.terrain.nil?
       end
@@ -128,4 +150,4 @@ class VirtualKingdomsGame < Shoes
   url '/game', :game
 end
 
-Shoes.app :title => "VK game", :width => 350, :height => 420
+Shoes.app :title => "VK game", :width => 350
