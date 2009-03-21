@@ -52,14 +52,14 @@ class Character < ActiveRecord::Base
     end
     p = point.map.points.find_by_i(new_i)
     if p.nil?
-      "Try using the arrow keys"
+      @refreshables[:status] = {:message => "Try using the arrow keys"}
     elsif can_walk_on?(p)
       @refreshables[:field] = true
       update_attribute(:point, p)
       dospecial(*p.special) if p.special?
-      "You walk on the #{p.terrain.name}"
+      @refreshables[:status] = {:message => "You walk on the #{p.terrain.name}"}
     else
-      "The #{p.terrain.name} is too dangerous"
+      @refreshables[:status] = {:message => "The #{p.terrain.name} is too dangerous"}
     end
   end
 

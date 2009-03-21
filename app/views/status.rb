@@ -2,7 +2,7 @@ module StatusView
 
   def show_status
     keys = %w(left right up down q)
-    @statusa = para "Available keys: #{keys.to_sentence}"
+    @statusline = para "Available keys: #{keys.to_sentence}"
     # button "Quit" do
     #   para "saving..."
     # params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
@@ -19,7 +19,7 @@ module StatusView
   end
 
   def update_status(message = '')
-    @statusa.text = message
+    @statusline.text = message
   end
 
 end

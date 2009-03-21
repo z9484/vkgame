@@ -24,6 +24,7 @@ ActiveRecord::Base.establish_connection({
 })
 
 class VirtualKingdomsGame < Shoes
+  include StatusView
   include FieldView
   include InventoryView
 
@@ -66,24 +67,10 @@ class VirtualKingdomsGame < Shoes
         show_field(@@character)
       end
       stack :height => 150 do
-        @bg = background BASE_LIGHT..BASE_DARK
+        background BASE_LIGHT..BASE_DARK
         border BASE_LIGHT, :strokewidth => 3
-        stack :height => 75 do
-          keys = %w(left right up down q)
-          @status = para "Available keys: #{keys.to_sentence}"
-          # button "Quit" do
-          #   para "saving..."
-            # params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
-            # c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?#{params}")
-            # c.multipart_form_post = true
-            # c.http_post(Curl::PostField.file('game[data]', DBPATH))
-            # if (200..300).include?(c.response_code)
-            #   File.delete(DBPATH)
-              # exit
-            # else
-            #   para "Error"
-            # end
-          # end
+        @status = stack :height => 75 do
+          show_status
         end
         @inventory= stack :height => 70 do
           show_inventory(@@character)
@@ -91,9 +78,10 @@ class VirtualKingdomsGame < Shoes
       end
     end
     keypress do |k|
-      @status.text = @@character.do(k)
+      @@character.do(k)
       @inventory.clear {show_inventory(@@character)} if @@character.refresh?(:inventory)
       update_images(@@character) if @@character.refresh?(:field)
+      update_status(@@character.refreshed(:status)[:message]) if @@character.refresh?(:status)
     end
   end
 
