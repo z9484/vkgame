@@ -5,6 +5,10 @@ class Character < ActiveRecord::Base
 
   before_create :set_defaults
 
+  def after_initialize
+    @refreshables = {}
+  end
+
   def wideview?
     true
   end
@@ -50,6 +54,7 @@ class Character < ActiveRecord::Base
     if p.nil?
       "Try using the arrow keys"
     elsif can_walk_on?(p)
+      @refreshables[:field] = true
       update_attribute(:point, p)
       dospecial(*p.special) if p.special?
       "You walk on the #{p.terrain.name}"
@@ -87,7 +92,6 @@ class Character < ActiveRecord::Base
   private
 
   def set_defaults
-    @refreshables = {}
     self.race_id = nil
     self.point_id = Point.find_by_i(2971).id
     self.name = "Hero"
