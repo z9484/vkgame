@@ -3,7 +3,7 @@ class Character < ActiveRecord::Base
   belongs_to :point
   has_many :items, :as => :itemable
 
-  before_create :init
+  before_create :set_defaults
 
   def wideview?
     true
@@ -63,7 +63,7 @@ class Character < ActiveRecord::Base
     when 'item_source'
       bi = BaseItem.find_by_slug(options[:item])
       if bi && !items.any? {|i| i.slug == bi.slug}
-        @inventory_stack = true
+        @refreshables[:inventory] = true
         items << bi.create_item
       end
     end
@@ -75,14 +75,19 @@ class Character < ActiveRecord::Base
   end
 
   def refresh?(e)
-    r = instance_variable_get "@#{e}"
-    instance_variable_set "@#{e}", false
-    return r
+    r = @refreshables[e]
+    @refreshables.delete(e) unless r.is_a?(Hash)
+    r
+  end
+
+  def refreshed(e)
+    @refreshables.delete(e)
   end
 
   private
 
-  def init
+  def set_defaults
+    @refreshables = {}
     self.race_id = nil
     self.point_id = Point.find_by_i(2971).id
     self.name = "Hero"

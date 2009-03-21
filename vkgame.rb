@@ -139,7 +139,8 @@ class VirtualKingdomsGame < Shoes
     end
     keypress do |k|
       @status.text = @@character.do(k)
-      @inventory_stack.clear {show_inventory} if @@character.refresh?('inventory_stack')
+      @inventory_stack.clear {show_inventory} if @@character.refresh?(:inventory)
+      # @field_stack.clear {show_field} if @@character.refresh?('field_stack')
       @@character.field_points.zip(@field_images) do |p, i|
         i.path = "images/terrains/#{p.terrain.color}.png" unless p.terrain.nil?
       end
