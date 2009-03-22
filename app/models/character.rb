@@ -10,7 +10,7 @@ class Character < ActiveRecord::Base
   end
 
   def wideview?
-    true
+    has?(:shades)
   end
 
   def field_flow_options
@@ -69,6 +69,7 @@ class Character < ActiveRecord::Base
       bi = BaseItem.find_by_slug(options[:item])
       if bi && !items.any? {|i| i.slug == bi.slug}
         @refreshables[:inventory] = true
+        @refreshables[:whole_field] = true if bi.slug.to_sym == :shades
         items << bi.create_item
       end
     end
