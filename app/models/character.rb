@@ -93,14 +93,8 @@ class Character < ActiveRecord::Base
     end
   end
 
-  def refresh?(e)
-    r = @refreshables[e]
-    @refreshables.delete(e) unless r.is_a?(Hash)
-    r
-  end
-
-  def refreshed(e)
-    @refreshables.delete(e)
+  def refreshables
+    (r, @refreshables = @refreshables, {}).first
   end
 
   private

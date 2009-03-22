@@ -83,10 +83,18 @@ class VirtualKingdomsGame < Shoes
     end
     keypress do |k|
       @@character.do(k)
-      @inventory.clear {show_inventory(@@character)} if @@character.refresh?(:inventory)
-      @field.clear {show_field(@@character)} if @@character.refresh?(:whole_field)
-      update_images(@@character) if @@character.refresh?(:field)
-      update_status(@@character.refreshed(:status)[:message]) if @@character.refresh?(:status)
+      @@character.refreshables.each do |refreshable, details|
+        case refreshable
+        when :inventory
+          @inventory.clear {show_inventory(@@character)}
+        when :whole_field
+          @field.clear {show_field(@@character)}
+        when :field
+          update_images(@@character)
+        when :status
+          update_status(details[:message])
+        end
+      end
     end
   end
 
