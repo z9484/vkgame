@@ -12,7 +12,7 @@ module FieldView
           else
             border COMPLEMENT2_LIGHTER
           end
-          @field_images << image("images/terrains/#{p.terrain.color}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3)
+          @field_images << image("images/terrains/#{p.terrain.try(:color)}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3)
         end
       end
     end

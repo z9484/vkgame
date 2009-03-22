@@ -59,7 +59,7 @@ class Character < ActiveRecord::Base
       dospecial(*p.special) if p.special?
       @refreshables[:status] = {:message => "You walk on the #{p.terrain.name}"}
     else
-      @refreshables[:status] = {:message => "The #{p.terrain.name} is too dangerous"}
+      @refreshables[:status] = {:message => "The #{p.terrain.try(:name)} is too dangerous"}
     end
   end
 
@@ -74,9 +74,22 @@ class Character < ActiveRecord::Base
     end
   end
 
+  def has?(item)
+    items.map {|i| i.slug.to_sym}.include? item.to_sym
+  end
+
   def can_walk_on?(p)
     return false if p.blank? || p.terrain.blank?
-    !%w(000000 0000ff).include?(p.terrain.color)
+    case p.try(:terrain).try(:color)
+    when '000000'
+      has? :climbing_gear
+    when '0000ff'
+      has? :kayak
+    when nil
+      false
+    else
+      true
+    end
   end
 
   def refresh?(e)

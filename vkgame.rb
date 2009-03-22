@@ -1,11 +1,14 @@
 Shoes.setup do
-  gem 'activerecord'
-  gem 'activesupport'
+  gem 'activesupport >= 2.3.2'
+  gem 'activerecord >= 2.3.2'
   gem 'curb'
 end
 
 require 'activerecord'
 require 'curb'
+Dir['config/*'].each do |m|
+  require m
+end
 Dir['app/models/*'].each do |m|
   require m
 end
@@ -44,8 +47,8 @@ class VirtualKingdomsGame < Shoes
       flow do
         b = button "Let the Adventure Begin", :width => 300 do
           para "Downloading... please be patient"
-          @@email = CGI.escape('e@e.com' || e.text)
-          @@password = CGI.escape('test' || pw.text)
+          @@email = Utils.escape('e@e.com' || e.text)
+          @@password = Utils.escape('test' || pw.text)
           params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
           # download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DBPATH do |r|
           #   if (200..300).include?(r.response.headers['Status'].to_i)
