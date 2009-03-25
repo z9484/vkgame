@@ -1,7 +1,9 @@
 class Character < ActiveRecord::Base
 
+  belongs_to :race
   belongs_to :point
   has_many :items, :as => :itemable
+  has_many :actions
 
   before_create :set_defaults
 
