@@ -1,7 +1,7 @@
 module FieldView
-  require 'config/constants'
 
   def show_field(character)
+    puts 'show_field'
     background BASE_LIGHT
     flow character.field_flow_options do
       @field_images = []

@@ -1,7 +1,7 @@
 module InventoryView
-  require 'config/constants'
 
   def show_inventory(character)
+    puts 'show_inventory'
     flow :margin => [3, 3, 0, 0] do
       character.items.each do |item|
         stack :width => 85, :height => 60, :margin => [3, 3, 0, 0] do

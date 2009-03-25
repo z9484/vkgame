@@ -4,29 +4,32 @@ Shoes.setup do
   gem 'curb'
 end
 
-require 'activerecord'
-require 'curb'
-Dir['config/*'].each do |m|
-  require m
-end
+puts 'before boot'
+require 'config/boot'
+puts 'booted'
+
 Dir['app/models/*'].each do |m|
   require m
 end
 Dir['app/views/*'].each do |m|
   require m
 end
+puts 'after apps'
 
 VK_SERVER_URL = 'http://localhost:3000'
 GAME_ID = 2
 DBPATH = "db/db.sqlite3"
 
+puts 'after constants'
 
 ActiveRecord::Base.establish_connection({
   :adapter => 'sqlite3',
   :dbfile => DBPATH,
 })
+puts 'after db'
 
 class VirtualKingdomsGame < Shoes
+puts 'inside class'
   include StatusView
   include FieldView
   include InventoryView
@@ -37,6 +40,7 @@ class VirtualKingdomsGame < Shoes
   @@character = nil
 
   def index
+    puts 'inside index'
     title "VK game"
     e, pw = '', ''
     stack do
@@ -66,6 +70,7 @@ class VirtualKingdomsGame < Shoes
   end
 
   def game
+    puts 'inside game'
     stack do
       @field = stack :width => 350, :height => 350 do
         show_field(@@character)
