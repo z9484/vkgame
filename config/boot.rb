@@ -1,16 +1,29 @@
 require 'activerecord'
 require 'curb'
 
-puts $0
-
 SHOES_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(SHOES_ROOT)
 
-Dir["#{SHOES_ROOT}/config/initializers/*"].each do |f|
-  require f
-end
-
-unless $0 =~ /console/
-  Dir["#{SHOES_ROOT}/config/shoes/*"].each do |f|
-    require f
+[
+  'config/initializers/*',
+  'app/models/*',
+].each do |path|
+  Dir["#{SHOES_ROOT}/#{path}"].each do |file|
+    require file
   end
 end
+
+unless $0 =~ /irb/
+  [
+    'config/shoes/*',
+    'app/views/*',
+  ].each do |path|
+    Dir["#{SHOES_ROOT}/#{path}"].each do |file|
+      require file
+    end
+  end
+end
+
+ActiveRecord::Base.establish_connection({
+  :adapter => 'sqlite3',
+  :dbfile => DBPATH,
+})

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require File.dirname(__FILE__) + '/../config/boot'
 
-libs =  " -r irb/completion"
+libs = "-r rubygems"
+libs << " -r config/boot"
+libs << " -r irb/completion"
 
 exec "irb #{libs} --simple-prompt"
