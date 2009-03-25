@@ -52,7 +52,7 @@ class VirtualKingdomsGame < Shoes
           params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
           # download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DBPATH do |r|
           #   if (200..300).include?(r.response.headers['Status'].to_i)
-          Character.delete_all
+          # Character.delete_all
               @@character = Character.find_or_create_by_email(@@email)
               visit '/game'
           #   else
@@ -83,6 +83,7 @@ class VirtualKingdomsGame < Shoes
     end
     keypress do |k|
       @@character.do(k)
+      puts "#{@@character.center.i} #{@@character.center.terrain.slug}"
       @@character.refreshables.each do |refreshable, details|
         case refreshable
         when :inventory
@@ -93,6 +94,8 @@ class VirtualKingdomsGame < Shoes
           update_images(@@character)
         when :status
           update_status(details[:message])
+        when :alert
+          alert(details[:message])
         end
       end
     end

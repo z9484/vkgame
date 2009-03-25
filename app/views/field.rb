@@ -12,7 +12,7 @@ module FieldView
           else
             border COMPLEMENT2_LIGHTER
           end
-          @field_images << image("images/terrains/#{p.terrain.try(:color)}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3)
+          @field_images << image("images/terrains/#{p.terrain.try(:slug)}.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3)
         end
       end
     end
@@ -20,7 +20,7 @@ module FieldView
 
   def update_images(character)
     character.field_points.zip(@field_images) do |p, i|
-      i.path = "images/terrains/#{p.terrain.color}.png" unless p.terrain.nil?
+      i.path = "images/terrains/#{p.terrain.try(:slug)}.png"
     end
   end
 

@@ -56,8 +56,8 @@ class Character < ActiveRecord::Base
     elsif can_walk_on?(p)
       @refreshables[:field] = true
       update_attribute(:point, p)
-      dospecial(*p.special) if p.special?
       @refreshables[:status] = {:message => "You walk on the #{p.terrain.name}"}
+      dospecial(*p.special) if p.special?
     else
       @refreshables[:status] = {:message => "The #{p.terrain.try(:name)} is too dangerous"}
     end
@@ -67,11 +67,18 @@ class Character < ActiveRecord::Base
     case action
     when 'item_source'
       bi = BaseItem.find_by_slug(options[:item])
-      if bi && !items.any? {|i| i.slug == bi.slug}
-        @refreshables[:inventory] = true
-        @refreshables[:whole_field] = true if bi.slug.to_sym == :shades
-        items << bi.create_item
+      if bi
+        if items.any? {|i| i.slug == bi.slug}
+          @refreshables[:status] = {:message => "You already have the #{bi.name}!"}
+        else
+          @refreshables[:inventory] = true
+          @refreshables[:whole_field] = true if bi.slug.to_sym == :shades
+          @refreshables[:alert] = {:message => "A guru gives you #{bi.name}"}
+          items << bi.create_item
+        end
       end
+    when 'win'
+      @refreshables[:alert] = {:message => "Congratulations, You won!"}
     end
   end
 
@@ -81,11 +88,15 @@ class Character < ActiveRecord::Base
 
   def can_walk_on?(p)
     return false if p.blank? || p.terrain.blank?
-    case p.try(:terrain).try(:color)
-    when '000000'
+    case p.try(:terrain).try(:kind).try(:to_sym)
+    when :void
+      false
+    when :mountain
       has? :climbing_gear
-    when '0000ff'
+    when :water
       has? :kayak
+    when :deep_desert
+      has? :stillsuit
     when nil
       false
     else
