@@ -38,18 +38,27 @@ class Character < ActiveRecord::Base
     field_points[field_points.size / 2]
   end
   def do(k)
-    move(k)
+    case k
+    when :up, :right, :down, :left,
+      'k', 'l', 'j', 'h',
+      '8', '6', '2', '4'
+      move(k)
+    when '?'
+      @refreshables[:alert] = {:message => HELP_TEXT}
+    else
+      @refreshables[:status] = {:message => "Invalid key. Try ? for help."}
+    end
   end
 
   def move(direction)
     new_i = case direction
-    when :up
+    when :up, 'k'
       point.i - 100
-    when :right
+    when :right, 'l'
       point.i + 1
-    when :down
+    when :down, 'j'
       point.i + 100
-    when :left
+    when :left, 'h'
       point.i - 1
     end
     p = point.map.points.find_by_i(new_i)

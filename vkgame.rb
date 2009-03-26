@@ -7,16 +7,11 @@ end
 require 'config/boot'
 
 class VirtualKingdomsGame < Shoes
-  include StatusView
+  include MiscView
   include FieldView
   include InventoryView
-  include IndexView
 
-  @@email = ''
-  @@password = ''
-  @@character = nil
-
-  def index
+  def game
     @@character = Character.find_or_create_by_email(@@email)
     stack do
       @field = stack :width => 350, :height => 350 do
@@ -34,6 +29,7 @@ class VirtualKingdomsGame < Shoes
       end
     end
     keypress do |k|
+      quit if k == 'q'
       @@character.do(k)
       puts "#{@@character.center.i} #{@@character.center.terrain.slug}"
       @@character.refreshables.each do |refreshable, details|
