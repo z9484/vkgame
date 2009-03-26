@@ -22,8 +22,3 @@ unless $0 =~ /irb/
     end
   end
 end
-
-ActiveRecord::Base.establish_connection({
-  :adapter => 'sqlite3',
-  :dbfile => DBPATH,
-})

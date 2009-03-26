@@ -12,6 +12,13 @@ class VirtualKingdomsGame < Shoes
   include InventoryView
 
   def game
+    puts 'inside game'
+    puts @@db_path
+    ActiveRecord::Base.establish_connection({
+      :adapter => 'sqlite3',
+      :dbfile => @@db_path,
+    })
+    puts 'after db'
     @@character = Character.find_or_create_by_email(@@email)
     stack do
       @field = stack :width => 350, :height => 350 do
@@ -54,4 +61,4 @@ class VirtualKingdomsGame < Shoes
 
 end
 
-Shoes.app :title => "VK game", :width => 350
+Shoes.app :title => "VK game", :width => 350, :height => 450
