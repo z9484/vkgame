@@ -33,7 +33,6 @@ class VirtualKingdomsGame < Shoes
       end
     end
     keypress do |k|
-      quit if k == 'q'
       @@character.do(k)
       puts "#{@@character.center.i} #{@@character.center.terrain.slug}"
       @@character.refreshables.each do |refreshable, details|
@@ -53,14 +52,6 @@ class VirtualKingdomsGame < Shoes
         end
       end
     end
-  end
-
-  def reset_game
-    @@character.destroy
-    @@character = Character.find_or_create_by_email(@@email)
-    @inventory.clear {show_inventory(@@character)}
-    @field.clear {show_field(@@character)}
-    update_status("Game has been reset.")
   end
 
   url '/', :index

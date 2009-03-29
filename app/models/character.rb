@@ -45,6 +45,11 @@ class Character < ActiveRecord::Base
       move(k)
     when '?'
       @refreshables[:alert] = {:message => HELP_TEXT}
+    when 'q'
+      @refreshables[:confirm] = {
+        :ask => "Are you sure you want to quit?",
+        :yes => :quit
+      }
     else
       @refreshables[:status] = {:message => "Invalid key. Try ? for help."}
     end

@@ -1,7 +1,5 @@
 VK_SERVER_URL = 'http://localhost:3000'
 
-GAME_ID = 2
-
 DB_PATH = "#{SHOES_ROOT}/db/db.sqlite3"
 SOLO_PATH = "#{SHOES_ROOT}/db/solo.sqlite3"
 CREDENTIALS_PATH = "#{SHOES_ROOT}/credentials"

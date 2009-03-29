@@ -1,7 +1,39 @@
 module MiscView
 
   def index
+    para "Virtual Kingdoms"
     window do
+      def solo_game
+        @@db_path = SOLO_PATH
+        @@email = 'solo'
+        owner.visit '/game'
+        close
+      end
+      def door_game
+        @@db_path = DB_PATH
+        @content.clear do
+          i = nil
+          stack do
+            para "Downloading... please be patient"
+            i = image
+          end
+          animate(3) do
+            i.path = Dir["images/**/*.png"].rand
+          end
+        end
+        File.open(CREDENTIALS_PATH, 'w') {|f| f << "#{@@email} #{@@password}"} unless File.exists?(CREDENTIALS_PATH)
+        params = "email=#{@@email}&password=#{@@password}"
+        download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DB_PATH do |r|
+          if (200..300).include?(r.response.headers['Status'].to_i)
+            owner.visit '/game'
+            close
+          else
+            alert File.read(DB_PATH)
+            exit
+          end
+        end
+      end
+
       background BASE_LIGHT..BASE_LIGHTEST
       background COMPLEMENT2_DARK..COMPLEMENT2_MID, :height => 65
 
@@ -15,7 +47,7 @@ module MiscView
         para "a re-application of the old school door game concept where you can walk around and explore the world."
       end
 
-      flow :margin => 10 do
+      @content = flow :margin => 10 do
         stack :width => 260 do
           para "Enter your information if you have already signed up."
           para strong "Email:"
@@ -25,26 +57,11 @@ module MiscView
         end
         stack :width => 250 do
           b = button "Play the Online\nDoor Version", :height => 100, :width => 225, :margin => 5 do
-            @@db_path = DB_PATH
-            para "Downloading... please be patient"
             @@email, @@password = Utils.escape(e.text), Utils.escape(pw.text)
-            File.open(CREDENTIALS_PATH, 'w') {|f| f << "#{@@email} #{@@password}"} unless File.exists?(CREDENTIALS_PATH)
-            params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
-            download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DB_PATH do |r|
-              if (200..300).include?(r.response.headers['Status'].to_i)
-                visit '/game'
-              else
-                alert File.read(DB_PATH)
-                exit
-              end
-            end
-            close
+            door_game
           end
           button "Play the Offline\nSolo Version.", :height => 100, :width => 225, :margin => 5 do
-            @@db_path = SOLO_PATH
-            @@email = 'solo'
-            owner.visit '/game'
-            close
+            solo_game
           end
         end
         e.text.blank? ? e.focus : b.focus
@@ -55,18 +72,27 @@ module MiscView
         when 'q'
           exit
         when 's'
-          # TODO DRY this up
-          @@db_path = SOLO_PATH
-          @@email = 'solo'
-          owner.visit '/game'
-          close
+          solo_game
+        when 'd'
+          door_game
         end
       end
     end
   end
 
   def quit
-    update_status("Saving game, please wait")
+    unless @@email == 'solo'
+      update_status("Saving game, please wait")
+      params = "email=#{@@email}&password=#{@@password}"
+      c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?#{params}")
+      c.multipart_form_post = true
+      c.http_post(Curl::PostField.file('game[data]', DB_PATH))
+      if (200..300).include?(c.response_code)
+        File.delete(DB_PATH)
+      else
+        puts "Error saving game."
+      end
+    end
     exit
   end
 
@@ -80,19 +106,6 @@ module MiscView
 
   def show_status
     @statusline = para "Find the winning hut. Arrow keys to move."
-    # button "Quit" do
-    #   para "saving..."
-    # params = "id=#{GAME_ID}&email=#{@@email}&password=#{@@password}"
-    # c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?#{params}")
-    # c.multipart_form_post = true
-    # c.http_post(Curl::PostField.file('game[data]', DB_PATH))
-    # if (200..300).include?(c.response_code)
-    #   File.delete(DB_PATH)
-    # exit
-    # else
-    #   para "Error"
-    # end
-    # end
   end
 
   def update_status(message = '')
