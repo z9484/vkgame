@@ -13,7 +13,8 @@ left arrow, h, or 4: move left
 right arrow, l, or 6: move right
 up arrow, k, or 8: move up
 down arrow, j, or 2: move down
-?: see this help
+s: look at (see) the current terrain
+?: show this help
 
 Good luck!
 HEREDOC

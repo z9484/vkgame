@@ -43,9 +43,11 @@ class Character < ActiveRecord::Base
       'k', 'l', 'j', 'h',
       '8', '6', '2', '4'
       move(k)
-    when '?'
+    when 's', :look
+      @refreshables[:status] = {:message => "Looks like the current terrain is #{center.terrain.try(:name)}"}
+    when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
-    when 'q'
+    when 'q', :quit
       @refreshables[:confirm] = {
         :ask => "Are you sure you want to quit?",
         :yes => :quit
@@ -72,11 +74,22 @@ class Character < ActiveRecord::Base
     elsif can_walk_on?(p)
       @refreshables[:field] = true
       update_attribute(:point, p)
-      @refreshables[:status] = {:message => "You walk on the #{p.terrain.name}"}
-      puts p.special.inspect
+      @refreshables[:status] = {:message => ""}
       dospecial(*p.special) if p.special?
     else
-      @refreshables[:status] = {:message => "The #{p.terrain.try(:name)} is too dangerous"}
+      message = case p.terrain.try(:slug).try(:to_sym)
+      when :water
+        "I might be able to go on the water if I had some kind of boat."
+      when :mountain
+        "That looks unsafe to attempt without proper equipment."
+      when :deep_desert
+        "Hmm, there must be some way I could survive in the deep desert."
+      when :void
+        "There's no way I'm walking off the end of the world!"
+      else
+        "That's way too scary to even think about."
+      end
+      @refreshables[:status] = {:message => message}
     end
   end
 

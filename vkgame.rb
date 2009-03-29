@@ -21,36 +21,22 @@ class VirtualKingdomsGame < Shoes
       @field = stack :width => 350, :height => 350 do
         show_field(@@character)
       end
-      stack :height => 150 do
+      stack :height => 180 do
         background BASE_LIGHT..BASE_DARK
         border BASE_LIGHT, :strokewidth => 3
-        @status = stack :height => 75 do
+        @status = stack :height => 60 do
           show_status
         end
-        @inventory= stack :height => 70 do
+        @inventory = stack :height => 70 do
           show_inventory(@@character)
+        end
+        @menu = stack :height => 30 do
+          show_menu @@character
         end
       end
     end
     keypress do |k|
-      @@character.do(k)
-      puts "#{@@character.center.i} #{@@character.center.terrain.slug}"
-      @@character.refreshables.each do |refreshable, details|
-        case refreshable
-        when :inventory
-          @inventory.clear {show_inventory(@@character)}
-        when :whole_field
-          @field.clear {show_field(@@character)}
-        when :field
-          update_images(@@character)
-        when :status
-          update_status(details[:message])
-        when :alert
-          alert(details[:message])
-        when :confirm
-          send(details[:yes]) if confirm(details[:ask])
-        end
-      end
+      handle @@character, k
     end
   end
 
@@ -59,4 +45,4 @@ class VirtualKingdomsGame < Shoes
 
 end
 
-Shoes.app :title => "VK game", :width => 350, :height => 500
+Shoes.app :title => "VK game", :width => 350, :height => 520

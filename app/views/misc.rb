@@ -112,4 +112,38 @@ module MiscView
     @statusline.text = message
   end
 
+  def show_menu c
+    flow do
+      button "Help", :margin_left => 10 do
+        handle c, :help
+      end
+      button "Look", :margin_left => 10 do
+        handle c, :look
+      end
+      button "Quit", :margin_left => 10 do
+        handle c, :quit
+      end
+    end
+  end
+
+  def handle(character, k)
+    character.do(k)
+    character.refreshables.each do |refreshable, details|
+      case refreshable
+      when :inventory
+        @inventory.clear {show_inventory(character)}
+      when :whole_field
+        @field.clear {show_field(character)}
+      when :field
+        update_images(character)
+      when :status
+        update_status(details[:message])
+      when :alert
+        alert(details[:message])
+      when :confirm
+        send(details[:yes]) if confirm(details[:ask])
+      end
+    end
+  end
+
 end
