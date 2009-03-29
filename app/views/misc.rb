@@ -50,12 +50,32 @@ module MiscView
         e.text.blank? ? e.focus : b.focus
       end
       para link "vkgame.virtualkingdoms.net", :click => "http://vkgame.virtualkingdoms.net", :align => 'center', :width => 600
+      keypress do |k|
+        case k
+        when 'q'
+          exit
+        when 's'
+          # TODO DRY this up
+          @@db_path = SOLO_PATH
+          @@email = 'solo'
+          owner.visit '/game'
+          close
+        end
+      end
     end
   end
 
   def quit
     update_status("Saving game, please wait")
     exit
+  end
+
+  def reset_game
+    @@character.destroy
+    @@character = Character.find_or_create_by_email(@@email)
+    @inventory.clear {show_inventory(@@character)}
+    @field.clear {show_field(@@character)}
+    update_status("Game has been reset.")
   end
 
   def show_status

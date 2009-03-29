@@ -68,6 +68,7 @@ class Character < ActiveRecord::Base
       @refreshables[:field] = true
       update_attribute(:point, p)
       @refreshables[:status] = {:message => "You walk on the #{p.terrain.name}"}
+      puts p.special.inspect
       dospecial(*p.special) if p.special?
     else
       @refreshables[:status] = {:message => "The #{p.terrain.try(:name)} is too dangerous"}
@@ -83,13 +84,19 @@ class Character < ActiveRecord::Base
           @refreshables[:status] = {:message => "You already have the #{bi.name}!"}
         else
           @refreshables[:inventory] = true
-          @refreshables[:whole_field] = true if bi.slug.to_sym == :shades
+          if bi.slug.to_sym == :shades
+            @refreshables.delete(:field)
+            @refreshables[:whole_field] = true
+          end
           @refreshables[:alert] = {:message => "A guru gives you #{bi.name}"}
           items << bi.create_item
         end
       end
     when 'win'
-      @refreshables[:alert] = {:message => "Congratulations, You won!"}
+      @refreshables[:confirm] = {
+        :ask => "Congratulations, You won!\nWould you like to reset the game?",
+        :yes => :reset_game
+      }
     end
   end
 

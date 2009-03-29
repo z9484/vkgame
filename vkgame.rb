@@ -12,13 +12,10 @@ class VirtualKingdomsGame < Shoes
   include InventoryView
 
   def game
-    puts 'inside game'
-    puts @@db_path
     ActiveRecord::Base.establish_connection({
       :adapter => 'sqlite3',
       :dbfile => @@db_path,
     })
-    puts 'after db'
     @@character = Character.find_or_create_by_email(@@email)
     stack do
       @field = stack :width => 350, :height => 350 do
@@ -51,9 +48,19 @@ class VirtualKingdomsGame < Shoes
           update_status(details[:message])
         when :alert
           alert(details[:message])
+        when :confirm
+          send(details[:yes]) if confirm(details[:ask])
         end
       end
     end
+  end
+
+  def reset_game
+    @@character.destroy
+    @@character = Character.find_or_create_by_email(@@email)
+    @inventory.clear {show_inventory(@@character)}
+    @field.clear {show_field(@@character)}
+    update_status("Game has been reset.")
   end
 
   url '/', :index
@@ -61,4 +68,4 @@ class VirtualKingdomsGame < Shoes
 
 end
 
-Shoes.app :title => "VK game", :width => 350, :height => 450
+Shoes.app :title => "VK game", :width => 350, :height => 500

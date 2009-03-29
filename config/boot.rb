@@ -12,7 +12,12 @@ SHOES_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(SHOES_ROOT)
   end
 end
 
-unless $0 =~ /irb/
+if $0 =~ /irb/
+  ActiveRecord::Base.establish_connection({
+    :adapter => 'sqlite3',
+    :dbfile => SOLO_PATH,
+  })
+else
   [
     'config/shoes/*',
     'app/views/*',

@@ -1,6 +1,7 @@
 module FieldView
 
   def show_field(character)
+    puts 'show_field'
     background BASE_LIGHT
     flow character.field_flow_options do
       @field_images = []
@@ -19,7 +20,12 @@ module FieldView
 
   def update_images(character)
     character.field_points.zip(@field_images) do |p, i|
-      i.path = "images/terrains/#{p.terrain.try(:slug)}.png"
+      if p.terrain.try(:slug).nil?
+        puts "Error finding terrain for point #{p.id}"
+        i.path = "images/terrains/void.png"
+      else
+        i.path = "images/terrains/#{p.terrain.try(:slug)}.png"
+      end
     end
   end
 
