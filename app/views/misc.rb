@@ -80,7 +80,7 @@ module MiscView
     end
   end
 
-  def quit
+  def quit(character = nil)
     unless @@email == 'solo'
       update_status("Saving game, please wait")
       params = "email=#{@@email}&password=#{@@password}"
@@ -96,11 +96,10 @@ module MiscView
     exit
   end
 
-  def reset_game
-    @@character.destroy
-    @@character = Character.find_or_create_by_email(@@email)
-    @inventory.clear {show_inventory(@@character)}
-    @field.clear {show_field(@@character)}
+  def reset_game(character)
+    character.reset! #update_attribute(:items, [])
+    @inventory.clear {show_inventory(character)}
+    @field.clear {show_field(character)}
     update_status("Game has been reset.")
   end
 
@@ -112,16 +111,16 @@ module MiscView
     @statusline.text = message
   end
 
-  def show_menu c
+  def show_menu(character)
     flow do
       button "Help", :margin_left => 10 do
-        handle c, :help
+        handle character, :help
       end
       button "Look", :margin_left => 10 do
-        handle c, :look
+        handle character, :look
       end
       button "Quit", :margin_left => 10 do
-        handle c, :quit
+        handle character, :quit
       end
     end
   end
@@ -141,7 +140,7 @@ module MiscView
       when :alert
         alert(details[:message])
       when :confirm
-        send(details[:yes]) if confirm(details[:ask])
+        send(details[:yes], character) if confirm(details[:ask])
       end
     end
   end

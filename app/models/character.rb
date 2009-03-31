@@ -144,11 +144,17 @@ class Character < ActiveRecord::Base
     (r, @refreshables = @refreshables, {}).first
   end
 
+  def reset!
+    set_defaults
+    puts save!
+  end
+
   private
 
   def set_defaults
     self.race_id = nil
-    self.point_id = Point.find_by_i(2971).id
+    self.point = Point.find_by_i(2971)
+    self.items = []
     self.name = "Hero"
     self.hp = 25
     self.vitality = 25
