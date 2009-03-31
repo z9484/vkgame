@@ -1,0 +1,19 @@
+h1. Virtual Kingdoms: The Game
+
+h2. Intro
+
+Playing around with ruby Shoes to make a little game.
+
+h2. Gameplay
+
+Wander around collecting handy items until you find the winning hut. Arrow keys to move around q to quit. 
+
+"Screenshot":images/screenshot.jpg
+
+h2. "Installation"
+
+If you're on Linux, try running vkgame (you may have to make it executable by doing 'chmod +x vkgame'). If that doesn't work try running shoes2.run and selecting vkgame.rb. And if that doesn't work or you're on another platform, try "downloading Shoes":http://shoooes.net for your platform and feeding it vkgame.rb. Good luck.
+
+h2. License
+
+GPL 2
