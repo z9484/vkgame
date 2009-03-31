@@ -97,7 +97,7 @@ module MiscView
   end
 
   def reset_game(character)
-    character.reset! #update_attribute(:items, [])
+    character.reset!
     @inventory.clear {show_inventory(character)}
     @field.clear {show_field(character)}
     update_status("Game has been reset.")
