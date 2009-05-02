@@ -19,4 +19,12 @@ module Utils
   end
   module_function :escape
 
+  # File actionpack/lib/action_controller/vendor/rack-1.0/rack/utils.rb, line 20
+  def unescape(s)
+    s.tr('+', ' ').gsub(/((?:%[0-9a-fA-F]{2})+)/n){
+      [$1.delete('%')].pack('H*')
+    }
+  end
+  module_function :unescape
+
 end

@@ -13,6 +13,7 @@ module MiscView
 
   def index
     para "Virtual Kingdoms"
+
     window do
       def solo_game
         @@db_path = SOLO_PATH
@@ -62,9 +63,9 @@ module MiscView
         stack :width => 260 do
           para "Enter your information if you have already signed up."
           para strong "Email:"
-          e = edit_line :text => @@email.gsub('%40', '@')
+          e = edit_line :text => Utils.unescape(@@email)
           para strong "Password:"
-          pw = edit_line :secret => true, :text => @@password
+          pw = edit_line :secret => true, :text => Utils.unescape(@@password)
         end
         stack :width => 250 do
           b = button "Play the Online\nDoor Version", :height => 100, :width => 225, :margin => 5 do
@@ -94,11 +95,14 @@ module MiscView
   def quit(character = nil)
     unless @@email == 'solo'
       update_status("Saving game, please wait")
-      params = "email=#{@@email}&password=#{@@password}"
-      c = Curl::Easy.new("#{VK_SERVER_URL}/pages/upload?#{params}")
-      c.multipart_form_post = true
-      c.http_post(Curl::PostField.file('game[data]', DB_PATH))
-      if (200..300).include?(c.response_code)
+
+      params = {
+        :email => @@email,
+        :password => @@password,
+        :game_data => Zlib::Deflate.deflate(File.read(DB_PATH)),
+      }
+      r = Net::HTTP.post_form(URI.parse("#{VK_SERVER_URL}/pages/upload"), params)
+      if (200..300).include?(r.code.to_i)
         File.delete(DB_PATH)
       else
         puts "Error saving game."

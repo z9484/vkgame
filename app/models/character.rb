@@ -23,7 +23,7 @@ class Character < ActiveRecord::Base
   end
 
   def wideview?
-    has?(:shades)
+    has?(:telescope)
   end
 
   def field_flow_options
@@ -51,10 +51,10 @@ class Character < ActiveRecord::Base
   def do(k)
     case k
     when :up, :right, :down, :left,
-      'k', 'l', 'j', 'h',
+      'w', 'a', 'd', 's',
       '8', '6', '2', '4'
       move(k)
-    when 's', :look
+    when 'l', :look
       @refreshables[:status] = {:message => "Looks like the current terrain is #{center.terrain.try(:name)}"}
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
@@ -70,13 +70,13 @@ class Character < ActiveRecord::Base
 
   def move(direction)
     new_i = case direction
-    when :up, 'k'
+    when :up, 'w'
       point.i - 100
-    when :right, 'l'
+    when :right, 'd'
       point.i + 1
-    when :down, 'j'
+    when :down, 's'
       point.i + 100
-    when :left, 'h'
+    when :left, 'a'
       point.i - 1
     end
     p = point.map.points.find_by_i(new_i)
@@ -113,7 +113,7 @@ class Character < ActiveRecord::Base
           @refreshables[:status] = {:message => "You already have the #{bi.name}!"}
         else
           @refreshables[:inventory] = true
-          if bi.slug.to_sym == :shades
+          if bi.slug.to_sym == :telescope
             @refreshables.delete(:field)
             @refreshables[:whole_field] = true
           end
@@ -143,7 +143,7 @@ class Character < ActiveRecord::Base
     when :water
       has? :kayak
     when :deep_desert
-      has? :stillsuit
+      has? :waterskin
     when nil
       false
     else
