@@ -9,7 +9,7 @@
 
 # See the COPYING file for more details.
 
-VK_SERVER_URL = 'game.ruby.virtualkingdoms.net'
+VK_SERVER_URL = 'http://game.ruby.virtualkingdoms.net'
 
 DB_PATH = "#{SHOES_ROOT}/db/db.sqlite3"
 SOLO_PATH = "#{SHOES_ROOT}/db/solo.sqlite3"
@@ -20,11 +20,11 @@ The basic idea of the game is to find the winning hut. You will be aided in your
 
 Some keys to try
 q: quit
-left arrow, h, or 4: move left
-right arrow, l, or 6: move right
-up arrow, k, or 8: move up
-down arrow, j, or 2: move down
-s: look at (see) the current terrain
+left arrow, a, or 4: move left
+right arrow, d, or 6: move right
+up arrow, w, or 8: move up
+down arrow, s, or 2: move down
+l: look at the current terrain
 ?: show this help
 
 Good luck!

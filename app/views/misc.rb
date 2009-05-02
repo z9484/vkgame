@@ -33,9 +33,14 @@ module MiscView
             i.path = Dir["images/**/*.png"].rand
           end
         end
-        File.open(CREDENTIALS_PATH, 'w') {|f| f << "#{@@email} #{@@password}"} unless File.exists?(CREDENTIALS_PATH)
-        params = "email=#{@@email}&password=#{@@password}"
-        download "#{VK_SERVER_URL}/pages/download?#{params}", :save => DB_PATH do |r|
+        if @@email.blank? || @@password.blank?
+          params = ''
+        else
+          File.open(CREDENTIALS_PATH, 'w') {|f| f << "#{@@email} #{@@password}"} unless File.exists?(CREDENTIALS_PATH)
+          params = "?email=#{Utils.escape(@@email)}&password=#{Utils.escape(@@password)}"
+        end
+        params ||= ''
+        download "#{VK_SERVER_URL}/pages/download#{params}", :save => DB_PATH do |r|
           if (200..300).include?(r.response.headers['Status'].to_i)
             owner.visit '/game'
             close
@@ -49,8 +54,9 @@ module MiscView
       background BASE_LIGHT..BASE_LIGHTEST
       background COMPLEMENT2_DARK..COMPLEMENT2_MID, :height => 65
 
-      @@email, @@password = '', ''
       @@email, @@password = File.read(CREDENTIALS_PATH).squish.split if File.exists?(CREDENTIALS_PATH)
+      @@email ||= ''
+      @@password ||= ''
       e, pw = '', ''
       title "Virtual Kingdoms: The Game"
       flow :margin => [10, 15] do
@@ -63,13 +69,13 @@ module MiscView
         stack :width => 260 do
           para "Enter your information if you have already signed up."
           para strong "Email:"
-          e = edit_line :text => Utils.unescape(@@email)
+          e = edit_line :text => @@email
           para strong "Password:"
-          pw = edit_line :secret => true, :text => Utils.unescape(@@password)
+          pw = edit_line :secret => true, :text => @@password
         end
         stack :width => 250 do
           b = button "Play the Online\nDoor Version", :height => 100, :width => 225, :margin => 5 do
-            @@email, @@password = Utils.escape(e.text), Utils.escape(pw.text)
+            @@email, @@password = e.text, pw.text
             door_game
           end
           button "Play the Offline\nSolo Version.", :height => 100, :width => 225, :margin => 5 do
@@ -78,14 +84,14 @@ module MiscView
         end
         e.text.blank? ? e.focus : b.focus
       end
-      para link "vkgame.virtualkingdoms.net", :click => "http://vkgame.virtualkingdoms.net", :align => 'center', :width => 600
+      para link VK_SERVER_URL, :click => VK_SERVER_URL, :align => 'center', :width => 600
       keypress do |k|
         case k
-        when 'q'
+        when :alt_q
           exit
-        when 's'
+        when :alt_s
           solo_game
-        when 'd'
+        when :alt_d
           door_game
         end
       end
