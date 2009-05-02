@@ -9,7 +9,7 @@
 
 # See the COPYING file for more details.
 
-VK_SERVER_URL = 'http://localhost:3000'
+VK_SERVER_URL = 'game.ruby.virtualkingdoms.net'
 
 DB_PATH = "#{SHOES_ROOT}/db/db.sqlite3"
 SOLO_PATH = "#{SHOES_ROOT}/db/solo.sqlite3"
