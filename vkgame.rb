@@ -12,7 +12,6 @@
 Shoes.setup do
   gem 'activesupport >= 2.3.2'
   gem 'activerecord >= 2.3.2'
-  gem 'curb'
 end
 
 require 'config/boot'

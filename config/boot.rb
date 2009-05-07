@@ -10,7 +10,6 @@
 # See the COPYING file for more details.
 
 require 'activerecord'
-require 'curb'
 
 SHOES_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(SHOES_ROOT)
 
