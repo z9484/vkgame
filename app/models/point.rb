@@ -21,4 +21,8 @@ class Point < ActiveRecord::Base
   serialize :foes
   serialize :special
 
+  def neighbors(character = nil)
+    characters.reject {|c| c.id == character.try(:id)}
+  end
+
 end

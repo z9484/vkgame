@@ -55,7 +55,10 @@ class Character < ActiveRecord::Base
       '8', '6', '2', '4'
       move(k)
     when 'l', :look
-      @refreshables[:status] = {:message => "Looks like the current terrain is #{center.terrain.try(:name)}"}
+      m = "[#{point.i}]"
+      m << " Looks like the current terrain is #{center.terrain.try(:name)}."
+      m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}" unless point.neighbors(self).empty?
+      @refreshables[:status] = {:message => m}
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
     when 'q', :quit
