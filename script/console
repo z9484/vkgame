@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+ENV["SHOES_ENV"] = "test"
 
 libs = "-r rubygems"
 libs << " -r config/boot"

@@ -22,7 +22,7 @@ SHOES_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(SHOES_ROOT)
   end
 end
 
-if $0 =~ /irb/
+if ENV["SHOES_ENV"] == "test"
   ActiveRecord::Base.establish_connection({
     :adapter => 'sqlite3',
     :dbfile => SOLO_PATH,
