@@ -14,7 +14,7 @@ module FieldView
   def show_field(character)
     background BASE_LIGHT
     flow character.field_flow_options do
-      @field_images = {:terrains => [], :neighbors => [], :items => []}
+      @field_images = {:terrains => [], :neighbors => [], :items => [], :group => []}
       character.field_points.each do |p|
         stack :width => 68, :height => 68 do
           if character.point == p
@@ -23,8 +23,9 @@ module FieldView
             background COMPLEMENT2_LIGHTER
           end
           @field_images[:terrains] << image("images/terrains/void.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => 3)
-          @field_images[:neighbors] << image("images/terrains/misc/empty.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => -60 + 3)
-          @field_images[:items] << image("images/terrains/misc/empty.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => -60 * 2 + 3)
+          @field_images[:neighbors] << image("images/terrains/overlays/empty.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => -60 + 3)
+          @field_images[:items] << image("images/terrains/overlays/empty.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => -60 * 2 + 3)
+          @field_images[:group] << image("images/terrains/overlays/empty.png", :width => 60, :height => 60, :margin => [2, 2, 0, 0], :displace_left => 3, :displace_top => -60 * 2 + 3)
         end
       end
     end
@@ -32,7 +33,7 @@ module FieldView
   end
 
   def update_images(character)
-    character.field_points.zip(@field_images[:terrains], @field_images[:neighbors], @field_images[:items]) do |p, t, n, i|
+    character.field_points.zip(@field_images[:terrains], @field_images[:neighbors], @field_images[:items], @field_images[:group]) do |p, t, n, i, g|
       if p.terrain.try(:slug).nil?
         puts "Error finding terrain for point #{p.id}"
         t.path = "images/terrains/void.png"
@@ -40,14 +41,19 @@ module FieldView
         t.path = "images/terrains/#{p.terrain.try(:slug)}.png"
       end
       if p.neighbors(character).empty?
-        n.path = "images/terrains/misc/empty.png"
+        n.path = "images/terrains/overlays/empty.png"
       else
-        n.path = "images/terrains/misc/camp.png"
+        n.path = "images/terrains/overlays/camp.png"
       end
       if p.items.empty?
-        i.path = "images/terrains/misc/empty.png"
+        i.path = "images/terrains/overlays/empty.png"
       else
-        i.path = "images/terrains/misc/camp.png"
+        i.path = "images/terrains/overlays/camp.png"
+      end
+      if p.group
+        g.path = "images/terrains/overlays/empty.png"
+      else
+        g.path = "images/terrains/overlays/group.png"
       end
     end
   end

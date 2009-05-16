@@ -25,4 +25,8 @@ class Point < ActiveRecord::Base
     characters.reject {|c| c.id == character.try(:id)}
   end
 
+  def group
+    false
+  end
+
 end
