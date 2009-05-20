@@ -158,6 +158,8 @@ module MiscView
         update_images(character)
       when :status
         update_status(details[:message])
+      when :fight
+        fight(character, details[:foe]) if details[:foe]
       when :alert
         alert(details[:message])
       when :confirm

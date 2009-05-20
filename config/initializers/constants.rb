@@ -19,12 +19,12 @@ HELP_TEXT = <<HEREDOC
 The basic idea of the game is to find the winning hut. You will be aided in your quest by handy gifts from gurus in simple looking huts.
 
 Some keys to try
-q: quit
+alt-q: quit
 left arrow, a, or 4: move left
 right arrow, d, or 6: move right
 up arrow, w, or 8: move up
 down arrow, s, or 2: move down
-l: look at the current terrain
+alt-l: look at the current terrain
 ?: show this help
 
 Good luck!

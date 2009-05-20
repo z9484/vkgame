@@ -54,14 +54,15 @@ class Character < ActiveRecord::Base
       'w', 'a', 'd', 's',
       '8', '6', '2', '4'
       move(k)
-    when 'l', :look
+    when :alt_l, :look
       m = "[#{point.i}]"
       m << " Looks like the current terrain is #{center.terrain.try(:name)}."
       m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}" unless point.neighbors(self).empty?
+      m << " Foes: #{point.foes.inspect}" unless point.foes.empty?
       @refreshables[:status] = {:message => m}
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
-    when 'q', :quit
+    when :alt_q, :quit
       @refreshables[:confirm] = {
         :ask => "Are you sure you want to quit?",
         :yes => :quit
@@ -86,9 +87,12 @@ class Character < ActiveRecord::Base
     if p.nil?
       @refreshables[:status] = {:message => "Try using the arrow keys"}
     elsif can_walk_on?(p)
+      self.hp += rand(3)
+      self.hp = self.vitality if self.hp > self.vitality
       @refreshables[:field] = true
       update_attribute(:point, p)
       @refreshables[:status] = {:message => ""}
+      @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(15).zero?
       dospecial(*p.special) if p.special?
     else
       message = case p.terrain.try(:slug).try(:to_sym)
