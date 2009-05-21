@@ -162,6 +162,8 @@ module MiscView
         fight(character, details[:foe]) if details[:foe]
       when :alert
         alert(details[:message])
+      when :recruit
+        recruit
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       end

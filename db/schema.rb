@@ -19,6 +19,17 @@ ActiveRecord::Schema.define do
     t.datetime "updated_at"
   end
 
+  create_table "armies", :force => true do |t|
+    t.integer  "point_id"
+    t.integer  "character_id"
+    t.integer  "footmen"
+    t.integer  "archers"
+    t.integer  "pikemen"
+    t.integer  "knights"
+    t.integer  "healers"
+    t.integer  "catapults"
+  end
+
   create_table "base_action_items", :force => true do |t|
     t.integer  "base_item_id"
     t.integer  "base_action_id"

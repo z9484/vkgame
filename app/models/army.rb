@@ -9,25 +9,9 @@
 
 # See the COPYING file for more details.
 
-class Point < ActiveRecord::Base
+class Army < ActiveRecord::Base
 
-  belongs_to :map
-  belongs_to :terrain
-  has_many :characters
-  has_many :items, :as => :itemable
-  has_many :dojo_actions
-  has_many :base_actions, :through => :dojo_actions
-  has_one :army
-
-  serialize :foes
-  serialize :special
-
-  def neighbors(character = nil)
-    characters.reject {|c| c.id == character.try(:id)}
-  end
-
-  def group
-    false
-  end
+  belongs_to :character
+  belongs_to :point
 
 end

@@ -15,6 +15,7 @@ class Character < ActiveRecord::Base
   belongs_to :point
   has_many :items, :as => :itemable
   has_many :actions
+  has_many :armies
 
   before_create :set_defaults
 
@@ -57,11 +58,18 @@ class Character < ActiveRecord::Base
     when :alt_l, :look
       m = "[#{point.i}]"
       m << " Looks like the current terrain is #{center.terrain.try(:name)}."
-      m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}" unless point.neighbors(self).empty?
+      m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}"
       m << " Foes: #{point.foes.inspect}" unless point.foes.empty?
       @refreshables[:status] = {:message => m}
+
+    when 'l', :look
+      @refreshables[:status] = {:message => "Looks like the current terrain is #{center.terrain.try(:name)}"}
+    when 'g', :graffiti
+      @refreshables[:edit] = {:message => "Leave a message"}
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
+    when 'r', :recruit
+      @refreshables[:recruit] = {:message => "What would you like to recruit?"}
     when :alt_q, :quit
       @refreshables[:confirm] = {
         :ask => "Are you sure you want to quit?",
@@ -92,7 +100,7 @@ class Character < ActiveRecord::Base
       @refreshables[:field] = true
       update_attribute(:point, p)
       @refreshables[:status] = {:message => ""}
-      @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(15).zero?
+      @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(12).zero?
       dospecial(*p.special) if p.special?
     else
       message = case p.terrain.try(:slug).try(:to_sym)
