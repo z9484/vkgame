@@ -12,8 +12,16 @@
 module ArmyView
 
 
-  def recruit
+
+  def recruit_window
     window do
+
+      def soldier
+        cool = 1+1
+      end
+
+      background BASE_LIGHT..BASE_LIGHTEST
+
       footman = 0
       archer = 0
       pikeman = 0
@@ -25,7 +33,8 @@ module ArmyView
       para "Which would you like to recruit? \n\n"
       #list_box :items => ["Footman", "Archer", "Pikeman", "Knight", "Healer", "Catapult"], :choose => "Footman"
 
-      flow do
+      flow :width => 200, :margin_left => 15 do 
+        
         para "Footman  "
         #@what = edit_line :width => 30, :text => '5'
         button '<' do
@@ -40,9 +49,7 @@ module ArmyView
           footman += 1
           @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
         end
-      end
 
-      flow do
         para "Archers  "
         button '<' do
           if cost > 0 and archer > 0
@@ -56,9 +63,7 @@ module ArmyView
           archer += 1
           @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
         end
-      end
 
-      flow do
         para "Pikemen  "
         button '<' do
           if cost > 0 and pikeman > 0
@@ -72,9 +77,7 @@ module ArmyView
           pikeman += 1
           @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
         end
-      end
 
-      flow do
         para "Knights  "
         button '<' do
           if cost > 0 and knight > 0
@@ -88,9 +91,7 @@ module ArmyView
           knight += 1
           @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
         end
-      end
 
-      flow do
         para "Healers  "
         button '<' do
           if cost > 0 and healer > 0
@@ -104,9 +105,7 @@ module ArmyView
           healer += 1
           @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
         end
-      end
 
-      flow do
         para "Catapults  "
         button '<' do
           if cost > 0 and catapult > 0
@@ -120,15 +119,19 @@ module ArmyView
           catapult += 1
           @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
         end
+
+
       end
 
       @p = flow
+      flow :margin_left => 10 do
       button 'ok' do
         close
         alert "Thanks you're #{cost} gold poorer."
       end
       button 'cancel' do
         close
+      end
       end
       #cost = 5 * @what.text.to_i
       #para "Total cost is ", strong("#{cost}")
