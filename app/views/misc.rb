@@ -163,7 +163,7 @@ module MiscView
       when :alert
         alert(details[:message])
       when :recruit
-        recruit
+        recruit_window
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       end
