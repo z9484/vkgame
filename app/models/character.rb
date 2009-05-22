@@ -69,7 +69,7 @@ class Character < ActiveRecord::Base
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
     when 'r', :recruit
-      @refreshables[:recruit] = {:message => "What would you like to recruit?"}
+      @refreshables[:recruit] = {:station => 1}
     when :alt_q, :quit
       @refreshables[:confirm] = {
         :ask => "Are you sure you want to quit?",
