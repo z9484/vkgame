@@ -33,9 +33,9 @@ class Character < ActiveRecord::Base
   end
 
   def field_points
-    w = point.map.width
+    h = point.map.height
     i = point.i
-    rows = wideview? ? [i - w * 2, i - w, i, i + w, i + w * 2] : [i - w, i, i + w]
+    rows = wideview? ? [i - h * 2, i - h, i, i + h, i + h * 2] : [i - h, i, i + h]
     is = rows.map do |r|
       if wideview?
         [r - 2, r - 1, r, r + 1, r + 2]
@@ -43,7 +43,7 @@ class Character < ActiveRecord::Base
         [r - 1, r, r + 1]
       end
     end.flatten
-    Point.find(:all, :conditions => {:i => is}, :order => 'i')
+    point.map.points.find(:all, :conditions => {:i => is}, :order => 'i')
   end
 
   def center
@@ -56,14 +56,11 @@ class Character < ActiveRecord::Base
       '8', '6', '2', '4'
       move(k)
     when :alt_l, :look
-      m = "[#{point.i}]"
+      m = "[#{point.i % 50}, #{point.i / 50}]"
       m << " Looks like the current terrain is #{center.terrain.try(:name)}."
       m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}"
       m << " Foes: #{point.foes.inspect}" unless point.foes.empty?
       @refreshables[:status] = {:message => m}
-
-    when 'l', :look
-      @refreshables[:status] = {:message => "Looks like the current terrain is #{center.terrain.try(:name)}"}
     when 'g', :graffiti
       @refreshables[:edit] = {:message => "Leave a message"}
     when '?', :help
@@ -83,11 +80,11 @@ class Character < ActiveRecord::Base
   def move(direction)
     new_i = case direction
     when :up, 'w'
-      point.i - 100
+      point.i - point.map.height
     when :right, 'd'
       point.i + 1
     when :down, 's'
-      point.i + 100
+      point.i + point.map.height
     when :left, 'a'
       point.i - 1
     end
@@ -100,7 +97,16 @@ class Character < ActiveRecord::Base
       @refreshables[:field] = true
       update_attribute(:point, p)
       @refreshables[:status] = {:message => ""}
-      @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(12).zero?
+      case p.terrain.slug.to_sym
+      when :church
+        update_attribute(:hp, vitality)
+        @refreshables[:alert] = {:message => "You have been healed!"}
+      when :armor, :weapons
+        @refreshables[:status] = {:message => "This shop is closed."}
+      else
+        @refreshables[:status] = {:message => ""}
+        @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(12).zero?
+      end
       dospecial(*p.special) if p.special?
     else
       message = case p.terrain.try(:slug).try(:to_sym)
@@ -151,7 +157,7 @@ class Character < ActiveRecord::Base
   def can_walk_on?(p)
     return false if p.blank? || p.terrain.blank?
     case p.try(:terrain).try(:kind).try(:to_sym)
-    when :void
+    when :void, :wall
       false
     when :mountain
       has? :climbing_gear
@@ -179,7 +185,7 @@ class Character < ActiveRecord::Base
 
   def set_defaults
     self.race_id = nil
-    self.point = Point.find_by_i(2971)
+    self.point = Map.find_by_name('Small').points.find_by_i(2185)
     self.items = []
     self.name = "Hero"
     self.hp = 25
