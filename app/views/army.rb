@@ -12,7 +12,7 @@
 module ArmyView
 
 
-  def recruit
+  def recruit(character)
     window do
       footman = 0
       archer = 0
@@ -124,8 +124,16 @@ module ArmyView
 
       @p = flow
       button 'ok' do
+        a = character.armies.create({
+          :footmen => footman,
+          :archers => archer,
+          :pikemen => pikeman,
+          :knights => knight,
+          :healers => healer,
+          :catapults => catapult,
+        })
         close
-        alert "Thanks you're #{cost} gold poorer."
+        alert "Thanks, you're #{cost} gold poorer."
       end
       button 'cancel' do
         close

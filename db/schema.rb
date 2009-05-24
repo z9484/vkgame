@@ -22,6 +22,8 @@ ActiveRecord::Schema.define do
   create_table "armies", :force => true do |t|
     t.integer  "point_id"
     t.integer  "character_id"
+    t.integer  "moves"
+    t.boolean  "camped"
     t.integer  "footmen"
     t.integer  "archers"
     t.integer  "pikemen"
@@ -74,6 +76,7 @@ ActiveRecord::Schema.define do
     t.integer  "gold"
     t.integer  "magic"
     t.string   "magic_kind"
+    t.integer  "moves"
   end
 
   create_table "dojo_actions", :force => true do |t|

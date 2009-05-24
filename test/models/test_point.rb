@@ -2,10 +2,6 @@ require 'test/test_helper'
 
 class TestPoint < ActiveSupport::TestCase
 
-  test 'group' do
-    assert !Point.make.group
-  end
-
   test 'neighbors empty' do
     assert Point.make(:characters => []).neighbors.empty?
   end

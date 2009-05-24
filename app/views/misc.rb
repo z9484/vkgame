@@ -163,7 +163,7 @@ module MiscView
       when :alert
         alert(details[:message])
       when :recruit
-        recruit
+        recruit(character) if character.point.terrain.slug == 'recruit'
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       end

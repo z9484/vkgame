@@ -14,4 +14,15 @@ class Army < ActiveRecord::Base
   belongs_to :character
   belongs_to :point
 
+  before_create :set_defaults
+
+  private
+
+  def set_defaults
+    self.point = Map.find_by_name('Small').points.find_by_i(1076)
+    self.moves = 20
+    self.camped = false
+    true
+  end
+
 end

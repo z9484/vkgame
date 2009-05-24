@@ -67,6 +67,20 @@ class Character < ActiveRecord::Base
       @refreshables[:alert] = {:message => HELP_TEXT}
     when 'r', :recruit
       @refreshables[:recruit] = {:message => "What would you like to recruit?"}
+    when 'c', :camp_army
+      army = armies.find_by_camped(false)
+      if army
+        army.update_attribute(:camped, true)
+        m = "Your army will camp here."
+      else
+        army = armies.find_by_point_id(point.id)
+        if army
+          army.update_attribute(:camped, false)
+          m = "Your army breaks camp and follows you."
+        end
+      end
+      m ||= 'No army here!'
+      @refreshables[:status] = {:message => m}
     when :alt_q, :quit
       @refreshables[:confirm] = {
         :ask => "Are you sure you want to quit?",
@@ -97,15 +111,25 @@ class Character < ActiveRecord::Base
       @refreshables[:field] = true
       update_attribute(:point, p)
       @refreshables[:status] = {:message => ""}
-      case p.terrain.slug.to_sym
+      armies.reload.each do |army|
+        army.update_attribute(:point, p) unless army.camped
+      end
+      case p.terrain.kind.to_sym
       when :church
         update_attribute(:hp, vitality)
         @refreshables[:alert] = {:message => "You have been healed!"}
-      when :armor, :weapons
-        @refreshables[:status] = {:message => "This shop is closed."}
+      when :shop
+        case p.terrain.slug.to_sym
+        when :recruit
+          @refreshables[:status] = {:message => "Press r to recruit"}
+        when :shop
+          # dospecial
+        else
+          @refreshables[:status] = {:message => "This shop is closed."}
+        end
       else
         @refreshables[:status] = {:message => ""}
-        @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(12).zero?
+        @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(20).zero?
       end
       dospecial(*p.special) if p.special?
     else
