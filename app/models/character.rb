@@ -66,7 +66,7 @@ class Character < ActiveRecord::Base
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
     when 'r', :recruit
-      @refreshables[:recruit] = {:message => "What would you like to recruit?"}
+      @refreshables[:recruit] = {:station => 1}
     when 'c', :camp_army
       army = armies.find_by_camped(false)
       if army
