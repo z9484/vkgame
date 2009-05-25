@@ -11,10 +11,124 @@
 
 module ArmyView
 
+  def merge(character)
+   
+  end
+
+
+  def army_info(character)
+    window do 
+      background BASE_LIGHT..BASE_LIGHTEST
+      army = character.armies.find_by_camped(false)
+
+      para "The status of the #{name} army.   (name   \"ready soldiers\" : \"injured soldiers\")\n"
+      para "This army has #{army.moves} moves left.\n"
+      flow :width => 150, :margin_left => 15 do 
+        if army.footmen > 0
+          para "Footmen    ", strong(army.footmen)
+        end
+        if army.archers > 0
+          para "Archers      ", strong(army.archers)
+        end 
+        if army.pikemen > 0
+          para "Pikemen    ", strong(army.pikemen)
+        end
+        if army.knights > 0
+          para "Knights      ", strong(army.knights)
+        end
+        if army.healers > 0
+          para "Healers     ", strong(army.healers)       
+        end
+        if army.catapults > 0
+          para "Catapults  ", strong(army.catapults)       
+        end
+      end
+      flow :margin_left => 15 do
+        button 'merge or split army' do
+          close
+          #merge(character)
+          window do 
+            background BASE_LIGHT..BASE_LIGHTEST
+            army = character.armies.find_by_camped(false)
+            ofootmen = army.footmen; nfootmen = 0
+            oarchers = army.archers; narchers = 0
+            opikemen = army.pikemen; npikemen = 0
+            oknights = army.knights; nknights = 0
+            ohealers = army.healers; nhealers = 0
+            ocatapults = army.catapults; ncatapults = 0
+
+            para "Merging #{name} army.\n"
+            flow :width => 250, :margin_left => 15 do 
+              para "Footmen    "
+              button '<' do
+                if nfootmen > 0
+                  ofootmen += 1
+                  nfootmen -= 1
+                  @p.clear{para strong(ofootmen), " ", strong(nfootmen)}
+                end
+              end
+              button '>' do
+                if ofootmen > 0
+                  ofootmen -= 1
+                  nfootmen += 1
+                  @p.clear{para strong(ofootmen), " ", strong(nfootmen)}
+                end
+              end
+              @p =flow
+=begin
+              para "Archers      ", strong(army.archers)
+              para "Pikemen    ", strong(army.pikemen)
+              para "Knights      ", strong(army.knights)
+              para "Healers     ", strong(army.healers)       
+              para "Catapults  ", strong(army.catapults)
+=end
+       
+            end
+            flow :margin_left => 15 do
+              button 'ok' do
+                a = character.armies.create({
+                :footmen => nfootmen,
+                :archers => narchers,
+                :pikemen => npikemen,
+                :knights => nknights,
+                :healers => nhealers,
+                :catapults => ncatapults,
+                })
+                a.update_attribute(:camped, true)
+                close
+              end
+              button 'cancel' do
+                close
+              end
+            end
+          end
+        end
+        button 'rename army' do
+        end
+        button 'ok' do
+          close
+        end
+      end
+    end
+  end
+
+
+=begin
+            character.update_attribute(:gold, character.gold - cost)
+            a = character.armies.create({
+              :footmen => footman,
+              :archers => archer,
+              :pikemen => pikeman,
+              :knights => knight,
+              :healers => healer,
+              :catapults => catapult,
+            })
+=end
+
 
   def recruit_window(character, station)
     window do
-    character.gold += 10000
+    #character.gold += 10000
       background BASE_LIGHT..BASE_LIGHTEST
 
       footman = 0
@@ -126,7 +240,10 @@ module ArmyView
       @p = flow
       flow :margin_left => 10 do
         button 'ok' do
-          if cost > character.gold
+          if cost == 0
+            close
+            alert 'Congratulations you recruited no one!'
+          elsif cost > character.gold
             alert "Invalid transaction. You do not have enough gold!"
           else
             character.update_attribute(:gold, character.gold - cost)

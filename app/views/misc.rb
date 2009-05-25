@@ -162,6 +162,8 @@ module MiscView
         fight(character, details[:foe]) if details[:foe]
       when :alert
         alert(details[:message])
+      when :army_info
+        army_info(character)
       when :recruit
         recruit_window(character, details[:station]) if character.point.terrain.slug == 'recruit'
       when :confirm

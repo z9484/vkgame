@@ -61,6 +61,14 @@ class Character < ActiveRecord::Base
       m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}"
       m << " Foes: #{point.foes.inspect}" unless point.foes.empty?
       @refreshables[:status] = {:message => m}
+    when 'i', :army_info
+      iarmy = armies.find_by_camped(false)
+      if iarmy
+        @refreshables[:army_info] = {:message => m}
+      else
+        m ||= 'No army is following you at the moment!'
+      @refreshables[:status] = {:message => m}
+      end
     when 'g', :graffiti
       @refreshables[:edit] = {:message => "Leave a message"}
     when '?', :help
