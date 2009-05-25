@@ -22,6 +22,7 @@ class VirtualKingdomsGame < Shoes
   include ArmyView
   include FieldView
   include InventoryView
+  include ActionsView
 
   def game
     ActiveRecord::Base.establish_connection({
@@ -30,10 +31,9 @@ class VirtualKingdomsGame < Shoes
     })
     @@character = Character.find_or_create_by_email(@@email)
     stack do
-      stack :width => 350, :height => 350 do
-        show_field(@@character)
-      end
+      show_field(@@character)
       show_status
+      show_actions(@@character)
     end
     keypress do |k|
       handle @@character, k
@@ -45,4 +45,4 @@ class VirtualKingdomsGame < Shoes
 
 end
 
-Shoes.app :title => "VK game", :width => 350, :height => 520
+Shoes.app :title => "VK game", :width => 350, :height => 675

@@ -18,6 +18,7 @@ class Character < ActiveRecord::Base
   has_many :armies
 
   before_create :set_defaults
+  after_create :create_actions
 
   def after_initialize
     @refreshables = {}
@@ -39,10 +40,11 @@ class Character < ActiveRecord::Base
     field_points[field_points.size / 2]
   end
   def do(k, *args)
-    case k
+    return false if k.nil?
+    case k.to_sym
     when :up, :right, :down, :left,
-      'w', 'a', 'd', 's',
-      '8', '6', '2', '4'
+      :'w', :'a', :'d', :'s',
+      :'8', :'6', :'2', :'4'
       move(k)
     when :alt_l, :look
       i = args.first || 12
@@ -55,7 +57,7 @@ class Character < ActiveRecord::Base
         m << " Foes: #{p.foes.inspect}" unless p.foes.empty?
       end
       @refreshables[:status] = {:message => m}
-    when 'i', :army_info
+    when :'i', :army_info
       iarmy = armies.find_by_camped(false)
       if iarmy
         @refreshables[:army_info] = {:message => m}
@@ -63,13 +65,13 @@ class Character < ActiveRecord::Base
         m ||= 'No army is following you at the moment!'
       @refreshables[:status] = {:message => m}
       end
-    when 'g', :go
+    when :'g', :go
       @refreshables[:go] = {:message => "There is no place to go to."}
-    when '?', :help
+    when :'?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
-    when 'r', :recruit
+    when :'r', :recruit
       @refreshables[:recruit] = {:station => 1}
-    when 'c', :camp_army
+    when :'c', :camp_army
       army = armies.find_by_camped(false)
       if army
         army.update_attribute(:camped, true)
@@ -89,19 +91,19 @@ class Character < ActiveRecord::Base
         :yes => :quit
       }
     else
-      @refreshables[:status] = {:message => "Invalid key. Try ? for help."}
+      @refreshables[:status] = {:message => "'#{k}' is an invalid key. Try ? for help."}
     end
   end
 
   def move(direction)
     new_i = case direction
-    when :up, 'w'
+    when :up, :'w', :'8'
       point.i - point.map.height
-    when :right, 'd'
+    when :right, :'d', :'6'
       point.i + 1
-    when :down, 's'
+    when :down, :'s', :'2'
       point.i + point.map.height
-    when :left, 'a'
+    when :left, :'a', :'4'
       point.i - 1
     end
     p = point.map.points.find_by_i(new_i)
@@ -203,10 +205,15 @@ class Character < ActiveRecord::Base
     (r, @refreshables = @refreshables, {}).first
   end
 
+  def available_actions
+    actions
+  end
+
   def reset!
     set_defaults
     puts save!
   end
+
 
   private
 
@@ -254,6 +261,12 @@ class Character < ActiveRecord::Base
     self.guild_status = 0
     self.guild_time = 0
     self.moves = 200
+  end
+
+  def create_actions
+    [:unequip, :east, :equip, :north, :south, :drop, :sell, :sort, :pick_up, :west, :camp, :buy, :use, :flip].each do |action|
+      actions.create(:base_action => BaseAction.find_by_slug(action.to_s))
+    end
   end
 
 end

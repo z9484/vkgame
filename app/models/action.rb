@@ -12,4 +12,9 @@
 class Action < ActiveRecord::Base
   belongs_to :base_action
   belongs_to :character
+
+  def slug
+    base_action.slug
+  end
+
 end

@@ -12,27 +12,29 @@
 module FieldView
 
   def show_field(character)
-    background BASE_LIGHT
-    stroke COMPLEMENT1_LIGHTER
-    fill COMPLEMENT1_LIGHTER
-    rect :width => 65, :height => 65, :top => 142, :left => 142
-    flow :width => 340, :height => 340, :displace_left => 5, :displace_top => 5 do
-      background COMPLEMENT2_LIGHTER
-      border BASE_MID, :strokewidth => 5
-      flow :displace_left => 5, :displace_top => 5 do
-        @field_images = {:terrains => [], :neighbors => [], :items => [], :army => []}
-        character.field_points.each_with_index do |p, i|
-          styles = {:width => 60, :height => 60}
-          stack :width => 66, :height => 66, :margin => 3 do
-            @field_images[:terrains] << image("images/terrains/void.png", styles) {handle(character, :look, i)}
-            @field_images[:neighbors] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60))
-            @field_images[:items] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60 * 2))
-            @field_images[:army] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60 * 3))
+    stack :width => 350, :height => 350 do
+      background BASE_LIGHT
+      stroke COMPLEMENT1_LIGHTER
+      fill COMPLEMENT1_LIGHTER
+      rect :width => 65, :height => 65, :top => 142, :left => 142
+      flow :width => 340, :height => 340, :displace_left => 5, :displace_top => 5 do
+        background COMPLEMENT2_LIGHTER
+        border BASE_MID, :strokewidth => 5
+        flow :displace_left => 5, :displace_top => 5 do
+          @field_images = {:terrains => [], :neighbors => [], :items => [], :army => []}
+          character.field_points.each_with_index do |p, i|
+            styles = {:width => 60, :height => 60}
+            stack :width => 66, :height => 66, :margin => 3 do
+              @field_images[:terrains] << image("images/terrains/void.png", styles) {handle(character, :look, i)}
+              @field_images[:neighbors] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60))
+              @field_images[:items] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60 * 2))
+              @field_images[:army] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60 * 3))
+            end
           end
         end
       end
+      update_images(character)
     end
-    update_images(character)
   end
 
   def update_images(character)

@@ -95,6 +95,7 @@ module MiscView
           door_game
         end
       end
+      solo_game
     end
   end
 
@@ -125,7 +126,11 @@ module MiscView
   end
 
   def show_status
-    @status = para "Find the winning hut. Arrow keys to move.", :height => 100
+    stack :height => 60 do
+      background BASE_LIGHTER..BASE_LIGHT
+      border BASE_DARK
+      @status = para "Find the winning hut. Arrow keys to move."
+    end
   end
 
   def update_status(message = '')
@@ -140,9 +145,6 @@ module MiscView
       end
       button "Look", :margin_left => 10 do
         handle character, :look
-      end
-      button "Quit", :margin_left => 10 do
-        handle character, :quit
       end
     end
   end
