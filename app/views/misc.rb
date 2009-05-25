@@ -125,11 +125,12 @@ module MiscView
   end
 
   def show_status
-    @statusline = para "Find the winning hut. Arrow keys to move."
+    @status = para "Find the winning hut. Arrow keys to move.", :height => 100
   end
 
   def update_status(message = '')
-    @statusline.text = message
+    @status.text = message
+    # @status.scroll_top = @status.scroll_max
   end
 
   def show_menu(character)
