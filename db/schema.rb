@@ -79,7 +79,7 @@ ActiveRecord::Schema.define do
     t.integer  "moves"
     t.string   "guild_membership"
     t.integer  "guild_status"
-    t.integer  "guild_time" 
+    t.integer  "guild_time"
   end
 
   create_table "dojo_actions", :force => true do |t|
