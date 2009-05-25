@@ -69,8 +69,8 @@ class Character < ActiveRecord::Base
         m ||= 'No army is following you at the moment!'
       @refreshables[:status] = {:message => m}
       end
-    when 'g', :graffiti
-      @refreshables[:edit] = {:message => "Leave a message"}
+    when 'g', :go
+      @refreshables[:go] = {:message => "There is no place to go to."}
     when '?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
     when 'r', :recruit

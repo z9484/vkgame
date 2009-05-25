@@ -44,6 +44,12 @@ module ArmyView
         end
       end
       flow :margin_left => 15 do
+        button 'disband army' do
+#         @refreshables[:confirm] = {
+#        :ask => "Are you sure you want to disband your army?",
+#        :yes => :disband_army
+#      }
+        end
         button 'merge or split army' do
           close
           #merge(character)

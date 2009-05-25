@@ -156,6 +156,14 @@ module MiscView
         @field.clear {show_field(character)}
       when :field
         update_images(character)
+      when :go
+        if character.point.terrain.slug == 'bank'
+          enter(character) 
+        elsif character.point.terrain.slug == 'recruit'
+          recruit_window(character, 1)
+        else
+          update_status(details[:message])
+        end
       when :status
         update_status(details[:message])
       when :fight
