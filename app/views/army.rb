@@ -13,65 +13,106 @@ module ArmyView
 
   def bank_window(character)
     window do
+#character.update_attribute(:gold, 1000) #cheating!
       background BASE_LIGHT..BASE_LIGHTEST
       @account = 0
       para "Welcome to the local bank. What would you like to do?\n\n"
       flow  :margin_left => 15 do
-        inv = button 'Make an investment.' do
-          @p.clear{para "\n\nHow much would you like to invest in the guild?\n"  #{character.guild_membership} 
-            para "You currently have ", strong("#{character.gold}"), " gold and ", strong("#{@account}"), " gold in your account."
-            @e = edit_line 
-            button "Invest" do
-              if character.gold > 0
+        button 'Make an investment.' do
+          if character.guild_membership == 'none'
+            @p.clear{para "\n\nYou have to be a member of a guild in order to invest money."}
+          else
+            @p.clear{para "\n\nHow much would you like to invest in the #{character.guild_membership} guild?\n"  
+              @e = edit_line 
+              button "Invest" do
+                if @e.text.to_i <= character.gold && @e.text.to_i > 0
+                  @account += @e.text.to_i
+                  character.update_attribute(:gold, character.gold - @e.text.to_i)
+                  #alert @e.text
+                  @e.text = ''
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                else
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank.\n" 
+                  para strong("Invalid amount. Please try again.") 
+                  @e.text = ''
+                  }
+                end
+              end
+              button "Withdraw" do
+                if @e.text.to_i <= @account && @e.text.to_i > 0
+                  @account -= @e.text.to_i
+                  character.update_attribute(:gold, character.gold + @e.text.to_i)
+                  #alert @e.text
+                  @e.text = ''
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                else
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank.\n" 
+                  para strong("Invalid amount. Please try again.") 
+                  @e.text = ''
+                  }
+                end
+              end
+              button "Check Balance" do
                 @account += @e.text.to_i
                 character.update_attribute(:gold, character.gold - @e.text.to_i)
-                #alert @e.text
-                @e.text = ''
-                
+                @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
               end
-            end
-            button "Withdraw" do
-              if @account > 0
-                @account -= @e.text.to_i
-                character.update_attribute(:gold, character.gold + @e.text.to_i)
-                #alert @e.text
-              @e.text = ''
-              end
-            end
-          }
-        end
-#        @a = flow
 
-       
-        button 'Join a guild.' do
-          @p.clear{para "\n\nWhich guild would you like to join?  "
-          list_box :items => ['Healer', 'Armorer', 'Weaponsmith', 'Merchant', 'Mercenary'], :width => 130, :choose => 'Healer' do |list|
-             @choice.text = list.text
+              @q = flow
+            }
           end
-          para "\n"
-          para "A 100 gold deposit is required to join the "
-          @choice = para "None selected"
-          para "guild\n\n"
-          button 'Sign me up!' do
-            alert @choice
-            character.update_attribute(:guild_membership, @choice)
-          end}
         end
-        button 'Learn more.' do
-          #alert BANK_TEXT
-          @p.clear{para "\n\n"
-            para BANK_TEXT
-          }
+      
+        button 'Join a guild' do
+          if character.guild_membership == 'none'
+            @p.clear{para "\n\nWhich guild would you like to join?  "
+            list_box :items => ['Healer', 'Armorer', 'Weaponsmith', 'Merchant', 'Mercenary'], :width => 130, :choose => 'Healer' do |list|
+               @choice.text = list.text
+            end
+            para "\n"
+            para "A 100 gold deposit is required to join the"
+            @choice = para "None selected"
+            para "guild\n\n"
+            button 'Sign me up!' do
+              if confirm("Are you sure you want to join?")
+                character.update_attribute(:guild_membership, @choice)
+              end
+              
+           end}
+         else
+          @p.clear{para "\n\nYou are currently a member of the #{character.guild_membership} guild.\n Would you like to switch guilds? "
+            list_box :items => ['Healer', 'Armorer', 'Weaponsmith', 'Merchant', 'Mercenary'], :width => 130, :choose => 'Healer' do |list|
+               @choice.text = list.text
+            end
+            para "\n"
+            para "A 100 gold deposit is required to join the"
+            @choice = para "None selected"
+            para "guild. Current guild money will be automatically transferred to the new account.\n\n"
+            button 'Sign me up!' do
+              if confirm("Are you sure you want to join?")
+                if character.guild_membership != @choice
+                  character.update_attribute(:guild_membership, @choice)
+                else
+                  alert "You are already in that guild!"
+                end
+              end
+           end}
+         end
+        end
+         button 'Learn more' do
+            @p.clear{para "\n\n"
+              para BANK_TEXT
+            }
+          end
         end
        @p = flow
        para "\n\n\n\n"
-       button 'Leave.' do
+       button 'Leave' do
         close
         end
 
       end
     end 
-  end
 
   
 

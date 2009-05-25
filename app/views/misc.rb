@@ -158,7 +158,7 @@ module MiscView
         update_images(character)
       when :go
         if character.point.terrain.slug == 'bank'
-          enter(character)
+          bank_window(character) 
         elsif character.point.terrain.slug == 'recruit'
           recruit_window(character, 1)
         else
@@ -172,7 +172,7 @@ module MiscView
         alert(details[:message])
       when :army_info
         army_info(character)
-      when :recruit
+      when :recruit #test function
         bank_window(character)
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])

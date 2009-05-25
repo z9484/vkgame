@@ -25,6 +25,7 @@ right arrow, d, or 6: move right
 up arrow, w, or 8: move up
 down arrow, s, or 2: move down
 alt-l: look at the current terrain
+g to enter or interact with a building or other event
 c to camp/uncamp your army
 i to check status of following armies
 ?: show this help
