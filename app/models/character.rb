@@ -45,7 +45,8 @@ class Character < ActiveRecord::Base
       '8', '6', '2', '4'
       move(k)
     when :alt_l, :look
-      p = point.map.points.find_by_i((point.i + args.first % 5 - 2) + ((args.first / 5 - 2) * point.map.height))
+      i = args.first || 12
+      p = point.map.points.find_by_i((point.i + i % 5 - 2) + ((i / 5 - 2) * point.map.height))
       m = ''
       if p
         m = "[#{p.i % 50}, #{p.i / 50}]"
