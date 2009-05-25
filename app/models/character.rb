@@ -27,21 +27,10 @@ class Character < ActiveRecord::Base
     has?(:telescope)
   end
 
-  def field_flow_options
-    w, l, t = (wideview? ? [340, 4, 4] : [220, 70, 70])
-    {:width => w, :displace_left => l, :displace_top => t}
-  end
-
   def field_points
-    h = point.map.height
-    i = point.i
-    rows = wideview? ? [i - h * 2, i - h, i, i + h, i + h * 2] : [i - h, i, i + h]
-    is = rows.map do |r|
-      if wideview?
-        [r - 2, r - 1, r, r + 1, r + 2]
-      else
-        [r - 1, r, r + 1]
-      end
+    i, h = point.i, point.map.height
+    is = [i - h * 2, i - h, i, i + h, i + h * 2].map do |r|
+      [r - 2, r - 1, r, r + 1, r + 2]
     end.flatten
     point.map.points.find(:all, :conditions => {:i => is}, :order => 'i')
   end
@@ -49,17 +38,21 @@ class Character < ActiveRecord::Base
   def center
     field_points[field_points.size / 2]
   end
-  def do(k)
+  def do(k, *args)
     case k
     when :up, :right, :down, :left,
       'w', 'a', 'd', 's',
       '8', '6', '2', '4'
       move(k)
     when :alt_l, :look
-      m = "[#{point.i % 50}, #{point.i / 50}]"
-      m << " Looks like the current terrain is #{center.terrain.try(:name)}."
-      m << " People camped here: #{point.neighbors(self).map {|c| c.email}.to_sentence}"
-      m << " Foes: #{point.foes.inspect}" unless point.foes.empty?
+      p = point.map.points.find_by_i((point.i + args.first % 5 - 2) + ((args.first / 5 - 2) * point.map.height))
+      m = ''
+      if p
+        m = "[#{p.i % 50}, #{p.i / 50}]"
+        m << " That looks like (a) #{p.terrain.try(:name)}."
+        m << " People camped here: #{p.neighbors(self).map {|c| c.email}.to_sentence}" unless p.neighbors(self).empty?
+        m << " Foes: #{p.foes.inspect}" unless p.foes.empty?
+      end
       @refreshables[:status] = {:message => m}
     when 'i', :army_info
       iarmy = armies.find_by_camped(false)
@@ -113,7 +106,8 @@ class Character < ActiveRecord::Base
     p = point.map.points.find_by_i(new_i)
     if p.nil?
       @refreshables[:status] = {:message => "Try using the arrow keys"}
-    elsif can_walk_on?(p)
+    elsif can_walk_on?(p) && moves > 0
+      self.moves -= 1
       self.hp += rand(3)
       self.hp = self.vitality if self.hp > self.vitality
       @refreshables[:field] = true
@@ -258,6 +252,7 @@ class Character < ActiveRecord::Base
     self.guild_membership = 'none'
     self.guild_status = 0
     self.guild_time = 0
+    self.moves = 200
   end
 
 end
