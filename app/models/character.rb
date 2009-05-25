@@ -215,6 +215,34 @@ class Character < ActiveRecord::Base
 
   private
 
+  def daily_update
+    #update_news
+    update_guild_membership
+    bank_interest
+  end
+
+  def bank_interest
+    if account > 0
+      account += account * 0.05
+      account.to_i!
+    end
+  end
+
+  def update_guild_membership
+    update_attribute(:guild_time, :guild_time + 1)
+    if :guild_membership != 'none'
+      if :guild_time > 0
+        update_attribute(:guild_status, 1)
+      elsif :guild_time > 2
+        update_attribute(:guild_status, 2)
+      elsif :guild_time > 6
+        update_attribute(:guild_status, 3)
+      elsif :guild_time > 13
+        update_attribute(:guild_status, 4)
+      end
+    end
+  end
+
   def set_defaults
     self.race_id = nil
     self.point = Map.find_by_name('Small').points.find_by_i(2185)
@@ -227,6 +255,9 @@ class Character < ActiveRecord::Base
     self.gold = 25
     self.magic = 25
     self.magic_kind = 'mage'
+    self.guild_membership = 'none'
+    self.guild_status = 0
+    self.guild_time = 0
   end
 
 end
