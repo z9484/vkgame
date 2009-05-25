@@ -173,7 +173,7 @@ module MiscView
       when :army_info
         army_info(character)
       when :recruit
-        recruit_window(character, details[:station]) if character.point.terrain.slug == 'recruit'
+        daily_update
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       end
