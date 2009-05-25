@@ -173,7 +173,7 @@ module MiscView
       when :army_info
         army_info(character)
       when :recruit
-        daily_update
+        bank_window(character)
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       end

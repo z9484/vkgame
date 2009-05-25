@@ -11,10 +11,69 @@
 
 module ArmyView
 
-  def merge(character)
-   
+  def bank_window(character)
+    window do
+      background BASE_LIGHT..BASE_LIGHTEST
+      @account = 0
+      para "Welcome to the local bank. What would you like to do?\n\n"
+      flow  :margin_left => 15 do
+        inv = button 'Make an investment.' do
+          @p.clear{para "\n\nHow much would you like to invest in the guild?\n"  #{character.guild_membership} 
+            para "You currently have ", strong("#{character.gold}"), " gold and ", strong("#{@account}"), " gold in your account."
+            @e = edit_line 
+            button "Invest" do
+              if character.gold > 0
+                @account += @e.text.to_i
+                character.update_attribute(:gold, character.gold - @e.text.to_i)
+                #alert @e.text
+                @e.text = ''
+                
+              end
+            end
+            button "Withdraw" do
+              if @account > 0
+                @account -= @e.text.to_i
+                character.update_attribute(:gold, character.gold + @e.text.to_i)
+                #alert @e.text
+              @e.text = ''
+              end
+            end
+          }
+        end
+#        @a = flow
+
+       
+        button 'Join a guild.' do
+          @p.clear{para "\n\nWhich guild would you like to join?  "
+          list_box :items => ['Healer', 'Armorer', 'Weaponsmith', 'Merchant', 'Mercenary'], :width => 130, :choose => 'Healer' do |list|
+             @choice.text = list.text
+          end
+          para "\n"
+          para "A 100 gold deposit is required to join the "
+          @choice = para "None selected"
+          para "guild\n\n"
+          button 'Sign me up!' do
+            alert @choice
+            character.update_attribute(:guild_membership, @choice)
+          end}
+        end
+        button 'Learn more.' do
+          #alert BANK_TEXT
+          @p.clear{para "\n\n"
+            para BANK_TEXT
+          }
+        end
+       @p = flow
+       para "\n\n\n\n"
+       button 'Leave.' do
+        close
+        end
+
+      end
+    end 
   end
 
+  
 
   def army_info(character)
     window do 
