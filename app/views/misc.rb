@@ -146,8 +146,8 @@ module MiscView
     end
   end
 
-  def handle(character, k)
-    character.do(k)
+  def handle(character, k, *args)
+    character.do(k, *args)
     character.refreshables.each do |refreshable, details|
       case refreshable
       when :inventory
@@ -158,7 +158,7 @@ module MiscView
         update_images(character)
       when :go
         if character.point.terrain.slug == 'bank'
-          enter(character) 
+          enter(character)
         elsif character.point.terrain.slug == 'recruit'
           recruit_window(character, 1)
         else
