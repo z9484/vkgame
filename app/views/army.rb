@@ -13,7 +13,7 @@ module ArmyView
 
   def bank_window(character)
     window do
-#character.update_attribute(:gold, 1000) #cheating!
+character.update_attribute(:gold, 1000) #cheating!
       background BASE_LIGHT..BASE_LIGHTEST
       @account = 0
       para "Welcome to the local bank. What would you like to do?\n\n"
@@ -75,7 +75,9 @@ module ArmyView
             para "guild\n\n"
             button 'Sign me up!' do
               if confirm("Are you sure you want to join?")
-                character.update_attribute(:guild_membership, @choice)
+                character.update_attribute(:guild_membership, @choice.text)
+                  alert "Thanks for joining the guild."
+                  close
               end
               
            end}
@@ -87,11 +89,14 @@ module ArmyView
             para "\n"
             para "A 100 gold deposit is required to join the"
             @choice = para "None selected"
-            para "guild. Current guild money will be automatically transferred to the new account.\n\n"
+            para "guild.\n"
+            para "Current guild money will be automatically transferred to the new account.\n\n"
             button 'Sign me up!' do
               if confirm("Are you sure you want to join?")
                 if character.guild_membership != @choice
-                  character.update_attribute(:guild_membership, @choice)
+                  character.update_attribute(:guild_membership, @choice.text)
+                  alert "Thanks for joining the guild."
+                  close
                 else
                   alert "You are already in that guild!"
                 end
