@@ -25,10 +25,14 @@ character.update_attribute(:gold, 1000) #cheating!
             @p.clear{para "\n\nHow much would you like to invest in the #{character.guild_membership} guild?\n"  
               @e = edit_line 
               button "Invest" do
-                if @e.text.to_i <= character.gold && @e.text.to_i > 0
+                if @e.text == 'all' or @e.text == 'All' or @e.text == 'ALL'
+                  @account += character.gold
+                  character.update_attribute(:gold, 0)
+                  @e.text = ''
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                elsif @e.text.to_i <= character.gold && @e.text.to_i > 0
                   @account += @e.text.to_i
                   character.update_attribute(:gold, character.gold - @e.text.to_i)
-                  #alert @e.text
                   @e.text = ''
                   @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
                 else
@@ -39,10 +43,14 @@ character.update_attribute(:gold, 1000) #cheating!
                 end
               end
               button "Withdraw" do
-                if @e.text.to_i <= @account && @e.text.to_i > 0
+                 if @e.text == 'all' or @e.text == 'All' or @e.text == 'ALL'
+                  character.update_attribute(:gold, character.gold + @account)
+                  @account = 0
+                  @e.text = ''
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                elsif @e.text.to_i <= @account && @e.text.to_i > 0
                   @account -= @e.text.to_i
                   character.update_attribute(:gold, character.gold + @e.text.to_i)
-                  #alert @e.text
                   @e.text = ''
                   @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
                 else
