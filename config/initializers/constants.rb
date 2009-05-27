@@ -32,9 +32,10 @@ i to check status of following armies
 
 Good luck!
 HEREDOC
+GUILDSTATS = ["Member", "Member", "Patron", "Benefactor", "Master"]
 
 BANK_TEXT = <<HEREDOC
-Here at the bank we offer you many different and exciting ways to invest your 
+Here at the Hall of Guilds, we offer you many different and exciting ways to invest your 
 hard earned gold. There are five different guilds in which to place your gold, 
 each gives 5% interest compounded daily, but have very different benefits. 
 The amount of time that your money stays in an account will drastically 

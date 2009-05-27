@@ -13,10 +13,10 @@ module ArmyView
 
   def bank_window(character)
     window do
-character.update_attribute(:gold, 1000) #cheating!
+character.update_attribute(:moves, 1000) #cheating!
       background BASE_LIGHT..BASE_LIGHTEST
-      @account = 0
-      para "Welcome to the local bank. What would you like to do?\n\n"
+
+      para "Welcome to the Hall of Guilds. What would you like to do?\n\n"
       flow  :margin_left => 15 do
         button 'Make an investment.' do
           if character.guild_membership == 'none'
@@ -26,17 +26,17 @@ character.update_attribute(:gold, 1000) #cheating!
               @e = edit_line 
               button "Invest" do
                 if @e.text == 'all' or @e.text == 'All' or @e.text == 'ALL'
-                  @account += character.gold
+                  character.update_attribute(:bank_account, character.bank_account += character.gold)
                   character.update_attribute(:gold, 0)
                   @e.text = ''
-                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
                 elsif @e.text.to_i <= character.gold && @e.text.to_i > 0
-                  @account += @e.text.to_i
+                  character.update_attribute(:bank_account, character.bank_account += @e.text.to_i)
                   character.update_attribute(:gold, character.gold - @e.text.to_i)
                   @e.text = ''
-                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
                 else
-                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank.\n" 
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank.\n" 
                   para strong("Invalid amount. Please try again.") 
                   @e.text = ''
                   }
@@ -44,26 +44,24 @@ character.update_attribute(:gold, 1000) #cheating!
               end
               button "Withdraw" do
                  if @e.text == 'all' or @e.text == 'All' or @e.text == 'ALL'
-                  character.update_attribute(:gold, character.gold + @account)
-                  @account = 0
+                  character.update_attribute(:gold, character.gold + character.bank_account)
+                  character.update_attribute(:bank_account, 0)
                   @e.text = ''
-                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
-                elsif @e.text.to_i <= @account && @e.text.to_i > 0
-                  @account -= @e.text.to_i
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
+                elsif @e.text.to_i <= character.bank_account && @e.text.to_i > 0
+                  character.update_attribute(:bank_account, character.bank_account -= @e.text.to_i)
                   character.update_attribute(:gold, character.gold + @e.text.to_i)
                   @e.text = ''
-                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
                 else
-                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank.\n" 
+                  @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank.\n" 
                   para strong("Invalid amount. Please try again.") 
                   @e.text = ''
                   }
                 end
               end
               button "Check Balance" do
-                @account += @e.text.to_i
-                character.update_attribute(:gold, character.gold - @e.text.to_i)
-                @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{@account}"), " gold in the bank."}
+                @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
               end
 
               @q = flow
@@ -84,6 +82,8 @@ character.update_attribute(:gold, 1000) #cheating!
             button 'Sign me up!' do
               if confirm("Are you sure you want to join?")
                 character.update_attribute(:guild_membership, @choice.text)
+                character.update_attribute(:guild_status, 1)
+                character.update_attribute(:guild_time, 0)
                   alert "Thanks for joining the guild."
                   close
               end
@@ -103,6 +103,8 @@ character.update_attribute(:gold, 1000) #cheating!
               if confirm("Are you sure you want to join?")
                 if character.guild_membership != @choice
                   character.update_attribute(:guild_membership, @choice.text)
+                  character.update_attribute(:guild_status, 1)
+                  character.update_attribute(:guild_time, 0)
                   alert "Thanks for joining the guild."
                   close
                 else
