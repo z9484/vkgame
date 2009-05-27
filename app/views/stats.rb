@@ -9,27 +9,21 @@
 
 # See the COPYING file for more details.
 
-module InventoryView
+module StatsView
 
-  def show_inventory(character)
-    stack :width => 250, :height => 350, :scroll => true do
+  def show_stats(character)
+    stack :width => 250 do
       background COMPLEMENT2_LIGHT..COMPLEMENT2_MID
       border BASE_MID, :strokewidth => 5
-      @inventory = flow :margin => 5
-    end
-    update_inventory(character)
-  end
-
-  def update_inventory(character)
-    @inventory.clear do
-      if character.items.empty?
-        para "This is your inventory. When you pick something up, it will appear here."
-      else
-        character.items.each do |item|
-          image "images/items/#{item.kind}/#{item.slug}.png"
-        end
+      flow :margin => 5 do
+        @stats = para
       end
     end
+    update_stats(character)
+  end
+
+  def update_stats(character)
+    @stats.text = character.stats
   end
 
 end

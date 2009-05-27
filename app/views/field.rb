@@ -13,13 +13,13 @@ module FieldView
 
   def show_field(character)
     stack :width => 350, :height => 350 do
-      background BASE_LIGHT
-      stroke COMPLEMENT1_LIGHTER
-      fill COMPLEMENT1_LIGHTER
-      rect :width => 65, :height => 65, :top => 142, :left => 142
+      background BASE_MID
       flow :width => 340, :height => 340, :displace_left => 5, :displace_top => 5 do
         background COMPLEMENT2_LIGHTER
-        border BASE_MID, :strokewidth => 5
+        border BASE_LIGHT, :strokewidth => 5
+        nostroke
+        fill COMPLEMENT1_MID
+        rect :width => 65, :height => 65, :top => 137, :left => 137
         flow :displace_left => 5, :displace_top => 5 do
           @field_images = {:terrains => [], :neighbors => [], :items => [], :army => []}
           character.field_points.each_with_index do |p, i|

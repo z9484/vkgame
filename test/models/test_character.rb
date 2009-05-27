@@ -10,4 +10,8 @@ class TestCharacter < ActiveSupport::TestCase
     assert !Character.make.available_actions.empty?
   end
 
+  test 'stats is a string' do
+    assert Character.make.stats.is_a? String
+  end
+
 end

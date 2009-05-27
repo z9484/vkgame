@@ -128,8 +128,8 @@ module MiscView
   def show_status
     stack :height => 60 do
       background BASE_LIGHTER..BASE_LIGHT
-      border BASE_DARK
-      @status = para "Find the winning hut. Arrow keys to move."
+      border BASE_MID, :strokewidth => 5
+      @status = para "Find the winning hut. Arrow keys to move.", :margin => 7
     end
   end
 
@@ -161,7 +161,7 @@ module MiscView
         update_images(character)
       when :go
         if character.point.terrain.slug == 'bank'
-          bank_window(character) 
+          bank_window(character)
         elsif character.point.terrain.slug == 'recruit'
           recruit_window(character, 1)
         else
@@ -181,6 +181,7 @@ module MiscView
         send(details[:yes], character) if confirm(details[:ask])
       end
     end
+    update_stats(character)
   end
 
 end
