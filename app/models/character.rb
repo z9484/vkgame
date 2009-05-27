@@ -43,7 +43,7 @@ class Character < ActiveRecord::Base
     return false if k.nil?
     case k.to_sym
     when :up, :right, :down, :left,
-      :'w', :'a', :'d', :'s',
+      :w, :a, :d, :s,
       :'8', :'6', :'2', :'4'
       move(k)
     when :alt_l, :look
@@ -96,14 +96,14 @@ class Character < ActiveRecord::Base
   end
 
   def move(direction)
-    new_i = case direction
-    when :up, :'w', :'8'
+    new_i = case direction.to_sym
+    when :up, :w, :'8'
       point.i - point.map.height
-    when :right, :'d', :'6'
+    when :right, :d, :'6'
       point.i + 1
-    when :down, :'s', :'2'
+    when :down, :s, :'2'
       point.i + point.map.height
-    when :left, :'a', :'4'
+    when :left, :a, :'4'
       point.i - 1
     end
     p = point.map.points.find_by_i(new_i)
@@ -207,6 +207,20 @@ class Character < ActiveRecord::Base
 
   def available_actions
     actions
+  end
+
+  def stats
+    <<-HEREDOC
+    Moves: #{moves}
+    HP: #{hp} / #{vitality}
+    Strength: #{strength}
+    Agility: #{strength}
+    Gold: #{gold}
+    Magic: #{magic}
+    Guild Time: #{guild_time}
+    Guild Membership: #{guild_membership}
+    Guild Status: #{guild_status}
+    HEREDOC
   end
 
   def reset!
