@@ -11,6 +11,49 @@
 
 module ArmyView
 
+  def fort_window(character)
+    window :width => 640, :height => 480 do
+      background BASE_LIGHT..BASE_LIGHTEST
+      para "Welcome to {name} Fort"
+      wolf = "images/items/companion/wolf.png"
+      hawk = "images/items/companion/hawk.png"
+      nothing = "images/items/companion/nothing.png"
+      image0 = hawk
+      image1 = wolf
+      flow do
+@p = flow
+        button 'start' do
+          @p.clear { para 'test'
+            @soldier0 = image image0
+            @soldier1 = image image1
+          }
+        end
+
+      
+    
+=begin
+          @soldier0.click do
+            image0 = wolf
+            alert "hi"
+          @p.clear {
+            @soldier0 = image image0
+            @soldier1 = image image1
+          }
+
+          end
+          @soldier1.click do
+          @p.clear {
+            @soldier0 = image image0
+            @soldier1 = image image1
+          }
+            image1 = hawk
+          end
+        @p = flow
+=end
+      end  
+    end
+  end
+
   def bank_window(character)
     window do
 character.update_attribute(:moves, 1000) #cheating!
@@ -63,8 +106,10 @@ character.update_attribute(:moves, 1000) #cheating!
               button "Check Balance" do
                 @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
               end
+# @q.clear {para "You currently have ", strong("#{character.gold}"), " gold on your person and ", strong("#{character.bank_account}"), " gold in the bank."}
 
               @q = flow
+             
             }
           end
         end
@@ -160,12 +205,14 @@ character.update_attribute(:moves, 1000) #cheating!
       end
       flow :margin_left => 15 do
         button 'disband army' do
-#         @refreshables[:confirm] = {
-#        :ask => "Are you sure you want to disband your army?",
-#        :yes => :disband_army
-#      }
+          if confirm("Are you sure you want to disband your army?")
+            #disband_army
+            army = character.armies.find_by_camped(false)
+            army.destroy
+            close
+          end	
         end
-        button 'merge or split army' do
+        button 'split army' do
           close
           #merge(character)
           window do 
@@ -178,23 +225,114 @@ character.update_attribute(:moves, 1000) #cheating!
             ohealers = army.healers; nhealers = 0
             ocatapults = army.catapults; ncatapults = 0
 
-            para "Merging #{name} army.\n"
-            flow :width => 250, :margin_left => 15 do 
+            para "Splitting #{name} army.\n"
+            flow :width => 200, :margin_left => 15 do 
               para "Footmen    "
               button '<' do
                 if nfootmen > 0
                   ofootmen += 1
                   nfootmen -= 1
-                  @p.clear{para strong(ofootmen), " ", strong(nfootmen)}
+                  @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+             
                 end
               end
               button '>' do
                 if ofootmen > 0
                   ofootmen -= 1
                   nfootmen += 1
-                  @p.clear{para strong(ofootmen), " ", strong(nfootmen)}
+                  @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
                 end
               end
+              if narchers > 0 && oarchers > 0
+                para "Archers    "
+                button '<' do
+                  if narchers > 0
+                    oarchers += 1
+                    narchers -= 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+                button '>' do
+                  if oarchers > 0
+                    oarchers -= 1
+                    narchers += 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+              end
+              
+              if npikemen > 0 && opikemen > 0
+                para "Pikemen    "
+                button '<' do
+                  if npikemen > 0
+                    opikemen += 1
+                    npikemen -= 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+                button '>' do
+                  if opikemen > 0
+                    opikemen -= 1
+                    npikemen += 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+              end
+                      
+              if nknights > 0 && oknights > 0
+                para "Knights    "
+                button '<' do
+                  if nknights > 0
+                    oknights += 1
+                    nknights -= 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+                button '>' do
+                  if oknights > 0
+                    oknights -= 1
+                    nknights += 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+              end
+              
+              if nhealers > 0 && ohealers > 0
+                para "Healers    "
+                button '<' do
+                  if nhealers > 0
+                    ohealers += 1
+                    nhealers -= 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+                button '>' do
+                  if ohealers > 0
+                    ohealers -= 1
+                    nhealers += 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+              end
+              
+              if ncatapults > 0 && ocatapults > 0
+                para "Catapults    "
+                button '<' do
+                  if ncatapults > 0
+                    ocatapults += 1
+                    ncatapults -= 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+                button '>' do
+                  if ocatapults > 0
+                    ocatapults -= 1
+                    ncatapults += 1
+                    @p.clear{para "Footmen  ", strong(ofootmen), " : ", strong(nfootmen), "\nArchers    ", strong(oarchers), " : ", strong(narchers), "\nPikemen  ", strong(opikemen), " : ", strong(npikemen), "\nKnights    ", strong(oknights), " : ", strong(nknights), "\nHealers    ", strong(ohealers), " : ", strong(nhealers), "\nCatapults ", strong(ocatapults), " : ", strong(ncatapults)}
+                  end
+                end
+              end
+              
               @p =flow
 =begin
               para "Archers      ", strong(army.archers)
@@ -207,19 +345,63 @@ character.update_attribute(:moves, 1000) #cheating!
             end
             flow :margin_left => 15 do
               button 'ok' do
-                a = character.armies.create({
-                :footmen => nfootmen,
-                :archers => narchers,
-                :pikemen => npikemen,
-                :knights => nknights,
-                :healers => nhealers,
-                :catapults => ncatapults,
-                })
-                a.update_attribute(:camped, true)
-                close
+                if (ofootmen > 0 || oarchers > 0 || opikemen > 0 || oknights > 0 || ohealers > 0 || ocatapults > 0) && (nfootmen > 0 || narchers > 0 || npikemen > 0 || nknights > 0 || nhealers > 0 || ncatapults > 0)
+                  #original army
+                  army.update_attribute(:footmen, ofootmen)
+                  army.update_attribute(:archers, oarchers)
+                  army.update_attribute(:pikemen, opikemen)
+                  army.update_attribute(:knights, oknights)
+                  army.update_attribute(:healers, ohealers)
+                  army.update_attribute(:catapults, ocatapults)
+                  
+                  #Create new army
+                  a = character.armies.create({
+                  :footmen => nfootmen,
+                  :archers => narchers,
+                  :pikemen => npikemen,
+                  :knights => nknights,
+                  :healers => nhealers,
+                  :catapults => ncatapults,
+                  })
+                  a.update_attribute(:point, character.point)
+                  a.update_attribute(:camped, true)
+                  close
+                else
+                alert "Invalid Selection"
+                end
               end
               button 'cancel' do
                 close
+              end
+            end
+          end
+        end
+        button 'merge army' do
+          close
+          window do 
+            background BASE_LIGHT..BASE_LIGHTEST
+            army1 = character.armies.find_by_camped(false)
+            army2 = character.armies.find_by_point_id(character.point)
+
+            para "Merging #{name} army.\n"
+            flow :width => 250, :margin_left => 15 do 
+              para "Footmen    ", army1.footmen, ' + ', army2.footmen, ' = ', army1.footmen + army2.footmen 
+            end
+            flow :margin_left => 15 do 
+              button 'ok' do
+                if confirm("Are you sure you want to merge your army?")
+                  army1.update_attribute(:footmen, army1.footmen + army2.footmen)
+                  #army1.update_attribute(:archers, army1.archers + army2.archers)
+                  #army1.update_attribute(:pikemen, army1.pikemen + army2.pikemen)
+                  #army1.update_attribute(:knights, army1.knights + army2.knights)
+                  #army1.update_attribute(:healers, army1.healers + army2.healers)
+                  #army1.update_attribute(:catapults, army1.catapults + army2.catapults)
+                  army2.destroy
+                  close
+                end
+              end 
+              button 'cancel' do
+                close           
               end
             end
           end
@@ -359,6 +541,8 @@ character.update_attribute(:moves, 1000) #cheating!
       end
 
       @p = flow
+      @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
+ 
       flow :margin_left => 10 do
         button 'ok' do
           if cost == 0
