@@ -12,6 +12,7 @@
 module ArmyView
 
   def fort_visitor(character)
+character.update_attribute(:moves, 1000)
     window :title => 'Fort Visitors Entrance', :width => 640, :height => 480 do
       background BASE_LIGHT..BASE_LIGHTEST
       para self, "Welcome to fort.name fort.\n"
