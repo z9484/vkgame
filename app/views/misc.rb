@@ -176,7 +176,7 @@ module MiscView
       when :army_info
         army_info(character)
       when :recruit #test function
-        fort_window(character)#bank_window(character)
+        fort_visitor(character)#bank_window(character)
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       end

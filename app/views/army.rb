@@ -11,6 +11,45 @@
 
 module ArmyView
 
+  def fort_visitor(character)
+    window :title => 'Fort Visitors Entrance', :width => 640, :height => 480 do
+      background BASE_LIGHT..BASE_LIGHTEST
+      para self, "Welcome to fort.name fort.\n"
+      button 'Enter' do
+        fort_window(character)
+        close
+      end
+      button 'Sales Menu' do
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+        end
+      end
+      button 'Teleport' do
+        close
+        window :title => 'Teleport Menu' do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Where would you like to go?"
+          done_link = link("Newb City") do
+            #character.update_attribute(:point, newb_city)
+            close
+          end  
+          para done_link
+          #endlink("main",  :click=>"/", :stroke => black, :underline => "none")
+          para "\n\n\n"          
+          button 'Leave' do
+            close
+          end
+        end
+      end
+      para "\n\n\n"
+      button 'Leave' do
+        close
+      end
+
+    end  
+  end
+
+
   def fort_window(character)
     window :width => 640, :height => 480 do
       background BASE_LIGHT..BASE_LIGHTEST
@@ -94,7 +133,7 @@ module ArmyView
   end
 
   def bank_window(character)
-    window do
+    window :title => 'Hall of Guilds' do
 character.update_attribute(:moves, 1000) #cheating!
       background BASE_LIGHT..BASE_LIGHTEST
 
