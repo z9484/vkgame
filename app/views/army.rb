@@ -17,40 +17,79 @@ module ArmyView
       para "Welcome to {name} Fort"
       wolf = "images/items/companion/wolf.png"
       hawk = "images/items/companion/hawk.png"
-      nothing = "images/items/companion/nothing.png"
+      nothing = "images/items/nothing.png"
       image0 = hawk
       image1 = wolf
-      flow do
-@p = flow
-        button 'start' do
-          @p.clear { para 'test'
-            @soldier0 = image image0
-            @soldier1 = image image1
-          }
+      image2 = nothing
+      #flow do
+      
+      
+      @box = flow
+      @pick = 0
+      @choice = nothing.dup
+      #rect :width => 80, :height => 55, :top => 30, :left => 0
+      animate(4) do
+      
+        @box.clear{
+          @soldier0 = image image0
+          @soldier1 = image image1
+          @soldier2 = image image2
+        }
+
+        @soldier0.click do         
+          if @pick == 0
+            @pick = 1
+            @choice = image0.dup
+            @ochoice = 0
+          else
+            @pick = 0
+            if @ochoice == 1 
+              image1 = image0.dup
+            elsif @ochoice == 2
+              image2 = image0.dup
+            end
+            image0 = @choice.dup
+          end
         end
 
-      
-    
-=begin
-          @soldier0.click do
-            image0 = wolf
-            alert "hi"
-          @p.clear {
-            @soldier0 = image image0
-            @soldier1 = image image1
-          }
+        @soldier1.click do
+          if @pick == 0
+            @pick = 1
+            @choice = image1.dup
+            @ochoice = 1
+          else
+            @pick = 0
+            if @ochoice == 0     
+              image0 = image1.dup           
+            elsif @ochoice == 2
+              image2 = image1.dup    
+            end          
+            image1 = @choice.dup
+          end
+        end
 
+        @soldier2.click do
+          if @pick == 0
+            @pick = 1
+            @choice = image2.dup
+            @ochoice = 2
+          else
+            @pick = 0
+            if @ochoice == 0     
+              image0 = image2.dup           
+            elsif @ochoice == 1 
+              image1 = image2.dup 
+            end            
+            image2 = @choice.dup
           end
-          @soldier1.click do
-          @p.clear {
-            @soldier0 = image image0
-            @soldier1 = image image1
-          }
-            image1 = hawk
-          end
-        @p = flow
-=end
-      end  
+        end
+
+      end
+
+    
+
+      
+      #end  
     end
   end
 
@@ -334,13 +373,6 @@ character.update_attribute(:moves, 1000) #cheating!
               end
               
               @p =flow
-=begin
-              para "Archers      ", strong(army.archers)
-              para "Pikemen    ", strong(army.pikemen)
-              para "Knights      ", strong(army.knights)
-              para "Healers     ", strong(army.healers)       
-              para "Catapults  ", strong(army.catapults)
-=end
        
             end
             flow :margin_left => 15 do
@@ -381,7 +413,8 @@ character.update_attribute(:moves, 1000) #cheating!
           window do 
             background BASE_LIGHT..BASE_LIGHTEST
             army1 = character.armies.find_by_camped(false)
-            army2 = character.armies.find_by_point_id(character.point)
+            army2 = character.armies.find_by_camped(true)         
+            #army2 = character.armies.find_by_point_id(character.point)
 
             para "Merging #{name} army.\n"
             flow :width => 250, :margin_left => 15 do 
@@ -391,11 +424,11 @@ character.update_attribute(:moves, 1000) #cheating!
               button 'ok' do
                 if confirm("Are you sure you want to merge your army?")
                   army1.update_attribute(:footmen, army1.footmen + army2.footmen)
-                  #army1.update_attribute(:archers, army1.archers + army2.archers)
-                  #army1.update_attribute(:pikemen, army1.pikemen + army2.pikemen)
-                  #army1.update_attribute(:knights, army1.knights + army2.knights)
-                  #army1.update_attribute(:healers, army1.healers + army2.healers)
-                  #army1.update_attribute(:catapults, army1.catapults + army2.catapults)
+                  army1.update_attribute(:archers, army1.archers + army2.archers)
+                  army1.update_attribute(:pikemen, army1.pikemen + army2.pikemen)
+                  army1.update_attribute(:knights, army1.knights + army2.knights)
+                  army1.update_attribute(:healers, army1.healers + army2.healers)
+                  army1.update_attribute(:catapults, army1.catapults + army2.catapults)
                   army2.destroy
                   close
                 end
