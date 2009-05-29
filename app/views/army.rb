@@ -203,6 +203,72 @@ character.update_attribute(:moves, 1000) #cheating!
               para BANK_TEXT
             }
           end
+         button 'Teams' do
+   
+            if team = 'none'
+              @p.clear{para "\n\n"
+                para "The Hall of Guilds allows you to set up teams to work together with other heroes."
+                button 'Make a new team' do
+                @q.clear { 
+                flow :width => 200 do
+                  para "Creating a new team.\n"                
+                  para "Team name: "
+                  @e = edit_line
+                  para "Team Password: "
+                  @passwd = edit_line :secret => true
+                  button 'ok' do
+                    team = @e.text
+                    team_password = @passwd.text
+                    alert "You just created #{team} team" 
+                    @e.text = ''
+                    @passwd.text = ''
+                    close
+                  end
+                  button "cancel" do
+                    @e.text = ''
+                    @passwd.text = ''                
+                  end
+                end
+                } 
+                end
+                button 'Join an existing team' do
+                  @q.clear { 
+                  flow :width => 200 do
+                    para "Joining an existing team.\n"                
+                    para "Team name: "
+                    @e = edit_line
+                    para "Team Password: "
+                    @passwd = edit_line :secret => true
+                    button 'ok' do
+                      if @e.text == team && @passwd.text == team_password   
+                        alert "You just joined #{team} team." 
+                        @e.text = ''
+                        @passwd.text = ''
+                      close
+                      end
+                    end
+                    button "cancel" do
+                      @e.text = ''
+                      @passwd.text = ''                
+                    end
+                  end
+                  } 
+                end
+                @q = flow
+              }
+            else
+              @p.clear{para "\n\n"
+                para "The Hall of Guilds allows you to set up teams to work together with other heroes."
+                para "You are a member of the #{team} team. What would you like to do?"
+                button 'Leave team' do
+                  if confirm("Are you sure you want to leave the team?")
+                    team = 'none'
+                  end
+                end
+              }
+
+            end
+          end
         end
        @p = flow
        para "\n\n\n\n"
