@@ -126,7 +126,7 @@ class Character < ActiveRecord::Base
       when :shop
         case p.terrain.slug.to_sym
         when :recruit
-          @refreshables[:status] = {:message => "Press r to recruit"}
+          @refreshables[:status] = {:message => "Press g to enter recruiting station"}
         when :shop
           # dospecial
         else
@@ -217,9 +217,9 @@ class Character < ActiveRecord::Base
     Agility: #{strength}
     Gold: #{gold}
     Magic: #{magic}
-    Guild Time: #{guild_time}
+    Guild Time: #{guild_time} day(s)
     Guild Membership: #{guild_membership}
-    Guild Status: #{guild_status}
+    Guild Status: #{GUILDSTATS[guild_status]}
     HEREDOC
   end
 
@@ -248,13 +248,13 @@ class Character < ActiveRecord::Base
     update_attribute(:guild_time, :guild_time + 1)
     if :guild_membership != 'none'
       if :guild_time > 0
-        update_attribute(:guild_status, 1)
-      elsif :guild_time > 2
         update_attribute(:guild_status, 2)
-      elsif :guild_time > 6
+      elsif :guild_time > 2
         update_attribute(:guild_status, 3)
-      elsif :guild_time > 13
+      elsif :guild_time > 6
         update_attribute(:guild_status, 4)
+      elsif :guild_time > 13
+        update_attribute(:guild_status, 5)
       end
     end
   end
@@ -275,6 +275,7 @@ class Character < ActiveRecord::Base
     self.guild_status = 0
     self.guild_time = 0
     self.moves = 200
+    self.bank_account = 0
   end
 
   def create_actions

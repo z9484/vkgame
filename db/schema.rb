@@ -80,6 +80,7 @@ ActiveRecord::Schema.define do
     t.string   "guild_membership"
     t.integer  "guild_status"
     t.integer  "guild_time"
+    t.integer  "bank_account"
   end
 
   create_table "dojo_actions", :force => true do |t|
