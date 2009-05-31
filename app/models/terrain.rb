@@ -11,4 +11,14 @@
 
 class Terrain < ActiveRecord::Base
   has_many :points
+
+  def enterable?
+    case kind
+    when 'shop'
+      true
+    else
+      false
+    end
+  end
+
 end

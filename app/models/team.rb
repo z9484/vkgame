@@ -9,21 +9,8 @@
 
 # See the COPYING file for more details.
 
-class Action < ActiveRecord::Base
-  belongs_to :base_action
-  belongs_to :character
+class Team < ActiveRecord::Base
 
-  def slug
-    base_action.slug
-  end
-
-  def available?
-    case slug.to_sym
-    when :enter
-      character.point.terrain.enterable?
-    else
-      true
-    end
-  end
+  has_many :characters
 
 end

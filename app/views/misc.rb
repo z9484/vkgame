@@ -9,7 +9,7 @@
 
 # See the COPYING file for more details.
 
-module MiscView
+module VKView
 
   def index
     para "Virtual Kingdoms"
@@ -155,18 +155,10 @@ module MiscView
       case refreshable
       when :inventory
         @inventory.clear {show_inventory(character)}
-      when :whole_field
-        @field.clear {show_field(character)}
       when :field
         update_images(character)
-      when :go
-        if character.point.terrain.slug == 'bank'
-          bank_window(character)
-        elsif character.point.terrain.slug == 'recruit'
-          recruit_window(character, 1)
-        else
-          update_status(details[:message])
-        end
+      when :enter
+        send("show_#{character.point.terrain.slug}", character) if character.point.terrain.enterable?
       when :status
         update_status(details[:message])
       when :fight
@@ -179,9 +171,19 @@ module MiscView
         fort_visitor(character)#bank_window(character)
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
+      when :actions
+        update_actions(character)
       end
     end
     update_stats(character)
+  end
+
+  #TODO Move elsewhere
+  def show_shop(character)
+  end
+  def show_armor(character)
+  end
+  def show_weapons(character)
   end
 
 end

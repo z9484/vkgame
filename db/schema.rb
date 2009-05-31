@@ -63,6 +63,7 @@ ActiveRecord::Schema.define do
   create_table "characters", :force => true do |t|
     t.integer  "race_id"
     t.integer  "point_id"
+    t.integer  "team_id"
     t.string   "name",       :limit => 32
     t.string   "email"
     t.integer  "kills",                    :default => 0
@@ -80,7 +81,7 @@ ActiveRecord::Schema.define do
     t.string   "guild_membership"
     t.integer  "guild_status"
     t.integer  "guild_time"
-    t.integer  "bank_account"
+    t.integer  "guild_gold"
   end
 
   create_table "dojo_actions", :force => true do |t|
@@ -148,6 +149,11 @@ ActiveRecord::Schema.define do
     t.integer  "strength"
     t.integer  "magic"
     t.integer  "gold"
+  end
+
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.string   "password"
   end
 
   create_table "terrains", :force => true do |t|

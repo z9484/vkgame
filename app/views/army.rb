@@ -138,6 +138,7 @@ character.update_attribute(:moves, 1000)
 character.update_attribute(:moves, 1000) #cheating!
       background BASE_LIGHT..BASE_LIGHTEST
 
+
       para "Welcome to the Hall of Guilds. What would you like to do?\n\n"
       flow  :margin_left => 15 do
         button 'Make an investment.' do

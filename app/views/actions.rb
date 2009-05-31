@@ -9,7 +9,7 @@
 
 # See the COPYING file for more details.
 
-module ActionsView
+module VKView
 
   ACTION_IMAGE_KEYS = [
     :quit, :b, :'7', :'8', :'9',
@@ -39,7 +39,20 @@ module ActionsView
   end
 
   def update_actions(character)
-    character.available_actions.each do |action|
+    # @action_images.each do |key, image|
+    #   if action.available?
+    #     image.path = "images/actions/#{action.slug}.png"
+    #     image.click do |i|
+    #       handle character, action_image_key_from_slug(File.basename(i.path, '.png'))
+    #     end
+    #   else
+    #     image.path = "images/actions/empty.png"
+    #   end
+    # end
+    @action_images.each_value do |image|
+      image.path = "images/actions/empty.png"
+    end
+    character.reload.actions.select {|a| a.available?}.each do |action|
       key = action_image_key_from_slug(action.slug)
       next if key.nil?
       @action_images[key].path = "images/actions/#{action.slug}.png"
@@ -61,8 +74,10 @@ module ActionsView
       :'6'
     when :north
       :'8'
+    when :enter
+      :enter
     else
-      puts "Don't know which image to use for #{slug} action."
+      # puts "Don't know which image to use for #{slug} action."
       nil
     end
   end

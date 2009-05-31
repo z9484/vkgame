@@ -9,7 +9,7 @@
 
 # See the COPYING file for more details.
 
-module FieldView
+module VKView
 
   def show_field(character)
     stack :width => 350, :height => 350 do

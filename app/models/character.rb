@@ -13,6 +13,7 @@ class Character < ActiveRecord::Base
 
   belongs_to :race
   belongs_to :point
+  belongs_to :team
   has_many :items, :as => :itemable
   has_many :actions
   has_many :armies
@@ -65,8 +66,12 @@ class Character < ActiveRecord::Base
         m ||= 'No army is following you at the moment!'
       @refreshables[:status] = {:message => m}
       end
-    when :'g', :go
-      @refreshables[:go] = {:message => "There is no place to go to."}
+    when :'e', :'g', :enter
+      if point.terrain.enterable?
+        @refreshables[:enter] = true
+      else
+        @refreshables[:alert] = {:message => "There's nothing to enter here."}
+      end
     when :'?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
     when :'r', :recruit
@@ -114,6 +119,7 @@ class Character < ActiveRecord::Base
       self.hp += rand(3)
       self.hp = self.vitality if self.hp > self.vitality
       @refreshables[:field] = true
+      @refreshables[:actions] = true
       update_attribute(:point, p)
       @refreshables[:status] = {:message => ""}
       armies.reload.each do |army|
@@ -129,6 +135,8 @@ class Character < ActiveRecord::Base
           @refreshables[:status] = {:message => "Press g to enter recruiting station"}
         when :shop
           # dospecial
+        when :guildhall
+          @refreshables[:status] = {:message => "Everyone's welcome at the Guildhall!"}
         else
           @refreshables[:status] = {:message => "This shop is closed."}
         end
@@ -163,10 +171,6 @@ class Character < ActiveRecord::Base
           @refreshables[:status] = {:message => "You already have the #{bi.name}!"}
         else
           @refreshables[:inventory] = true
-          if bi.slug.to_sym == :telescope
-            @refreshables.delete(:field)
-            @refreshables[:whole_field] = true
-          end
           @refreshables[:alert] = {:message => "A guru gives you #{bi.name}"}
           items << bi.create_item
         end
@@ -205,10 +209,6 @@ class Character < ActiveRecord::Base
     (r, @refreshables = @refreshables, {}).first
   end
 
-  def available_actions
-    actions
-  end
-
   def stats
     <<-HEREDOC
     Moves: #{moves}
@@ -221,6 +221,30 @@ class Character < ActiveRecord::Base
     Guild Membership: #{guild_membership}
     Guild Status: #{GUILDSTATS[guild_status]}
     HEREDOC
+  end
+
+  def deposit(amount)
+    amount = gold if amount =~ /all/i
+    amount = amount.to_i
+    amount = gold if amount > gold
+    amount = 0 if amount < 0
+    update_attributes({
+      :gold => gold - amount,
+      :guild_gold => guild_gold + amount,
+    })
+    "You deposit #{amount} gold into your account."
+  end
+
+  def withdraw(amount)
+    amount = guild_gold if amount =~ /all/i
+    amount = amount.to_i
+    amount = guild_gold if amount > guild_gold
+    amount = 0 if amount < 0
+    update_attributes({
+      :gold => gold + amount,
+      :guild_gold => guild_gold - amount,
+    })
+    "You withdraw #{amount} gold from your account."
   end
 
   def reset!
@@ -260,27 +284,27 @@ class Character < ActiveRecord::Base
   end
 
   def set_defaults
-    self.race_id = nil
-    self.point = Map.find_by_name('Small').points.find_by_i(2185)
-    self.items = []
-    self.name = "Hero"
-    self.hp = 25
-    self.vitality = 25
-    self.strength = 25
-    self.agility = 25
-    self.gold = 25
-    self.magic = 25
-    self.magic_kind = 'mage'
-    self.guild_membership = 'none'
-    self.guild_status = 0
-    self.guild_time = 0
-    self.moves = 200
-    self.bank_account = 0
+    self.race_id ||= nil
+    self.point ||= Map.find_by_name('Small').points.find_by_i(2185)
+    self.items ||= []
+    self.name ||= "Hero"
+    self.hp ||= 25
+    self.vitality ||= 25
+    self.strength ||= 25
+    self.agility ||= 25
+    self.gold ||= 25
+    self.magic ||= 25
+    self.magic_kind ||= 'mage'
+    self.guild_membership ||= nil
+    self.guild_status ||= 0
+    self.guild_time ||= 0
+    self.moves ||= 1000
+    self.guild_gold ||= 0
   end
 
   def create_actions
-    [:unequip, :east, :equip, :north, :south, :drop, :sell, :sort, :pick_up, :west, :camp, :buy, :use, :flip].each do |action|
-      actions.create(:base_action => BaseAction.find_by_slug(action.to_s))
+    BaseAction.find_all_by_kind('base').each do |ba|
+      actions.create(:base_action => ba)
     end
   end
 
