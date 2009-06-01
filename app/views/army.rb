@@ -53,83 +53,247 @@ character.update_attribute(:moves, 1000)
 
   def fort_window(character)
     window :width => 640, :height => 480 do
-      background BASE_LIGHT..BASE_LIGHTEST
-      para "Welcome to {name} Fort"
-      wolf = "images/items/companion/wolf.png"
-      hawk = "images/items/companion/hawk.png"
-      nothing = "images/items/nothing.png"
-      image0 = hawk
-      image1 = wolf
-      image2 = nothing
-      #flow do
-      
-      
-      @box = flow
-      @pick = 0
-      @choice = nothing.dup
-      #rect :width => 80, :height => 55, :top => 30, :left => 0
-      animate(4) do
-      
-        @box.clear{
-          @soldier0 = image image0
-          @soldier1 = image image1
-          @soldier2 = image image2
-        }
+      def defenderslot
+        wolf = "images/items/companion/wolf.png"
+        hawk = "images/items/companion/hawk.png"
+        nothing = "images/items/nothing.png"
+        image0 = hawk
+        image1 = wolf
+        image2 = nothing
+        #flow do
+        
+        
+        @box = flow
+        @pick = 0
+        @choice = nothing.dup
+        #rect :width => 80, :height => 55, :top => 30, :left => 0
+        animate(4) do
+        
+          @box.clear{
+            @soldier0 = image image0
+            @soldier1 = image image1
+            @soldier2 = image image2
+          }
 
-        @soldier0.click do         
-          if @pick == 0
-            @pick = 1
-            @choice = image0.dup
-            @ochoice = 0
-          else
-            @pick = 0
-            if @ochoice == 1 
-              image1 = image0.dup
-            elsif @ochoice == 2
-              image2 = image0.dup
+          @soldier0.click do         
+            if @pick == 0
+              @pick = 1
+              @choice = image0.dup
+              @ochoice = 0
+            else
+              @pick = 0
+              if @ochoice == 1 
+                image1 = image0.dup
+              elsif @ochoice == 2
+                image2 = image0.dup
+              end
+              image0 = @choice.dup
             end
-            image0 = @choice.dup
           end
+
+          @soldier1.click do
+            if @pick == 0
+              @pick = 1
+              @choice = image1.dup
+              @ochoice = 1
+            else
+              @pick = 0
+              if @ochoice == 0     
+                image0 = image1.dup           
+              elsif @ochoice == 2
+                image2 = image1.dup    
+              end          
+              image1 = @choice.dup
+            end
+          end
+
+          @soldier2.click do
+            if @pick == 0
+              @pick = 1
+              @choice = image2.dup
+              @ochoice = 2
+            else
+              @pick = 0
+              if @ochoice == 0     
+                image0 = image2.dup           
+              elsif @ochoice == 1 
+                image1 = image2.dup 
+              end            
+              image2 = @choice.dup
+            end
+          end
+
         end
 
-        @soldier1.click do
-          if @pick == 0
-            @pick = 1
-            @choice = image1.dup
-            @ochoice = 1
-          else
-            @pick = 0
-            if @ochoice == 0     
-              image0 = image1.dup           
-            elsif @ochoice == 2
-              image2 = image1.dup    
-            end          
-            image1 = @choice.dup
-          end
-        end
+      end #defenderslot
 
-        @soldier2.click do
-          if @pick == 0
-            @pick = 1
-            @choice = image2.dup
-            @ochoice = 2
-          else
-            @pick = 0
-            if @ochoice == 0     
-              image0 = image2.dup           
-            elsif @ochoice == 1 
-              image1 = image2.dup 
-            end            
-            image2 = @choice.dup
+      def moat
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Would you like to pay for a new moat?\n"
+          para "None, Water, Alligator Infested, Sea serpent infested, poison"
+          button 'ok' do
+            close
+          end        
+          button 'cancel' do
+            close
           end
-        end
 
+        end
       end
 
-    
+      def gatherers
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Would you like to pay for some gatheres?\n"
+          para "All services have a range of 3 from the fort.
+          o Dogs -lowest resale value; Chewed up merchandise (with purchase 3 free dogs as defenders)
+          o Beggars -slightly higher resale value; Are often known to steal more lucrative items
+          o Pages(Lackeys) -highest resale value; highly loyal servants.\n"
+          button 'ok' do
+            close
+          end        
+          button 'cancel' do
+            close
+          end
 
-      
-      #end  
+        end
+      end
+
+      def traps
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Would you like to pay for traps?\n"
+          para "
+          o Trap digger- Goes about digging traps that do low damage to enemy heroes.
+          o Landscaper Magician - Plants carniverous plants that do medium damage to enemy heroes.
+          o Crazy Trap Magician -Finds the most dangerous creatures to guard your surrounding base.\n"
+          button 'ok' do
+            close
+          end        
+          button 'cancel' do
+            close
+          end
+
+        end
+      end
+
+      def teleport
+        window :title => 'Teleport Menu' do
+          
+          background BASE_LIGHT..BASE_LIGHTEST
+          if $has_teleport == 1
+            para "Where would you like to go?"
+            done_link = link("Newb City") do
+              #character.update_attribute(:point, newb_city)
+              close
+            end  
+            para done_link
+            #endlink("main",  :click=>"/", :stroke => black, :underline => "none")
+            para "\n\n\n"          
+            button 'Leave' do
+              close
+            end
+          else
+            para "Would you like to hire a teleport magician?\n"
+            button 'ok' do
+              $has_teleport = 1
+              close
+            end
+            button 'cancel' do
+              close
+            end
+          end
+        end
+      end
+
+      def healers
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Would you like to hire more healers?\n"
+          para "
+          o 1 healer - can heal all defenders 3 times in a day.
+          o 2 healers - can heal all defenders 6 times in a day.
+          o 3 healers - can heal all defenders 9 times in a day.\n"
+          button 'ok' do
+            close
+          end        
+          button 'cancel' do
+            close
+          end
+
+        end
+      end
+
+      def swordsman
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Would you like to hire a better swordsman\n"
+          para "
+          o level 2  all defenders are supplied with the training, weapons, and armor to make them fight at level 2.
+          o level 3  all defenders are supplied with the training, weapons, and armor to make them fight at level 3.
+          o level 4  all defenders are supplied with the training, weapons, and armor to make them fight at level 4.\n"
+          button 'ok' do
+            close
+          end        
+          button 'cancel' do
+            close
+          end
+
+        end
+      end
+
+      def hirelings
+        window do
+          background BASE_LIGHT..BASE_LIGHTEST
+          para "Would you like to hire one of the following?"
+          para "
+          # Herbalist - medkits and mana potions
+          # Blacksmith - create weapons or armor
+          # Fletcher - Makes arrows
+          # Specialist - make some random other item (ie factories)
+          # Enchanter - Enchants one weapon or armor every 3(1?) days\n"
+          button 'ok' do
+            close
+          end        
+          button 'cancel' do
+            close
+          end
+
+        end
+      end
+
+      #Fort Window Start
+      background BASE_LIGHT..BASE_LIGHTEST
+$has_teleport = 0
+      para "Welcome to {name} Fort\n"
+      button 'moat' do
+        moat
+      end
+      button 'gatherers' do
+        gatherers
+      end
+      button 'Traps' do
+        traps
+      end
+      button 'Teleport' do
+        teleport
+      end
+      button 'Healers' do
+        healers
+      end
+      button 'Swordsman' do
+        swordsman
+      end
+      button 'Hirelings' do
+        hirelings
+      end
+
+      defenderslot
+      button 'leave' do
+        close
+      end
+       
     end
   end
 
@@ -520,29 +684,35 @@ character.update_attribute(:moves, 1000) #cheating!
           window do 
             background BASE_LIGHT..BASE_LIGHTEST
             army1 = character.armies.find_by_camped(false)
-            army2 = character.armies.find_by_camped(true)         
-            #army2 = character.armies.find_by_point_id(character.point)
-
-            para "Merging #{name} army.\n"
-            flow :width => 250, :margin_left => 15 do 
-              para "Footmen    ", army1.footmen, ' + ', army2.footmen, ' = ', army1.footmen + army2.footmen 
-            end
-            flow :margin_left => 15 do 
-              button 'ok' do
-                if confirm("Are you sure you want to merge your army?")
-                  army1.update_attribute(:footmen, army1.footmen + army2.footmen)
-                  army1.update_attribute(:archers, army1.archers + army2.archers)
-                  army1.update_attribute(:pikemen, army1.pikemen + army2.pikemen)
-                  army1.update_attribute(:knights, army1.knights + army2.knights)
-                  army1.update_attribute(:healers, army1.healers + army2.healers)
-                  army1.update_attribute(:catapults, army1.catapults + army2.catapults)
-                  army2.destroy
-                  close
-                end
-              end 
-              button 'cancel' do
-                close           
+            #army2 = character.armies.find_by_point_id(character.point).and.find_by_camped(true)   
+            army2 = character.armies.find(:conditions => { :point_id => character.point, :camped => true})
+            if army2
+              para "Merging #{name} army.\n"
+              flow :width => 250, :margin_left => 15 do 
+                para "Footmen    ", army1.footmen, ' + ', army2.footmen, ' = ', army1.footmen + army2.footmen 
               end
+              flow :margin_left => 15 do 
+                button 'ok' do
+                  if confirm("Are you sure you want to merge your army?")
+                    army1.update_attribute(:footmen, army1.footmen + army2.footmen)
+                    army1.update_attribute(:archers, army1.archers + army2.archers)
+                    army1.update_attribute(:pikemen, army1.pikemen + army2.pikemen)
+                    army1.update_attribute(:knights, army1.knights + army2.knights)
+                    army1.update_attribute(:healers, army1.healers + army2.healers)
+                    army1.update_attribute(:catapults, army1.catapults + army2.catapults)
+                    army2.destroy
+                    close
+                  end
+                end 
+                button 'cancel' do
+                  close           
+                end
+              end
+            else
+              para "No army to merge.\n"
+              button 'ok' do
+                  close           
+             end
             end
           end
         end
@@ -588,6 +758,10 @@ character.update_attribute(:moves, 1000) #cheating!
       para "With #{character.gold} gold, which would you like to recruit? \n\n"
      # para army.footmen
 
+
+      @p = flow
+      @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
+ 
       flow :width => 200, :margin_left => 15 do
         if station == 1
           para "Footman  "
@@ -680,9 +854,6 @@ character.update_attribute(:moves, 1000) #cheating!
         end #if
       end
 
-      @p = flow
-      @p.clear{para "Hiring ", strong("#{footman}"), " footmen. ", "\nHiring ", strong("#{archer}"), " archers.", "\nHiring ", strong("#{pikeman}"), " pikemen.", "\nHiring ", strong("#{knight}"), " knights.", "\nHiring ", strong("#{healer}"), " healers.", "\nHiring ", strong("#{catapult}"), " catapults.", "\nTotal cost is ", strong("#{cost}")}
- 
       flow :margin_left => 10 do
         button 'ok' do
           if cost == 0
