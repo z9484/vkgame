@@ -195,10 +195,15 @@ character.update_attribute(:moves, 1000)
               close
             end
           else
-            para "Would you like to hire a teleport magician?\n"
+            para "Would you like to hire a teleport magician for 0 gold?\n"
             button 'ok' do
-              $has_teleport = 1
-              close
+			  if character.gold > 5
+				  $has_teleport = 1
+				  character.update_attribute(:gold, character.gold - 0)
+				  close
+			  else
+			    alert "Sorry you do not have enough gold."
+			  end	
             end
             button 'cancel' do
               close
@@ -246,13 +251,13 @@ character.update_attribute(:moves, 1000)
       def hirelings
         window do
           background BASE_LIGHT..BASE_LIGHTEST
-          para "Would you like to hire one of the following?"
+          para "Would you like to hire one of the following?\n"
           para "
-          # Herbalist - medkits and mana potions
-          # Blacksmith - create weapons or armor
-          # Fletcher - Makes arrows
-          # Specialist - make some random other item (ie factories)
-          # Enchanter - Enchants one weapon or armor every 3(1?) days\n"
+          o Herbalist - medkits and mana potions
+          o Blacksmith - create weapons or armor
+          o Fletcher - Makes arrows
+          o Specialist - make some random other item (ie factories)
+          o Enchanter - Enchants one weapon or armor every 3(1?) days\n"
           button 'ok' do
             close
           end        
