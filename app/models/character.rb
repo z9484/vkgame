@@ -17,6 +17,7 @@ class Character < ActiveRecord::Base
   has_many :items, :as => :itemable
   has_many :actions
   has_many :armies
+  has_many :forts
 
   before_create :set_defaults
   after_create :create_actions
@@ -74,6 +75,8 @@ class Character < ActiveRecord::Base
       end
     when :'?', :help
       @refreshables[:alert] = {:message => HELP_TEXT}
+    when :alt_b, :build_fort
+       @refreshables[:build_fort] = {}
     when :'r', :recruit
       @refreshables[:recruit] = {:station => 1}
     when :'c', :camp_army

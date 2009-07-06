@@ -19,6 +19,7 @@ require 'config/boot'
 class VirtualKingdomsGame < Shoes
   include FoeView
   include ArmyView
+  include FortView
   include InventoryView
   include StatsView
   include VKView

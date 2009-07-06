@@ -32,6 +32,13 @@ ActiveRecord::Schema.define do
     t.integer  "catapults"
   end
 
+ create_table "forts", :force => true do |t|
+    t.integer  "point_id"
+    t.integer  "character_id"
+    t.string   "name"
+    t.boolean  "share"
+  end
+
   create_table "base_action_items", :force => true do |t|
     t.integer  "base_item_id"
     t.integer  "base_action_id"

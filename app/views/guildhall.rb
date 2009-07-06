@@ -10,6 +10,7 @@
 # See the COPYING file for more details.
 
 module VKView
+
   def show_guildhall(character)
     @a = window :title => "The Guildhall" do
 

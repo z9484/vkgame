@@ -167,8 +167,10 @@ module VKView
         alert(details[:message])
       when :army_info
         army_info(character)
+      when :build_fort 
+        fort_build(character)
       when :recruit #test function
-        fort_window(character)#bank_window(character)
+        fort_window(character)
       when :confirm
         send(details[:yes], character) if confirm(details[:ask])
       when :actions
