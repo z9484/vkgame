@@ -37,6 +37,20 @@ ActiveRecord::Schema.define do
     t.integer  "character_id"
     t.string   "name"
     t.boolean  "share"
+    t.integer  "items_id" #I don't know how item storage will work. 
+    t.integer  "moat"
+    t.integer  "toll"
+    t.integer  "gold"
+    t.integer  "gatherers"
+    t.integer  "teleport"
+    t.integer  "healers"
+    t.integer  "swordsman"
+    t.integer  "hireling1"
+    t.integer  "hireling2"
+    t.integer  "hireling3"
+    t.string   "defenders" #maybe we could do something like AAFK0 for archer archer footman Knight
+    #t.integer  "hireling4"
+    #t.integer  "hireling5"
   end
 
   create_table "base_action_items", :force => true do |t|

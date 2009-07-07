@@ -12,11 +12,11 @@
 module FortView
   def fort_build(character)
     #character.update_attribute(:gold, 100) #cheating
-    cost = 1
-    if cost > character.gold
+    fortcost = 1
+    if fortcost > character.gold
             alert "You do not have enough gold to build a fort!"
     else
-      if confirm("Are you sure you want to build a fort for 10,000 gold?")
+      if confirm("Are you sure you want to build a fort for #{fortcost} gold?")
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           tagline "Creating a new Fort\n"
@@ -44,7 +44,7 @@ module FortView
                   #:share => false,
                 #}
               end
-              character.update_attribute(:gold, character.gold -= cost)
+              character.update_attribute(:gold, character.gold -= fortcost)
               close
             end
 
@@ -181,7 +181,11 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to pay for a new moat?\n"
-          para "None, Water, Alligator Infested, Sea serpent infested, poison"
+          @choice0 = radio; para strong ("None"), "\n"
+          @choice1 = radio; para strong ("Water"), " $1 - A mostly ornamental defense.\n"
+          @choice2 = radio; para strong ("Alligator Infested"), " $5 \n"
+          @choice3 = radio; para strong ("Sea serpent infested"), " $10 \n"
+          @choice4 = radio; para strong ("Poison swamp"), " $30 \n"
           button 'ok' do
             close
           end        
@@ -193,13 +197,14 @@ character.update_attribute(:moves, 1000) #cheating
       end
 
       def gatherers
-        window do
+        window :width => 640, :height => 480 do
           background BASE_LIGHT..BASE_LIGHTEST
-          para "Would you like to pay for some gatheres?\n"
-          para "All services have a range of 3 from the fort.
-          o Dogs -lowest resale value; Chewed up merchandise (with purchase 3 free dogs as defenders)
-          o Beggars -slightly higher resale value; Are often known to steal more lucrative items
-          o Pages(Lackeys) -highest resale value; highly loyal servants.\n"
+          para "Would you like to pay for some gatherers?\n"
+          para "All services have a range of 3 from the fort.\n"
+          @choice0 = radio; para strong ("None"), "\n"
+          @choice1 = radio; para strong ("Dogs"), " $1 -lowest resale value; Chewed up merchandise (with purchase 3 free dogs as defenders)\n"
+          @choice2 = radio; para strong ("Beggars"), " $5 -slightly higher resale value; Are often known to steal more lucrative items\n"
+          @choice3 = radio; para strong ("Pages(Lackeys)"), " $10 -highest resale value; highly loyal servants.\n"
           button 'ok' do
             close
           end        
@@ -214,17 +219,33 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to pay for traps?\n"
-          para "
-          o Trap digger- Goes about digging traps that do low damage to enemy heroes.
-          o Landscaper Magician - Plants carniverous plants that do medium damage to enemy heroes.
-          o Crazy Trap Magician -Finds the most dangerous creatures to guard your surrounding base.\n"
+          @choice0 = radio; para strong ("None"), "\n"
+          @choice1 = radio; para strong ("Trap digger"), " $1 - Goes about digging traps that do low damage to enemy heroes.\n"
+          @choice2 = radio; para strong ("Landscaper Magician"), " $5 - Plants carniverous plants that do medium damage to enemy heroes.\n"
+          @choice3 = radio; para strong ("Crazy Trap Magician"), " $10 -Finds the most dangerous creatures to guard your surrounding base.\n"
           button 'ok' do
-            close
+=begin            if (@choice0.checked?())
+              close
+            else if (@choice1.checked?())
+              cost = 1
+            else if (@choice2.checked?())
+              cost = 5
+            else if (@choice3.checked?())
+              cost = 10
+            end
+=end
+            if cost > character.gold
+              @p.clear{para strong("You do not have enough gold!")}
+            else
+              if confirm("Are you sure you want to spend #{cost} gold?")
+                close
+              end
+            end
           end        
           button 'cancel' do
             close
           end
-
+          @p = flow
         end
       end
 
@@ -265,11 +286,10 @@ character.update_attribute(:moves, 1000) #cheating
       def healers
         window do
           background BASE_LIGHT..BASE_LIGHTEST
-          para "Would you like to hire more healers?\n"
-          para "
-          o 1 healer - can heal all defenders 3 times in a day.
-          o 2 healers - can heal all defenders 6 times in a day.
-          o 3 healers - can heal all defenders 9 times in a day.\n"
+          para "Would you like to hire more healers?\n" 
+          @choice0 = radio; para strong ("1 healer"), " - can heal all defenders 3 times in a day.\n"
+          @choice1 = radio; para strong ("2 healers"), " $1 - can heal all defenders 6 times in a day.\n"
+          @choice2 = radio; para strong ("3 healers"), " $5 - can heal all defenders 9 times in a day.\n"
           button 'ok' do
             close
           end        
@@ -284,10 +304,10 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to hire a better swordsman\n"
-          para "
-          o level 2  all defenders are supplied with the training, weapons, and armor to make them fight at level 2.
-          o level 3  all defenders are supplied with the training, weapons, and armor to make them fight at level 3.
-          o level 4  all defenders are supplied with the training, weapons, and armor to make them fight at level 4.\n"
+          @choice0 = radio; para strong ("None"), "\n"
+          @choice1 = radio; para strong ("Level 2"), " $1 all defenders are supplied with the training, weapons, and armor to make them fight at level 2.\n"
+          @choice2 = radio; para strong ("Level 3"), " $5 all defenders are supplied with the training, weapons, and armor to make them fight at level 3.\n"
+          @choice3 = radio; para strong ("Level 4"), " $10  all defenders are supplied with the training, weapons, and armor to make them fight at level 4.\n"
           button 'ok' do
             close
           end        
@@ -302,12 +322,12 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to hire one of the following?\n"
-          para "
-          o Herbalist - medkits and mana potions
-          o Blacksmith - create weapons or armor
-          o Fletcher - Makes arrows
-          o Specialist - make some random other item (ie factories)
-          o Enchanter - Enchants one weapon or armor every 3(1?) days\n"
+          @choice0 = radio; para strong ("None"), "\n"
+          @choice1 = radio; para strong ("Herbalist"), " $100 - medkits and mana potions\n"
+          @choice2 = radio; para strong ("Blacksmith"), " $100 - create weapons or armor\n"
+          @choice3 = radio; para strong ("Fletcher"), " $100 - Makes arrows\n"
+          @choice4 = radio; para strong ("Specialist"), " $100 - make some other items\n"
+          @choice5 = radio; para strong ("Enchanter"), " $200 - Enchants one weapon or armor every 3(1?) days\n"
           button 'ok' do
             close
           end        
