@@ -1,0 +1,887 @@
+<?xml version="1.0"?>
+<glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy project-wide -->
+  <widget class="GtkWindow" id="VKgame">
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <signal name="key_press_event" handler="on_VKgame_key_press_event"/>
+    <child>
+      <widget class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <widget class="GtkMenuBar" id="menubar1">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkMenuItem" id="menuitem1">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_File</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="imagemenuitem1">
+                        <property name="label">gtk-new</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate_item" handler="restart_game"/>
+                        <signal name="activate" handler="restart_game"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="imagemenuitem5">
+                        <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate_item" handler="gtk_main_quit"/>
+                        <signal name="activate" handler="gtk_main_quit"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="menuitem3">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_View</property>
+                <property name="use_underline">True</property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="menuitem4">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Help</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu3">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="Help">
+                        <property name="label">_Help</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate_item" handler="help-dialog"/>
+                        <signal name="activate" handler="help-dialog"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image1">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="imagemenuitem10">
+                        <property name="label">gtk-about</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate_item" handler="gtk_widget_show"/>
+                        <signal name="activate" handler="gtk_widget_show"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment10">
+            <property name="visible">True</property>
+            <property name="top_padding">15</property>
+            <property name="bottom_padding">15</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">15</property>
+            <child>
+              <widget class="GtkTable" id="table1">
+                <property name="visible">True</property>
+                <property name="n_rows">5</property>
+                <property name="n_columns">5</property>
+                <child>
+                  <widget class="GtkImage" id="img0_0">
+                    <property name="visible">True</property>
+                    <property name="pixbuf">images/terrains/grass.png</property>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img1_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img2_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img3_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img4_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img0_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img1_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img2_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img3_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img4_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img0_2">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img1_2">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img2_2">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img3_2">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img4_2">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img0_3">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img1_3">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img2_3">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img3_3">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img4_3">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img0_4">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img1_4">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img2_4">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img3_4">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="img4_4">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkHSeparator" id="hseparator1">
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment11">
+            <property name="visible">True</property>
+            <property name="top_padding">15</property>
+            <property name="bottom_padding">15</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">15</property>
+            <child>
+              <widget class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <widget class="GtkLabel" id="console">
+                    <property name="visible">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment8">
+            <property name="visible">True</property>
+            <property name="top_padding">15</property>
+            <property name="bottom_padding">15</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">15</property>
+            <child>
+              <widget class="GtkTable" id="table2">
+                <property name="visible">True</property>
+                <property name="n_rows">2</property>
+                <property name="n_columns">6</property>
+                <child>
+                  <widget class="GtkImage" id="inv0_0">
+                    <property name="visible">True</property>
+                    <property name="pixbuf">images/items/special/telescope.png</property>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv1_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv2_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv3_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv4_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv5_0">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">5</property>
+                    <property name="right_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv0_1">
+                    <property name="visible">True</property>
+                    <property name="pixbuf">images/items/special/template.png</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv1_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv2_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv3_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv4_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkImage" id="inv5_1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">5</property>
+                    <property name="right_attach">6</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkHSeparator" id="hseparator2">
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment9">
+            <property name="visible">True</property>
+            <property name="top_padding">15</property>
+            <property name="bottom_padding">15</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">15</property>
+            <child>
+              <widget class="GtkHButtonBox" id="hbuttonbox1">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkButton" id="help">
+                    <property name="label" translatable="yes">Help</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="focus_on_click">False</property>
+                    <signal name="clicked" handler="help_dialog"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="look">
+                    <property name="label" translatable="yes">Look</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="focus_on_click">False</property>
+                    <signal name="clicked" handler="on_look_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="quit">
+                    <property name="label" translatable="yes">Quit</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="focus_on_click">False</property>
+                    <signal name="clicked" handler="gtk_main_quit" object="Gtk.quit()"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">6</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkAboutDialog" id="aboutdialog">
+    <property name="border_width">5</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">VK the Game</property>
+    <property name="version">0.1</property>
+    <property name="copyright" translatable="yes">Copyleft 2009 Virtual Kingdoms.</property>
+    <property name="website">http://www.virtualkingdoms.net</property>
+    <property name="website_label" translatable="yes">http://www.virtualkingdoms.net</property>
+    <property name="license" translatable="yes">GPLv2</property>
+    <property name="authors">Eremite
+Z9484
+</property>
+    <property name="artists">Shrike</property>
+    <signal name="close" handler="gtk_widget_destroy"/>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <widget class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">A fantasty revisit to the DOOR concept.</property>
+          </widget>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="newgame">
+    <property name="window_position">center</property>
+    <child>
+      <widget class="GtkTable" id="table3">
+        <property name="visible">True</property>
+        <property name="n_rows">5</property>
+        <property name="n_columns">2</property>
+        <child>
+          <widget class="GtkLinkButton" id="serverlink">
+            <property name="label" translatable="yes">http://game.ruby.virtualkingdoms.net</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="receives_default">True</property>
+            <property name="relief">none</property>
+            <property name="focus_on_click">False</property>
+            <property name="uri">http://game.ruby.virtualkingdoms.net</property>
+          </widget>
+          <packing>
+            <property name="top_attach">4</property>
+            <property name="bottom_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&lt;b&gt;Online Mode Only:&lt;/b&gt;
+Enter your information if you have
+already signed up.</property>
+            <property name="use_markup">True</property>
+          </widget>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment3">
+            <property name="visible">True</property>
+            <property name="top_padding">25</property>
+            <property name="bottom_padding">25</property>
+            <property name="left_padding">25</property>
+            <property name="right_padding">25</property>
+            <child>
+              <widget class="GtkButton" id="button1">
+                <property name="label" translatable="yes">Play the Online Door Version</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="start_online"/>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment4">
+            <property name="visible">True</property>
+            <property name="bottom_padding">150</property>
+            <property name="left_padding">25</property>
+            <property name="right_padding">25</property>
+            <child>
+              <widget class="GtkButton" id="button2">
+                <property name="label" translatable="yes">Play the Offline Solo Version</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="start_offline"/>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment5">
+            <property name="visible">True</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">30</property>
+            <child>
+              <widget class="GtkFrame" id="frame2">
+                <property name="visible">True</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <widget class="GtkAlignment" id="alignment2">
+                    <property name="visible">True</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <widget class="GtkEntry" id="entry2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Password:&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="top_attach">3</property>
+            <property name="bottom_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment6">
+            <property name="visible">True</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">30</property>
+            <child>
+              <widget class="GtkFrame" id="frame1">
+                <property name="visible">True</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <widget class="GtkAlignment" id="alignment1">
+                    <property name="visible">True</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <widget class="GtkEntry" id="entry1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label4">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Email:&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment7">
+            <property name="visible">True</property>
+            <property name="top_padding">15</property>
+            <property name="bottom_padding">5</property>
+            <property name="left_padding">15</property>
+            <property name="right_padding">15</property>
+            <child>
+              <widget class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">
+Welcome to &lt;b&gt;Virtual Kingdoms the Game&lt;/b&gt;, a re-application of the old school
+ door concept where you can walk around and explore the world.
+</property>
+                <property name="use_markup">True</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="right_attach">2</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>
