@@ -113,10 +113,11 @@
                 <property name="visible">True</property>
                 <property name="n_rows">5</property>
                 <property name="n_columns">5</property>
+                <property name="homogeneous">True</property>
                 <child>
                   <widget class="GtkImage" id="img0_0">
                     <property name="visible">True</property>
-                    <property name="pixbuf">images/terrains/grass.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </widget>
                 </child>
                 <child>
@@ -448,7 +449,7 @@
                 <child>
                   <widget class="GtkImage" id="inv0_0">
                     <property name="visible">True</property>
-                    <property name="pixbuf">images/items/special/telescope.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </widget>
                 </child>
                 <child>
@@ -504,7 +505,7 @@
                 <child>
                   <widget class="GtkImage" id="inv0_1">
                     <property name="visible">True</property>
-                    <property name="pixbuf">images/items/special/template.png</property>
+                    <property name="stock">gtk-missing-image</property>
                   </widget>
                   <packing>
                     <property name="top_attach">1</property>

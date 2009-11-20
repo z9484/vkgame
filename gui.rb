@@ -4,6 +4,8 @@
 #
 require 'libglade2'
 
+GRASS = "images/terrains/grass.png" 
+
 HELP_TEXT = <<HEREDOC
 The basic idea of the game is to find the winning hut. You will be aided in your quest by handy gifts from gurus in simple looking huts.
 
@@ -24,12 +26,8 @@ HEREDOC
 # Real Functions
 
 def print_to_console(string)
-    @console = @glade.get_widget("console")
-    @console.label = string
-
-    #test for graphics
-    @img2_2 = @glade.get_widget("img2_2")
-    @img2_2.file = "images/terrains/grass.png" 
+  @console = @glade.get_widget("console")
+  @console.label = string
 end
 
 # GUI stuff
@@ -42,19 +40,25 @@ class GuiGlade
   def initialize(path_or_data, root = nil, domain = nil, localedir = nil, flag = GladeXML::FILE)
     bindtextdomain(domain, localedir, nil, "UTF-8")
     @glade = GladeXML.new(path_or_data, root, domain, localedir, flag) {|handler| method(handler)}
-    @glade["newgame"].show_all #For testing purposes.
-    #@glade["VKgame"].show_all
+    #@glade["newgame"].show_all #comment out for testing purposes.
+    show_view()
+    @glade["VKgame"].show_all
+    
     
   end
   
   def gtk_widget_show(widget)  
-    Gnome::About.new("VK the Game", "0.1",
-                     "Copyright (C) 2009 Virtual Kingdoms",
-                     "A fantasy revisit to the DOOR concept.",
-                     ["Eremite", "Z9484"], ["Eremite"], nil).show
+    about = Gtk::AboutDialog.new
+	  #about.name = "VK the Game" #deprecated way
+    about.program_name = "VK the Game"
+	  about.version = "0.1"
+	  about.copyright = "Copyright (C) 2009 Virtual Kingdoms"
+	  about.authors = ["Eremite", "Z9484"]
+	  about.artists = ["Shrike"]
+	  about.license = "Virtual Kingdoms the Game is released under the GPLv2"
+	  about.run
+    about.destroy
   end
-  #  @glade["aboutdialog"].show_all
-  #end
 
   def start_offline(widget)
     @glade["VKgame"].show_all
@@ -85,6 +89,22 @@ class GuiGlade
     dialog.destroy
   end
 
+  def show_view()
+
+    x, y = 5, 5
+    @view_array = []  #initializing m for scope reasons
+    x.times { @view_array << Array.new( y ) }  # adding new arrays to m
+
+    
+   #test for graphics
+    for x in 0..4
+      for y in 0..4
+        @view_array[x][y] = @glade.get_widget("img#{x}_#{y}")
+        @view_array[x][y].file = GRASS
+      end
+    end
+
+  end
 
   def on_VKgame_key_press_event(widget, arg0)
     if (arg0.keyval == 108) # l -> look 
@@ -112,7 +132,7 @@ class GuiGlade
   end
 
   def gtk_main_quit(widget)
-    Gtk.quit()
+    Gtk::main_quit
   end
 
   def gtk_widget_destroy(widget)
