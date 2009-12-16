@@ -28,6 +28,9 @@ HEREDOC
 def print_to_console(string)
   @console = @glade.get_widget("console")
   @console.label = string
+
+
+
 end
 
 # GUI stuff
@@ -107,23 +110,32 @@ class GuiGlade
   end
 
   def on_VKgame_key_press_event(widget, arg0)
+    @test = @glade.get_widget("notebook2")
     if (arg0.keyval == 108) # l -> look 
       print_to_console("Just an empty field.")
 
     elsif (arg0.keyval == 97) or (arg0.keyval == 65460) or (arg0.keyval == 65361)
-        print_to_console("Moving left.")
+      print_to_console("Moving left.")
 
     elsif (arg0.keyval == 100) or (arg0.keyval == 65462) or (arg0.keyval == 65363)
-        print_to_console("Moving right.")
+      print_to_console("Moving right.")
 
     elsif (arg0.keyval == 119) or (arg0.keyval == 65464) or (arg0.keyval == 65362)
-        print_to_console("Moving up.")
+      print_to_console("Moving up.")
 
     elsif (arg0.keyval == 115) or (arg0.keyval == 65364) or (arg0.keyval == 65458)
-        print_to_console("Moving down.")
+      print_to_console("Moving down.")
 
     elsif (arg0.keyval == 63)
       help_dialog(widget)
+
+    elsif (arg0.keyval == 103) or (arg0.keyval == 65461)
+      @test.page = 1
+      print_to_console("Entered the store.")
+
+    elsif (arg0.keyval == 104)
+      @test.page = 0
+      print_to_console("Just left the store.")
 
     else
       puts arg0.keyval
