@@ -59,6 +59,8 @@ class GuiGlade
 	  about.authors = ["Eremite", "Z9484"]
 	  about.artists = ["Shrike"]
 	  about.license = "Virtual Kingdoms the Game is released under the GPLv2"
+    about.website = "http://ruby.game.virtualkingdoms.net"
+    about.comments = "A fantasy re-application of the Door concept\n written in Ruby."
 	  about.run
     about.destroy
   end
@@ -143,8 +145,30 @@ class GuiGlade
     
   end
 
+  def quick_message(widget, message)
+    # Create the dialog
+    dialog = Gtk::Dialog.new("VKgame", widget,
+                         Gtk::Dialog::MODAL | Gtk::Dialog::DESTROY_WITH_PARENT,
+                         [Gtk::Stock::YES, Gtk::Dialog::RESPONSE_ACCEPT],
+                         [Gtk::Stock::NO, Gtk::Dialog::RESPONSE_REJECT])
+    
+    # Add the message in a label, and show everything we've added to the dialog.
+    dialog.vbox.add(Gtk::Label.new(message))
+    dialog.show_all
+
+    dialog.run do |response|
+      case response
+        when Gtk::Dialog::RESPONSE_ACCEPT
+          Gtk::main_quit
+      end
+      dialog.destroy
+    end
+
+
+  end
+
   def gtk_main_quit(widget)
-    Gtk::main_quit
+    quick_message(widget, "\nAre you sure you want to quit?\n")
   end
 
   def gtk_widget_destroy(widget)
