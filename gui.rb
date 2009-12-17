@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-#
+#http://talk.maemo.org/showthread.php?p=399493
 # This file is gererated by ruby-glade-create-template 1.1.4.
 #
 require 'libglade2'
@@ -29,8 +29,6 @@ def print_to_console(string)
   @console = @glade.get_widget("console")
   @console.label = string
 
-
-
 end
 
 # GUI stuff
@@ -44,7 +42,7 @@ class GuiGlade
     bindtextdomain(domain, localedir, nil, "UTF-8")
     @glade = GladeXML.new(path_or_data, root, domain, localedir, flag) {|handler| method(handler)}
     #@glade["newgame"].show_all #comment out for testing purposes.
-    show_view()
+    init_view()
     @glade["VKgame"].show_all
     
     
@@ -52,8 +50,8 @@ class GuiGlade
   
   def gtk_widget_show(widget)  
     about = Gtk::AboutDialog.new
-	  #about.name = "VK the Game" #deprecated way
-    about.program_name = "VK the Game"
+	  about.name = "VK the Game" #deprecated win way 
+    #about.program_name = "VK the Game"
 	  about.version = "0.1"
 	  about.copyright = "Copyright (C) 2009 Virtual Kingdoms"
 	  about.authors = ["Eremite", "Z9484"]
@@ -94,21 +92,42 @@ class GuiGlade
     dialog.destroy
   end
 
-  def show_view()
+  def init_view()
 
     x, y = 5, 5
     @view_array = []  #initializing m for scope reasons
     x.times { @view_array << Array.new( y ) }  # adding new arrays to m
 
-    
-   #test for graphics
     for x in 0..4
       for y in 0..4
         @view_array[x][y] = @glade.get_widget("img#{x}_#{y}")
-        @view_array[x][y].file = GRASS
       end
     end
 
+    show_view()  
+
+  end
+
+  def show_view()  
+    overlay = Gtk::Image.new("images/terrains/overlays/army.png")
+
+    destbuf = Gdk::Pixbuf.new(GRASS)
+	  puts overlay.pixbuf.has_alpha? #add_alpha(substitute_color, r, g, b)
+    #test = overlay.pixbuf.copy_area(0, 0, 0, 0, destbuf, 60, 60)
+
+	  test = destbuf.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255)
+   
+
+   #test for graphics
+    for x in 0..4
+      for y in 0..4
+        @view_array[x][y].file = GRASS
+      end
+    end
+ 
+	#@view_array[3][3].file =  "images/terrains/church.png" #overlay #destbuf #overlay.pixbuf
+	  @view_array[3][3].pixbuf = test
+ 
   end
 
   def on_VKgame_key_press_event(widget, arg0)
@@ -188,3 +207,4 @@ if __FILE__ == $0
   GuiGlade.new(PROG_PATH, nil, PROG_NAME)
   Gtk.main
 end
+
