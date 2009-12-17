@@ -23,10 +23,10 @@ SHOES_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(SHOES_ROOT)
 end
 
 if ENV["SHOES_ENV"] == "test"
-  ActiveRecord::Base.establish_connection({
-    :adapter => 'sqlite3',
-    :dbfile => SOLO_PATH,
-  })
+  #ActiveRecord::Base.establish_connection({
+  #  :adapter => 'sqlite3',
+   # :database => SOLO_PATH,
+  #})
 else
   [
     'config/shoes/*',

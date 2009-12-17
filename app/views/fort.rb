@@ -1,4 +1,4 @@
-# Copyright (C) 2009 Daniel Esplin
+# Copyright(C) 2009 Daniel Esplin
 # Part of the Virtual Kingdoms the Game project. http://www.virtualkingdoms.net/
 
 # This program is free software; you can redistribute it and/or modify
@@ -29,9 +29,9 @@ module FortView
 
           button 'Ok' do
             if @e.text == ""
-              @p.clear{para strong ("Please enter a fort name first.")}
+              @p.clear{para strong("Please enter a fort name first.")}
             else
-              if (@team.checked?())
+              if(@team.checked?())
                 alert "Fort #{@e.text.to_s} with Team access created."
                 #f = character.forts.create({
                   #:name => @e.text.to_s,
@@ -181,11 +181,11 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to pay for a new moat?\n"
-          @choice0 = radio; para strong ("None"), "\n"
-          @choice1 = radio; para strong ("Water"), " $1 - A mostly ornamental defense.\n"
-          @choice2 = radio; para strong ("Alligator Infested"), " $5 \n"
-          @choice3 = radio; para strong ("Sea serpent infested"), " $10 \n"
-          @choice4 = radio; para strong ("Poison swamp"), " $30 \n"
+          @choice0 = radio; para strong("None"), "\n"
+          @choice1 = radio; para strong("Water"), " $1 - A mostly ornamental defense.\n"
+          @choice2 = radio; para strong("Alligator Infested"), " $5 \n"
+          @choice3 = radio; para strong("Sea serpent infested"), " $10 \n"
+          @choice4 = radio; para strong("Poison swamp"), " $30 \n"
           button 'ok' do
             close
           end        
@@ -201,10 +201,10 @@ character.update_attribute(:moves, 1000) #cheating
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to pay for some gatherers?\n"
           para "All services have a range of 3 from the fort.\n"
-          @choice0 = radio; para strong ("None"), "\n"
-          @choice1 = radio; para strong ("Dogs"), " $1 -lowest resale value; Chewed up merchandise (with purchase 3 free dogs as defenders)\n"
-          @choice2 = radio; para strong ("Beggars"), " $5 -slightly higher resale value; Are often known to steal more lucrative items\n"
-          @choice3 = radio; para strong ("Pages(Lackeys)"), " $10 -highest resale value; highly loyal servants.\n"
+          @choice0 = radio; para strong("None"), "\n"
+          @choice1 = radio; para strong("Dogs"), " $1 -lowest resale value; Chewed up merchandise(with purchase 3 free dogs as defenders)\n"
+          @choice2 = radio; para strong("Beggars"), " $5 -slightly higher resale value; Are often known to steal more lucrative items\n"
+          @choice3 = radio; para strong("Pages(Lackeys)"), " $10 -highest resale value; highly loyal servants.\n"
           button 'ok' do
             close
           end        
@@ -219,18 +219,18 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to pay for traps?\n"
-          @choice0 = radio; para strong ("None"), "\n"
-          @choice1 = radio; para strong ("Trap digger"), " $1 - Goes about digging traps that do low damage to enemy heroes.\n"
-          @choice2 = radio; para strong ("Landscaper Magician"), " $5 - Plants carniverous plants that do medium damage to enemy heroes.\n"
-          @choice3 = radio; para strong ("Crazy Trap Magician"), " $10 -Finds the most dangerous creatures to guard your surrounding base.\n"
+          @choice0 = radio; para strong("None"), "\n"
+          @choice1 = radio; para strong("Trap digger"), " $1 - Goes about digging traps that do low damage to enemy heroes.\n"
+          @choice2 = radio; para strong("Landscaper Magician"), " $5 - Plants carniverous plants that do medium damage to enemy heroes.\n"
+          @choice3 = radio; para strong("Crazy Trap Magician"), " $10 -Finds the most dangerous creatures to guard your surrounding base.\n"
           button 'ok' do
-=begin            if (@choice0.checked?())
+=begin            if(@choice0.checked?())
               close
-            else if (@choice1.checked?())
+            else if(@choice1.checked?())
               cost = 1
-            else if (@choice2.checked?())
+            else if(@choice2.checked?())
               cost = 5
-            else if (@choice3.checked?())
+            else if(@choice3.checked?())
               cost = 10
             end
 =end
@@ -287,9 +287,9 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to hire more healers?\n" 
-          @choice0 = radio; para strong ("1 healer"), " - can heal all defenders 3 times in a day.\n"
-          @choice1 = radio; para strong ("2 healers"), " $1 - can heal all defenders 6 times in a day.\n"
-          @choice2 = radio; para strong ("3 healers"), " $5 - can heal all defenders 9 times in a day.\n"
+          @choice0 = radio; para strong("1 healer"), " - can heal all defenders 3 times in a day.\n"
+          @choice1 = radio; para strong("2 healers"), " $1 - can heal all defenders 6 times in a day.\n"
+          @choice2 = radio; para strong("3 healers"), " $5 - can heal all defenders 9 times in a day.\n"
           button 'ok' do
             close
           end        
@@ -304,10 +304,10 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to hire a better swordsman\n"
-          @choice0 = radio; para strong ("None"), "\n"
-          @choice1 = radio; para strong ("Level 2"), " $1 all defenders are supplied with the training, weapons, and armor to make them fight at level 2.\n"
-          @choice2 = radio; para strong ("Level 3"), " $5 all defenders are supplied with the training, weapons, and armor to make them fight at level 3.\n"
-          @choice3 = radio; para strong ("Level 4"), " $10  all defenders are supplied with the training, weapons, and armor to make them fight at level 4.\n"
+          @choice0 = radio; para strong("None"), "\n"
+          @choice1 = radio; para strong("Level 2"), " $1 all defenders are supplied with the training, weapons, and armor to make them fight at level 2.\n"
+          @choice2 = radio; para strong("Level 3"), " $5 all defenders are supplied with the training, weapons, and armor to make them fight at level 3.\n"
+          @choice3 = radio; para strong("Level 4"), " $10  all defenders are supplied with the training, weapons, and armor to make them fight at level 4.\n"
           button 'ok' do
             close
           end        
@@ -322,12 +322,12 @@ character.update_attribute(:moves, 1000) #cheating
         window do
           background BASE_LIGHT..BASE_LIGHTEST
           para "Would you like to hire one of the following?\n"
-          @choice0 = radio; para strong ("None"), "\n"
-          @choice1 = radio; para strong ("Herbalist"), " $100 - medkits and mana potions\n"
-          @choice2 = radio; para strong ("Blacksmith"), " $100 - create weapons or armor\n"
-          @choice3 = radio; para strong ("Fletcher"), " $100 - Makes arrows\n"
-          @choice4 = radio; para strong ("Specialist"), " $100 - make some other items\n"
-          @choice5 = radio; para strong ("Enchanter"), " $200 - Enchants one weapon or armor every 3(1?) days\n"
+          @choice0 = radio; para strong("None"), "\n"
+          @choice1 = radio; para strong("Herbalist"), " $100 - medkits and mana potions\n"
+          @choice2 = radio; para strong("Blacksmith"), " $100 - create weapons or armor\n"
+          @choice3 = radio; para strong("Fletcher"), " $100 - Makes arrows\n"
+          @choice4 = radio; para strong("Specialist"), " $100 - make some other items\n"
+          @choice5 = radio; para strong("Enchanter"), " $200 - Enchants one weapon or armor every 3(1?) days\n"
           button 'ok' do
             close
           end        

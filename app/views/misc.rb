@@ -11,6 +11,7 @@
 
 module VKView
 
+=begin
   def index
     para "Virtual Kingdoms"
 
@@ -98,6 +99,7 @@ module VKView
       solo_game
     end
   end
+=end
 
   def quit(character = nil)
     unless @@email == 'solo'
@@ -115,7 +117,7 @@ module VKView
         puts "Error saving game."
       end
     end
-    exit
+    #exit
   end
 
   def reset_game(character)
@@ -124,7 +126,7 @@ module VKView
     @field.clear {show_field(character)}
     update_status("Game has been reset.")
   end
-
+=begin
   def show_status
     stack :height => 60 do
       background BASE_LIGHTER..BASE_LIGHT
@@ -132,12 +134,14 @@ module VKView
       @status = para "Find the winning hut. Arrow keys to move.", :margin => 7
     end
   end
+=end
 
   def update_status(message = '')
-    @status.text = message
+    @status.label = message
     # @status.scroll_top = @status.scroll_max
   end
 
+=begin
   def show_menu(character)
     flow do
       button "Help", :margin_left => 10 do
@@ -148,6 +152,7 @@ module VKView
       end
     end
   end
+=end
 
   def handle(character, k, *args)
     character.do(k, *args)
@@ -167,7 +172,7 @@ module VKView
         alert(details[:message])
       when :army_info
         army_info(character)
-      when :build_fort 
+      when :build_fort  
         fort_build(character)
       when :recruit #test function
         fort_window(character)
@@ -177,7 +182,7 @@ module VKView
         update_actions(character)
       end
     end
-    update_stats(character)
+    #update_stats(character)
   end
 
   #TODO Move elsewhere

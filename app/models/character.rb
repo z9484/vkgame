@@ -8,6 +8,27 @@
 # but WITHOUT ANY WARRANTY.
 
 # See the COPYING file for more details.
+key_up = 65362
+key_kp_up = 65464
+key_w = 119
+
+key_down = 65364
+key_kp_down = 65458
+key_s = 115
+
+key_left = 65361
+key_kp_left = 65460
+key_a = 97
+
+key_right = 65363
+key_kp_right = 65462
+key_d = 100
+
+key_questionmark = 63
+key_g = 103
+key_h = 104
+key_kp_5 = 65461
+
 
 class Character < ActiveRecord::Base
 
@@ -42,11 +63,15 @@ class Character < ActiveRecord::Base
     field_points[field_points.size / 2]
   end
   def do(k, *args)
+
+
     return false if k.nil?
-    case k.to_sym
-    when :up, :right, :down, :left,
-      :w, :a, :d, :s,
-      :'8', :'6', :'2', :'4'
+    case k  #.to_sym
+    when 65362, 65464, 119,
+      65364, 65458, 115,
+      65361, 65460, 97,
+      65363, 65462, 100
+
       move(k)
     when :alt_l, :look
       i = args.first || 12
@@ -104,14 +129,14 @@ class Character < ActiveRecord::Base
   end
 
   def move(direction)
-    new_i = case direction.to_sym
-    when :up, :w, :'8'
+    new_i = case direction
+    when 65362, 119, 65464
       point.i - point.map.height
-    when :right, :d, :'6'
+    when 65363, 65462, 100
       point.i + 1
-    when :down, :s, :'2'
+    when 65364, 65458, 115
       point.i + point.map.height
-    when :left, :a, :'4'
+    when 65361, 65460, 97
       point.i - 1
     end
     p = point.map.points.find_by_i(new_i)

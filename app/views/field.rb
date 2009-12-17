@@ -12,6 +12,20 @@
 module VKView
 
   def show_field(character)
+    @field_images = {:terrains => [], :neighbors => [], :items => [], :army => []}
+    puts "test", @field_images[:terrains]
+
+    #character.field_points.each_with_index do |p, i|
+     # puts @field_images[:terrains] #<< image("images/terrains/void.png", styles) {handle(character, :look, i)}
+      #@field_images[:terrains] << image("images/terrains/void.png", styles) {handle(character, :look, i)}
+      #@field_images[:neighbors] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60))
+      #@field_images[:items] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60 * 2))
+      #@field_images[:army] << image("images/terrains/overlays/empty.png", styles.merge(:displace_top => -60 * 3))
+    #end
+    #update_images(character)
+  end
+
+=begin
     stack :width => 350, :height => 350 do
       background BASE_MID
       flow :width => 340, :height => 340, :displace_left => 5, :displace_top => 5 do
@@ -36,6 +50,7 @@ module VKView
       update_images(character)
     end
   end
+=end
 
   def update_images(character)
     character.field_points.zip(@field_images[:terrains], @field_images[:neighbors], @field_images[:items], @field_images[:army]) do |p, t, n, i, a|
