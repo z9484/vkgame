@@ -46,6 +46,9 @@ class VirtualKingdomsGame
       :database => @@db_path,
     })
     @@character = Character.find_or_create_by_email(@@email)
+
+    show_field(@@character)
+
   end
 
   def init()
@@ -55,33 +58,22 @@ class VirtualKingdomsGame
   def init_view()
 
     x, y = 5, 5
-    @view_array = []  #initializing m for scope reasons
-    x.times { @view_array << Array.new( y ) }  # adding new arrays to m
+    @view_array = []
+    #x.times { @@view_array << Array.new( y ) }  # adding new arrays to m
 
-    for x in 0..4
-      for y in 0..4
-        @view_array[x][y] = @glade.get_widget("img#{x}_#{y}")
-      end
+    for x in 0..24
+      @view_array[x] = @glade.get_widget("img#{x}")
     end
 
-    show_view()  
-
-  end
-
-  def show_view()  
-
-   #test for graphics
+=begin
     for x in 0..4
       for y in 0..4
-        @view_array[x][y].file = GRASS
+        @@view_array[x][y] = @glade.get_widget("img#{x}_#{y}")
       end
     end
+=end
+    #show_view()  
 
-    overlay = Gtk::Image.new("images/terrains/overlays/army.png")
-    destbuf = Gdk::Pixbuf.new(GRASS)
-	  comp = destbuf.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255)
-	  @view_array[3][3].pixbuf = comp
- 
   end
 
   def gtk_widget_show(widget)  
@@ -121,14 +113,18 @@ class VirtualKingdomsGame
   end
 
   def start_online(widget)
+    start_offline(widget)
+=begin
     emailentry = @glade.get_widget("entry_email")
     passentry = @glade.get_widget("entry_password")
     @@email = emailentry.text
     @@password = passentry.text
 
+    start_game()
 
     @glade["VKgame"].show_all
     @glade["newgame"].hide_all
+=end
   end
 
   def restart_game(widget)
@@ -191,7 +187,7 @@ class VirtualKingdomsGame
     dialog.run do |response|
       case response
         when Gtk::Dialog::RESPONSE_ACCEPT
-          Gtk::main_quit
+          on_VKgame_destroy_event(widget)
       end
       dialog.destroy
     end
@@ -200,6 +196,7 @@ class VirtualKingdomsGame
 
 
   def on_VKgame_destroy_event(widget)
+    #quit()
     Gtk::main_quit
   end
 

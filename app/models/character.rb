@@ -73,7 +73,7 @@ class Character < ActiveRecord::Base
       65363, 65462, 100
 
       move(k)
-    when :alt_l, :look
+    when :alt_l, 108
       i = args.first || 12
       p = point.map.points.find_by_i((point.i + i % 5 - 2) + ((i / 5 - 2) * point.map.height))
       m = ''
@@ -92,13 +92,13 @@ class Character < ActiveRecord::Base
         m ||= 'No army is following you at the moment!'
       @refreshables[:status] = {:message => m}
       end
-    when :'e', :'g', :enter
+    when :'e', 103, 65461
       if point.terrain.enterable?
         @refreshables[:enter] = true
       else
         @refreshables[:alert] = {:message => "There's nothing to enter here."}
       end
-    when :'?', :help
+    when 63, :help
       @refreshables[:alert] = {:message => HELP_TEXT}
     when :alt_b, :build_fort
        @refreshables[:build_fort] = {}
@@ -118,11 +118,11 @@ class Character < ActiveRecord::Base
       end
       m ||= 'No army here!'
       @refreshables[:status] = {:message => m}
-    when :alt_q, :quit
-      @refreshables[:confirm] = {
-        :ask => "Are you sure you want to quit?",
-        :yes => :quit
-      }
+    #when :alt_q, :quit
+    #  @refreshables[:confirm] = {
+    #    :ask => "Are you sure you want to quit?",
+    #    :yes => :quit
+    #  }
     else
       @refreshables[:status] = {:message => "'#{k}' is an invalid key. Try ? for help."}
     end
@@ -176,7 +176,7 @@ class Character < ActiveRecord::Base
     else
       message = case p.terrain.try(:slug).try(:to_sym)
       when :water
-        "I might be able to go on the water if I had some kind of boat."
+        "I might be able to go on the water if I had\n some kind of boat."
       when :mountain
         "That looks unsafe to attempt without proper equipment."
       when :deep_desert

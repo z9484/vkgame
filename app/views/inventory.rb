@@ -10,12 +10,12 @@
 # See the COPYING file for more details.
 
 module InventoryView
-
+=begin
   def show_inventory(character)
-    stack :width => 250, :height => 350, :scroll => true do
-      background COMPLEMENT2_LIGHT..COMPLEMENT2_MID
-      border BASE_MID, :strokewidth => 5
-      @inventory = flow :margin => 5
+    #stack :width => 250, :height => 350, :scroll => true do
+    #  background COMPLEMENT2_LIGHT..COMPLEMENT2_MID
+    #  border BASE_MID, :strokewidth => 5
+    #  @inventory = flow :margin => 5
     end
     update_inventory(character)
   end
@@ -23,13 +23,13 @@ module InventoryView
   def update_inventory(character)
     @inventory.clear do
       if character.items.empty?
-        para "This is your inventory. When you pick something up, it will appear here."
+        puts "inventory" #para "This is your inventory. When you pick something up, it will appear here."
       else
         character.items.each do |item|
-          image "images/items/#{item.kind}/#{item.slug}.png"
+          puts "inventory" #image "images/items/#{item.kind}/#{item.slug}.png"
         end
       end
     end
   end
-
+=end
 end

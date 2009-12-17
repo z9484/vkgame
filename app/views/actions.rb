@@ -15,30 +15,29 @@ module VKView
     :quit, :b, :'7', :'8', :'9',
     :c, :d, :'4', :'5', :'6',
     :e, :f, :'1', :'2', :'3',
-    :g, :h, :'0', :'.', :'enter',
+    103, 104, :'0', :'.', :'enter',
+  ]
+
+=begin
+  ACTION_IMAGE_KEYS = [
+    98, 
+    99, 
+    101, 102, 
+    103, 104, 46, 65293, 65421,   
   ]
 
   def show_actions(character)
-    flow :width => 350 do
-      background BASE_LIGHT
-      border BASE_MID, :strokewidth => 5
-      @action_images = {}
-      # background BASE_LIGHT..BASE_MID
-      styles = {:width => 60, :height => 60, :margin => 3}
-      flow :width => 340, :displace_left => 5 do
-        flow :displace_left => 5, :displace_top => 5 do
-          ACTION_IMAGE_KEYS.each do |key|
-            stack :width => 66, :height => 66, :margin => 3 do
-              @action_images[key] = image("images/actions/empty.png", styles)
-            end
-          end
-        end
-      end
+    @action_images = {}
+    ACTION_IMAGE_KEYS.each do |key|
+        @action_images[key] = image("images/actions/empty.png", styles)
     end
     update_actions(character)
   end
 
+=end
   def update_actions(character)
+  end
+=begin
     # @action_images.each do |key, image|
     #   if action.available?
     #     image.path = "images/actions/#{action.slug}.png"
@@ -49,7 +48,7 @@ module VKView
     #     image.path = "images/actions/empty.png"
     #   end
     # end
-    @action_images.each_value do |image|
+    for @action_images.each_value do |image|
       image.path = "images/actions/empty.png"
     end
     character.reload.actions.select {|a| a.available?}.each do |action|
@@ -81,5 +80,5 @@ module VKView
       nil
     end
   end
-
+=end
 end

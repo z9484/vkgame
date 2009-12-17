@@ -10,7 +10,10 @@
 # See the COPYING file for more details.
 
 module FoeView
-
+  def fight(character, foe)
+    puts "enemy encountered"
+  end
+=begin
   BORDER_WIDTH = 2
   TOP_HEIGHT = 200
   def fight(character, foe)
@@ -80,5 +83,5 @@ module FoeView
       end
     end
   end
-
+=end
 end

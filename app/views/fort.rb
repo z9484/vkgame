@@ -10,6 +10,7 @@
 # See the COPYING file for more details.
 
 module FortView
+=begin
   def fort_build(character)
     #character.update_attribute(:gold, 100) #cheating
     fortcost = 1
@@ -233,7 +234,7 @@ character.update_attribute(:moves, 1000) #cheating
             else if(@choice3.checked?())
               cost = 10
             end
-=end
+
             if cost > character.gold
               @p.clear{para strong("You do not have enough gold!")}
             else
@@ -371,5 +372,5 @@ $has_teleport = 0
        
     end
   end
-
+=end
 end

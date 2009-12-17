@@ -10,7 +10,7 @@
 # See the COPYING file for more details.
 
 module ArmyView
-  
+=begin  
   def army_info(character)
     window do 
       background BASE_LIGHT..BASE_LIGHTEST
@@ -261,7 +261,7 @@ module ArmyView
               :healers => healer,
               :catapults => catapult,
             })
-=end
+
 
 
   def recruit_window(character, station)
@@ -406,5 +406,5 @@ module ArmyView
       end
     end
   end
-
+=end
 end

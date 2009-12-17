@@ -161,15 +161,15 @@ module VKView
       when :inventory
         @inventory.clear {show_inventory(character)}
       when :field
-        update_images(character)
+        show_field(character) #update_images(character)
       when :enter
         send("show_#{character.point.terrain.slug}", character) if character.point.terrain.enterable?
       when :status
         update_status(details[:message])
       when :fight
-        fight(character, details[:foe]) if details[:foe]
+        #fight(character, details[:foe]) if details[:foe]
       when :alert
-        alert(details[:message])
+        update_status(details[:message]) #alert(details[:message])
       when :army_info
         army_info(character)
       when :build_fort  

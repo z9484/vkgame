@@ -12,18 +12,18 @@
 module StatsView
 
   def show_stats(character)
-    stack :width => 250 do
-      background COMPLEMENT2_LIGHT..COMPLEMENT2_MID
-      border BASE_MID, :strokewidth => 5
-      flow :margin => 5 do
-        @stats = para
-      end
-    end
+    #stack :width => 250 do
+    #  background COMPLEMENT2_LIGHT..COMPLEMENT2_MID
+    #  border BASE_MID, :strokewidth => 5
+    #  flow :margin => 5 do
+    #    @stats = para
+    #  end
+    #end
     update_stats(character)
   end
 
   def update_stats(character)
-    @stats.text = character.stats
+    #@stats.text = character.stats
   end
 
 end
