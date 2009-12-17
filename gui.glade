@@ -791,7 +791,6 @@ occasional tree.</property>
                         </child>
                       </widget>
                       <packing>
-                        <property name="right_attach">2</property>
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                       </packing>
@@ -816,6 +815,21 @@ occasional tree.</property>
                     </child>
                     <child>
                       <placeholder/>
+                    </child>
+                    <child>
+                      <widget class="GtkAlignment" id="alignment15">
+                        <property name="visible">True</property>
+                        <property name="left_padding">8</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                      </packing>
                     </child>
                   </widget>
                 </child>
@@ -876,6 +890,7 @@ Z9484
   </widget>
   <widget class="GtkWindow" id="newgame">
     <property name="window_position">center</property>
+    <signal name="destroy" handler="on_VKgame_destroy_event"/>
     <child>
       <widget class="GtkTable" id="table3">
         <property name="visible">True</property>
@@ -971,9 +986,10 @@ already signed up.</property>
                     <property name="visible">True</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <widget class="GtkEntry" id="entry2">
+                      <widget class="GtkEntry" id="entry_password">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="visibility">False</property>
                         <property name="invisible_char">&#x25CF;</property>
                       </widget>
                     </child>
@@ -1012,7 +1028,7 @@ already signed up.</property>
                     <property name="visible">True</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <widget class="GtkEntry" id="entry1">
+                      <widget class="GtkEntry" id="entry_email">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>

@@ -1,3 +1,4 @@
+
 require 'libglade2'
 
 GRASS = "images/terrains/grass.png" 
@@ -108,6 +109,11 @@ class GuiGlade
   end
 
   def start_online(widget)
+    emailentry = @glade.get_widget("entry_email")
+    passentry = @glade.get_widget("entry_password")
+    @@email = emailentry.text
+    @@password = passentry.text
+
     @glade["VKgame"].show_all
     @glade["newgame"].hide_all
   end
