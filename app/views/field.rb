@@ -20,31 +20,52 @@ module VKView
     return (destbuf.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255))
   end
 
-  def overlay_existing(image, overlay_image)  
+  def overlay_existing(imagebuf, overlay_image)  
     overlay = Gtk::Image.new(overlay_image)
-    return (image.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255))
+    return (imagebuf.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255))
   end
 
 def show_field(character)
   @field_images = {:terrains => [], :neighbors => [], :items => [], :army => []}
 
   character.field_points.each_with_index do |p, i|
-    if (i == 12) #the middle
-    @view_array[i].pixbuf = overlay("images/terrains/#{p.terrain.try(:slug)}.png", BOX)
-    else
+
     if p.terrain.try(:slug).nil?
       puts "Error finding terrain for point #{p.id}"
       path = "images/terrains/void.png"
     else
       path = "images/terrains/#{p.terrain.try(:slug)}.png"
     end
-    @view_array[i].file = path
+    
+    if (i != 12) #the middle
+      @view_array[i].file = path
+    else
+      @view_array[i].pixbuf = overlay("images/terrains/#{p.terrain.try(:slug)}.png", BOX)
     end
+    #overlays
+    if p.neighbors(character).empty?
+      # do nothing 
+    else
+      @view_array[i].pixbuf = overlay_existing(@view_array[i].pixbuf, "images/terrains/overlays/camp.png")
+    end
+    
+    if p.items.empty?
+      # do nothing
+    else
+      @view_array[i].pixbuf = overlay_existing(@view_array[i].pixbuf, "images/terrains/overlays/items.png")
+    end
+
+    if p.army
+      @view_array[i].pixbuf = overlay_existing(@view_array[i].pixbuf, "images/terrains/overlays/army.png")
+    else
+      # do nothing
+    end
+
 
   end
 end
 
-#=begin
+=begin
 
       #terrain
       if p.terrain.try(:slug).nil?
@@ -72,7 +93,7 @@ end
         army_path = "images/terrains/overlays/empty.png"
       end
 
-#=end
+=end
 
 
 =begin

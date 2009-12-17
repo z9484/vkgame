@@ -20,11 +20,11 @@ GRASS = "images/terrains/grass.png"
 #class GuiGlade
 class VirtualKingdomsGame 
   include GetText
-  #include FoeView
-  #include ArmyView
-  #include FortView
-  #include InventoryView
-  #include StatsView
+  include FoeView
+  include ArmyView
+  include FortView
+  include InventoryView
+  include StatsView
   include VKView
 
   attr :glade
@@ -46,7 +46,7 @@ class VirtualKingdomsGame
       :database => @@db_path,
     })
     @@character = Character.find_or_create_by_email(@@email)
-
+    @@character.moves = 10000
     show_field(@@character)
 
   end
@@ -92,6 +92,7 @@ class VirtualKingdomsGame
   end
 
   def help_dialog(widget)
+    puts widget.name
     dialog = Gtk::MessageDialog.new(nil, 
                                     Gtk::Dialog::DESTROY_WITH_PARENT,
                                     Gtk::MessageDialog::QUESTION,
