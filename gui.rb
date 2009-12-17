@@ -1,7 +1,3 @@
-#!/usr/bin/env ruby
-#http://talk.maemo.org/showthread.php?p=399493
-# This file is gererated by ruby-glade-create-template 1.1.4.
-#
 require 'libglade2'
 
 GRASS = "images/terrains/grass.png" 
@@ -48,20 +44,63 @@ class GuiGlade
     
   end
   
+  def init_view()
+
+    x, y = 5, 5
+    @view_array = []  #initializing m for scope reasons
+    x.times { @view_array << Array.new( y ) }  # adding new arrays to m
+
+    for x in 0..4
+      for y in 0..4
+        @view_array[x][y] = @glade.get_widget("img#{x}_#{y}")
+      end
+    end
+
+    show_view()  
+
+  end
+
+  def show_view()  
+
+   #test for graphics
+    for x in 0..4
+      for y in 0..4
+        @view_array[x][y].file = GRASS
+      end
+    end
+
+    overlay = Gtk::Image.new("images/terrains/overlays/army.png")
+    destbuf = Gdk::Pixbuf.new(GRASS)
+	  comp = destbuf.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255)
+	  @view_array[3][3].pixbuf = comp
+ 
+  end
+
   def gtk_widget_show(widget)  
     about = Gtk::AboutDialog.new
-	  about.name = "VK the Game" #deprecated win way 
-    #about.program_name = "VK the Game"
+	  #about.name = "VK the Game" #deprecated win way 
+    about.program_name = "VK the Game"
 	  about.version = "0.1"
 	  about.copyright = "Copyright (C) 2009 Virtual Kingdoms"
 	  about.authors = ["Eremite", "Z9484"]
 	  about.artists = ["Shrike"]
 	  about.license = "Virtual Kingdoms the Game is released under the GPLv2"
-    about.website = "http://ruby.game.virtualkingdoms.net"
+    about.website = "http://game.ruby.virtualkingdoms.net"
     about.comments = "A fantasy re-application of the Door concept\n written in Ruby."
 	  about.run
     about.destroy
   end
+
+  def help_dialog(widget)
+    dialog = Gtk::MessageDialog.new(nil, 
+                                    Gtk::Dialog::DESTROY_WITH_PARENT,
+                                    Gtk::MessageDialog::QUESTION,
+                                    Gtk::MessageDialog::BUTTONS_CLOSE,
+                                    HELP_TEXT)
+    dialog.run
+    dialog.destroy
+  end
+
 
   def start_offline(widget)
     @glade["VKgame"].show_all
@@ -80,54 +119,6 @@ class GuiGlade
 
   def on_look_clicked(widget)
     print_to_console("Just an empty field.")
-  end
-
-  def help_dialog(widget)
-    dialog = Gtk::MessageDialog.new(nil, 
-                                Gtk::Dialog::DESTROY_WITH_PARENT,
-                                Gtk::MessageDialog::QUESTION,
-                                Gtk::MessageDialog::BUTTONS_CLOSE,
-                                HELP_TEXT)
-    dialog.run
-    dialog.destroy
-  end
-
-  def init_view()
-
-    x, y = 5, 5
-    @view_array = []  #initializing m for scope reasons
-    x.times { @view_array << Array.new( y ) }  # adding new arrays to m
-
-    for x in 0..4
-      for y in 0..4
-        @view_array[x][y] = @glade.get_widget("img#{x}_#{y}")
-      end
-    end
-
-    show_view()  
-
-  end
-
-  def show_view()  
-    overlay = Gtk::Image.new("images/terrains/overlays/army.png")
-
-    destbuf = Gdk::Pixbuf.new(GRASS)
-	  puts overlay.pixbuf.has_alpha? #add_alpha(substitute_color, r, g, b)
-    #test = overlay.pixbuf.copy_area(0, 0, 0, 0, destbuf, 60, 60)
-
-	  test = destbuf.composite!(overlay.pixbuf, 0, 0, 60, 60, 0, 0, 1, 1, Gdk::Pixbuf::INTERP_BILINEAR, 255)
-   
-
-   #test for graphics
-    for x in 0..4
-      for y in 0..4
-        @view_array[x][y].file = GRASS
-      end
-    end
- 
-	#@view_array[3][3].file =  "images/terrains/church.png" #overlay #destbuf #overlay.pixbuf
-	  @view_array[3][3].pixbuf = test
- 
   end
 
   def on_VKgame_key_press_event(widget, arg0)
@@ -164,14 +155,12 @@ class GuiGlade
     
   end
 
-  def quick_message(widget, message)
-    # Create the dialog
+  def quit_message(widget, message)
     dialog = Gtk::Dialog.new("VKgame", widget,
                          Gtk::Dialog::MODAL | Gtk::Dialog::DESTROY_WITH_PARENT,
                          [Gtk::Stock::YES, Gtk::Dialog::RESPONSE_ACCEPT],
                          [Gtk::Stock::NO, Gtk::Dialog::RESPONSE_REJECT])
     
-    # Add the message in a label, and show everything we've added to the dialog.
     dialog.vbox.add(Gtk::Label.new(message))
     dialog.show_all
 
@@ -183,27 +172,26 @@ class GuiGlade
       dialog.destroy
     end
 
+  end
 
+
+  def on_VKgame_destroy_event(widget)
+    Gtk::main_quit
   end
 
   def gtk_main_quit(widget)
-    quick_message(widget, "\nAre you sure you want to quit?\n")
+    quit_message(widget, "\nAre you sure you want to quit?\n")
   end
 
-  def gtk_widget_destroy(widget)
-    puts "dd" #@glade["aboutdialog"].hide
-  end
 
 end
 
 
 
-
 # Main program
 if __FILE__ == $0
-  # Set values as your own application. 
   PROG_PATH = "gui.glade"
-  PROG_NAME = "YOUR_APPLICATION_NAME"
+  PROG_NAME = "Virtual Kingdoms the Game"
   GuiGlade.new(PROG_PATH, nil, PROG_NAME)
   Gtk.main
 end

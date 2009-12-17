@@ -6,7 +6,9 @@
     <property name="title" translatable="yes">Virtual Kingdoms the Game</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
+    <signal name="destroy" handler="on_VKgame_destroy_event"/>
     <signal name="key_press_event" handler="on_VKgame_key_press_event"/>
+    <signal name="destroy_event" handler="on_VKgame_destroy_event"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -795,12 +797,6 @@ occasional tree.</property>
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
                       <widget class="GtkAlignment" id="alignment13">
                         <property name="visible">True</property>
                         <child>
@@ -814,6 +810,12 @@ occasional tree.</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </widget>
                 </child>
@@ -844,7 +846,6 @@ occasional tree.</property>
 Z9484
 </property>
     <property name="artists">Shrike</property>
-    <signal name="close" handler="gtk_widget_destroy"/>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
