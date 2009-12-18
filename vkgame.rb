@@ -138,7 +138,8 @@ class VirtualKingdomsGame
   end
 
   def on_VKgame_key_press_event(widget, k)
-    #@test = @glade.get_widget("notebook2")
+    #@test = @glade.get_widget("notebook1")
+    #@test.page = 1
     handle @@character, k.keyval
   end
 
