@@ -48,22 +48,31 @@ class VirtualKingdomsGame
     @@character = Character.find_or_create_by_email(@@email)
     @@character.moves = 10000
     show_field(@@character)
+    show_inventory(@@character)
 
   end
 
   def init()
     @status = @glade.get_widget("console")
+    stats_label = @glade.get_widget("stats_label")
+    stats_label.tooltip_text = "Strength / Agility / Vitality / Magic"
   end
 
   def init_view()
 
     x, y = 5, 5
     @view_array = []
+    @inv_array = []
     #x.times { @@view_array << Array.new( y ) }  # adding new arrays to m
 
     for x in 0..24
       @view_array[x] = @glade.get_widget("img#{x}")
     end
+
+    for x in 0..11
+      @inv_array[x] = @glade.get_widget("inv#{x}")
+    end
+
 
 =begin
     for x in 0..4

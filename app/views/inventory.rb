@@ -10,8 +10,25 @@
 # See the COPYING file for more details.
 
 module InventoryView
-=begin
+
+EMPTY_ITEM = "images/items/nothing.png"
+
   def show_inventory(character)
+    for i in 0..11
+      @inv_array[i].file = EMPTY_ITEM
+    end
+  end
+
+=begin
+  def show_equipment(character)
+    for i in 0..5
+      @eq_array[i].file = EMPTY_ITEM
+    end
+  end
+=end
+
+=begin
+
     #stack :width => 250, :height => 350, :scroll => true do
     #  background COMPLEMENT2_LIGHT..COMPLEMENT2_MID
     #  border BASE_MID, :strokewidth => 5

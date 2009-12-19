@@ -96,7 +96,7 @@ class Character < ActiveRecord::Base
       if point.terrain.enterable?
         @refreshables[:enter] = true
       else
-        @refreshables[:alert] = {:message => "There's nothing to enter here.\n"}
+        @refreshables[:alert] = {:message => "There's nothing to enter here."}
       end
     when 63, :help
       @refreshables[:alert] = {:message => HELP_TEXT} #help_dialog("Help") #@refreshables[:alert] = {:message => HELP_TEXT}
@@ -124,7 +124,7 @@ class Character < ActiveRecord::Base
     #    :yes => :quit
     #  }
     else
-      @refreshables[:status] = {:message => "'#{k}' is an invalid key. Try ? for help.\n"}
+      @refreshables[:status] = {:message => "'#{k}' is an invalid key. Try ? for help."}
     end
   end
 
@@ -141,7 +141,7 @@ class Character < ActiveRecord::Base
     end
     p = point.map.points.find_by_i(new_i)
     if p.nil?
-      @refreshables[:status] = {:message => "Try using the arrow keys\n"}
+      @refreshables[:status] = {:message => "Try using the arrow keys"}
     elsif can_walk_on?(p) && moves > 0
       self.moves -= 1
       self.hp += rand(3)
@@ -149,42 +149,42 @@ class Character < ActiveRecord::Base
       @refreshables[:field] = true
       @refreshables[:actions] = true
       update_attribute(:point, p)
-      @refreshables[:status] = {:message => "\n"}
+      @refreshables[:status] = {:message => ""}
       armies.reload.each do |army|
         army.update_attribute(:point, p) unless army.camped
       end
       case p.terrain.kind.to_sym
       when :church
         update_attribute(:hp, vitality)
-        @refreshables[:alert] = {:message => "You have been healed!\n"}
+        @refreshables[:alert] = {:message => "You have been healed!"}
       when :shop
         case p.terrain.slug.to_sym
         when :recruit
-          @refreshables[:status] = {:message => "Press g to enter recruiting station\n"}
+          @refreshables[:status] = {:message => "Press g to enter recruiting station"}
         when :shop
           # dospecial
         when :guildhall
-          @refreshables[:status] = {:message => "Everyone's welcome at the Guildhall!\n"}
+          @refreshables[:status] = {:message => "Everyone's welcome at the Guildhall!"}
         else
-          @refreshables[:status] = {:message => "This shop is closed.\n"}
+          @refreshables[:status] = {:message => "This shop is closed."}
         end
       else
-        @refreshables[:status] = {:message => "\n"}
+        @refreshables[:status] = {:message => ""}
         @refreshables[:fight] = {:foe => Foe.find(p.foes.rand)} if !p.foes.empty? && rand(20).zero?
       end
       dospecial(*p.special) if p.special?
     else
       message = case p.terrain.try(:slug).try(:to_sym)
       when :water
-        "I might be able to go on the water if I had\n some kind of boat."
+        "I might be able to go on the water if I had some kind of boat."
       when :mountain
-        "That looks unsafe to attempt without proper\n equipment."
+        "That looks unsafe to attempt without proper equipment."
       when :deep_desert
-        "Hmm, there must be some way I could survive in\n the deep desert."
+        "Hmm, there must be some way I could survive in the deep desert."
       when :void
-        "There's no way I'm walking off the end of the\n world!"
+        "There's no way I'm walking off the end of the world!"
       else
-        "That's way too scary to even think about.\n"
+        "That's way too scary to even think about."
       end
       @refreshables[:status] = {:message => message}
     end
