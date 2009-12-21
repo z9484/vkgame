@@ -2,7 +2,7 @@ h1. Virtual Kingdoms: The Game
 
 h2. Intro
 
-Playing around with ruby Shoes to make a little game.
+A little game written in Ruby. It uses Glade and Gtk for the GUI.
 
 h2. Gameplay
 
@@ -12,7 +12,7 @@ Wander around collecting handy items until you find the winning hut. Arrow keys 
 
 h2. "Installation"
 
-If you're on Linux, try running vkgame (you may have to make it executable by doing 'chmod +x vkgame'). If that doesn't work try running shoes2.run and selecting vkgame.rb. And if that doesn't work or you're on another platform, try "downloading Shoes":http://shoooes.net for your platform and feeding it vkgame.rb. Good luck.
+If you're on Linux, try running vkgame (you may have to make it executable by doing 'chmod +x vkgame'). 
 
 h2. Limitations
 
