@@ -8,7 +8,7 @@ h2. Gameplay
 
 Wander around collecting handy items until you find the winning hut. Arrow keys to move around q to quit. 
 
-"Screenshot":http://github.com/eremite/vkgame/raw/3926b4519fee30bcb4ebdf505c68c1f2fc0fa27e/images/screenshot.jpg
+"Screenshot":http://github.com/z9484/vkgame/raw/master/images/screenshot.jpg
 
 h2. "Installation"
 
