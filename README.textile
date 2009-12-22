@@ -2,11 +2,11 @@ h1. Virtual Kingdoms: The Game
 
 h2. Intro
 
-A little game written in Ruby. It uses Glade and Gtk for the GUI.
+VKgame is a fantasy re-application of the Door concept written in Ruby. It uses Glade and Gtk for the GUI. 
 
 h2. Gameplay
 
-Wander around collecting handy items until you find the winning hut. Arrow keys to move around q to quit. 
+Wander around collecting handy items. Arrow keys to move around q to quit. 
 
 "Screenshot":http://github.com/z9484/vkgame/raw/master/images/screenshot.jpg
 
@@ -20,4 +20,4 @@ I don't have a server set up yet so only the offline solo version works right no
 
 h2. License
 
-GPL 2
+VK the Game is released under the GPL 2.
