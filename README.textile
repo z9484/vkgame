@@ -12,7 +12,7 @@ Wander around collecting handy items until you find the winning hut. Arrow keys 
 
 h2. "Installation"
 
-If you're on Linux, try running vkgame (you may have to make it executable by doing 'chmod +x vkgame'). 
+If you're on Linux, try running vkgame (you may have to make it executable by doing 'chmod +x vkgame'). Rails needs to be installed as well as possibly sqlite3.
 
 h2. Limitations
 
