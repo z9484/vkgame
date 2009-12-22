@@ -13,7 +13,8 @@ Wander around collecting handy items. Arrow keys to move around q to quit.
 h2. "Installation"
 
 If you're on Linux, try running vkgame (you may have to make it executable by doing 'chmod +x vkgame'). Rails needs to be installed as well as possibly sqlite3.
-
+activerecord and activesupport gems also need to be installed.
+ 
 h2. Limitations
 
 I don't have a server set up yet so only the offline solo version works right now.
